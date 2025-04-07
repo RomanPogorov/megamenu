@@ -181,7 +181,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             {/* Поисковая строка */}
             <div className="pt-3 px-6 pb-4">
               <div
-                className="relative max-w-5xl mx-auto"
+                className="relative max-w-5xl mx-auto mt-4"
                 onClick={(event) => event.stopPropagation()}
               >
                 <input
@@ -213,7 +213,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
 
             {/* Навигационные кнопки */}
             {!searchQuery && (
-              <div className="flex justify-center items-center px-16 pb-11">
+              <div className="flex justify-center items-center px-16 pb-11 mt-6">
                 <div className="flex gap-4">
                   <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
                     <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
