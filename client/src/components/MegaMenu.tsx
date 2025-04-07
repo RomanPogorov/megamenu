@@ -167,35 +167,48 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   // Animation flags
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     let searchTimer: NodeJS.Timeout | undefined;
     let contentTimer: NodeJS.Timeout;
+    let visibilityTimer: NodeJS.Timeout;
 
     if (isOpen) {
+      setIsVisible(true);
       // Show search bar immediately
       setShowSearchBar(true);
 
-      // Задержка появления контента (уменьшена)
+      // Задержка появления контента
       contentTimer = setTimeout(() => {
         setShowContent(true);
-      }, 200); // Уменьшенная задержка для контента
+      }, 100);
     } else {
-      // Reset states when closed
-      setShowSearchBar(false);
+      // Сначала скрываем контент
       setShowContent(false);
+      // Затем скрываем поиск
+      setTimeout(() => {
+        setShowSearchBar(false);
+      }, 50);
+      // И только потом убираем компонент из DOM
+      visibilityTimer = setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
     }
 
     return () => {
       if (searchTimer) clearTimeout(searchTimer);
       clearTimeout(contentTimer);
+      clearTimeout(visibilityTimer);
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-white z-40 ml-[60px]">
+    <div
+      className={`fixed inset-0 bg-white z-40 ml-[60px] transition-opacity duration-100 ${isOpen ? "opacity-100" : "opacity-0"}`}
+    >
       <div ref={menuRef} className="w-full h-full overflow-auto relative">
         {/* Убираем крестик из мегаменю, оставляем только в боковом меню */}
 
@@ -203,7 +216,11 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
         <div className="w-full">
           {/* Header section with search */}
           <div
-            className={`transition-all duration-300 transform ${showSearchBar ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}`}
+            className={`transition-all duration-100 transform ${
+              showSearchBar
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-4 opacity-0"
+            }`}
           >
             {/* Search input - на всю ширину */}
             <div className="pt-3 px-6 pb-4">
@@ -224,9 +241,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Content section - fades in with delay (ускоренная анимация) */}
+          {/* Content section */}
           <div
-            className={`transition-all duration-250 transform ${showContent ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
+            className={`transition-all duration-100 transform ${
+              showContent
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-4 opacity-0"
+            }`}
           >
             {searchQuery ? (
               // Search Results State
