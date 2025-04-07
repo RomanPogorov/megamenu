@@ -5,11 +5,18 @@ export interface ResourceType {
   size: string;
   table: boolean;
   lastUpdated: string;
-  status: string;
-  [key: string]: string | boolean;
+  status: "Active" | "Outdated" | "Draft";
+  description?: string;
+  version?: string;
+  [key: string]: string | boolean | undefined;
 }
 
-export type ResourceCategory = "Categorised" | "Custom" | "Populated" | "System" | "Failed validation";
+export type ResourceCategory =
+  | "Categorised"
+  | "Custom"
+  | "Populated"
+  | "System"
+  | "Failed validation";
 
 export interface ResourceAction {
   id: string;
