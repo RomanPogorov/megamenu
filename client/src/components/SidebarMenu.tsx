@@ -114,7 +114,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
         <div className="w-8 h-px bg-gray-200 my-2"></div>
 
         {/* Regular Pinned Items Section */}
-        <div className="flex flex-col items-center space-y-2 overflow-y-auto hide-scrollbar flex-grow py-1">
+        <div className="flex flex-col items-center overflow-y-auto hide-scrollbar flex-grow">
           {pinnedItems.length === 0 && (
             <div className="text-gray-400 text-xs text-center px-2 py-2">
               Прикрепите элементы из меню
@@ -127,12 +127,13 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 item={item}
                 onClick={() => handleItemClick(item.id)}
                 getCategoryIcon={getCategoryIcon}
+                isCentral={true}
               />
             </div>
           ))}
 
           {/* Divider before Recent Search */}
-          <div className="w-8 h-px bg-gray-200 mt-auto mb-2"></div>
+          <div className="w-8 h-px bg-gray-200 mb-2"></div>
 
           {/* Recent Items Button */}
           <div className="relative">

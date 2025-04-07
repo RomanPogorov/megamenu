@@ -78,7 +78,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 ? "bg-red-500 text-white"
                 : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
             } transition-colors`}
-            onClick={() => setActiveFilter(filter.id)}
+            onClick={(event) => {
+              setActiveFilter(filter.id);
+              event.stopPropagation();
+            }}
           >
             {filter.name}{" "}
             <span
@@ -106,7 +109,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             <div
               key={item.id}
               className="py-4 px-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer border-b border-gray-200 last:border-b-0"
-              onClick={() => onItemClick(item.category, item.id)}
+              onClick={(event) => {
+                onItemClick(item.category, item.id);
+                event.stopPropagation();
+              }}
             >
               <div className="flex items-center pl-2">
                 <span className="font-medium text-gray-800">{item.name}</span>

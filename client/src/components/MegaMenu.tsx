@@ -204,19 +204,11 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  // Передаем состояние isClosing наверх через onClose
-  const handleClose = () => {
-    if (!isClosing) {
-      onClose();
-    }
-  };
-
   if (!isVisible) return null;
 
   return (
     <div
       className={`fixed inset-0 bg-white z-40 ml-[60px] transition-opacity duration-100 ${isOpen ? "opacity-100" : "opacity-0"}`}
-      onClick={handleClose}
     >
       <div ref={menuRef} className="w-full h-full overflow-auto relative">
         {/* Убираем крестик из мегаменю, оставляем только в боковом меню */}
@@ -233,7 +225,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
           >
             {/* Search input - на всю ширину */}
             <div className="pt-3 px-6 pb-4">
-              <div className="relative max-w-4xl mx-auto">
+              <div
+                className="relative max-w-4xl mx-auto"
+                onClick={(event) => event.stopPropagation()}
+              >
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -249,7 +244,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 />
                 {searchQuery && (
                   <button
-                    onClick={() => setSearchQuery("")}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSearchQuery("");
+                    }}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
                     <Icon name={ICON_CLOSE_MENU} size={16} />

@@ -29,12 +29,14 @@ interface SidebarMenuItemProps {
   item: MenuItem;
   onClick: () => void;
   getCategoryIcon: (categoryId: string) => string;
+  isCentral?: boolean;
 }
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   item,
   onClick,
   getCategoryIcon,
+  isCentral = false,
 }) => {
   // Access the getParentIcon function from the menu context
   const { getParentIcon } = useMenu();
@@ -49,7 +51,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
 
   return (
     <button
-      className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
+      className={`px-3 ${isCentral ? "py-2" : "py-3"} rounded-lg text-gray-900 hover:bg-gray-100 transition-colors`}
       aria-label={item.name}
       title={item.name}
       onClick={onClick}
