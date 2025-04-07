@@ -10,7 +10,10 @@ import { useShortcut } from "./hooks/useShortcut";
 function App() {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 
-  useShortcut(() => setIsMegaMenuOpen((prev) => !prev));
+  useShortcut(
+    () => setIsMegaMenuOpen((prev) => !prev), // Для Command+K
+    () => setIsMegaMenuOpen(false) // Для ESC
+  );
 
   return (
     <MenuProvider>

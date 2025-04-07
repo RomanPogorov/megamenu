@@ -51,13 +51,21 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             )}
           </button>
           <div className="flex items-center gap-1 text-xs text-gray-400">
-            <span className="flex items-center justify-center w-4 h-4 bg-gray-100 rounded">
-              ⌘
-            </span>
-            <span>+</span>
-            <span className="flex items-center justify-center w-4 h-4 bg-gray-100 rounded">
-              K
-            </span>
+            {!isMegaMenuOpen ? (
+              <>
+                <span className="flex items-center justify-center w-4 h-4 bg-gray-100 rounded">
+                  ⌘
+                </span>
+                <span>+</span>
+                <span className="flex items-center justify-center w-4 h-4 bg-gray-100 rounded">
+                  K
+                </span>
+              </>
+            ) : (
+              <span className="flex items-center justify-center w-[26px] h-4 bg-gray-100 rounded text-[10px]">
+                ESC
+              </span>
+            )}
           </div>
         </div>
 
