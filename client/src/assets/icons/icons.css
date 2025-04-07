@@ -9,6 +9,20 @@
   vertical-align: middle;
 }
 
+/* Logo icon */
+.icon-logo {
+  background-image: url("./svg/logo.svg");
+}
+
+/* Menu icons */
+.icon-menu {
+  background-image: url("./svg/menu.svg");
+}
+
+.icon-close-menu {
+  background-image: url("./svg/close-menu.svg");
+}
+
 /* Category icons */
 .icon-resources {
   background-image: url("./svg/folder-open.svg");

@@ -3,9 +3,13 @@ import { useLocation } from "wouter";
 import { useMenu } from "../hooks/useMenu";
 import RecentMenu from "./RecentMenu";
 import SidebarMenuItem from "./SidebarMenuItem";
-import { FaBars, FaTimes } from "react-icons/fa";
 import { Icon } from "./Icon";
-import { ICON_CLOCK } from "../assets/icons";
+import {
+  ICON_CLOCK,
+  ICON_LOGO,
+  ICON_MENU,
+  ICON_CLOSE_MENU,
+} from "../assets/icons";
 
 interface SidebarMenuProps {
   toggleMegaMenu: () => void;
@@ -57,41 +61,42 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Logo (SVG) - visible only in default state when closed and not hovering */}
           {!isMegaMenuOpen && (
             <div
-              className={`transform transition-all duration-300 ${isMegaMenuOpen ? "opacity-0 scale-0" : "group-hover:opacity-0 group-hover:scale-0"} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}
+              className={`transform transition-all duration-300 ${
+                isMegaMenuOpen
+                  ? "opacity-0 scale-0"
+                  : "group-hover:opacity-0 group-hover:scale-0"
+              } absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#E53E3E" />
-                <path
-                  d="M2 17L12 22L22 17L12 12L2 17Z"
-                  fill="#E53E3E"
-                  opacity="0.7"
-                />
-              </svg>
+              <Icon name={ICON_LOGO} size={24} className="text-red-500" />
             </div>
           )}
 
           {/* Menu icon - shown on hover when closed */}
           {!isMegaMenuOpen && (
-            <FaBars className="text-xl transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative" />
+            <Icon
+              name={ICON_MENU}
+              size={24}
+              className="text-gray-900 transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative"
+            />
           )}
 
           {/* Close (X) icon - shown when menu is open */}
-          {isMegaMenuOpen && <FaTimes className="text-xl relative" />}
+          {isMegaMenuOpen && (
+            <Icon
+              name={ICON_CLOSE_MENU}
+              size={24}
+              className="text-gray-900 relative"
+            />
+          )}
         </button>
 
         {/* Divider */}
         <div className="w-8 h-px bg-gray-200 my-2"></div>
 
         {/* Pinned Items Section */}
-        <div className="flex flex-col items-center space-y-4 overflow-y-auto hide-scrollbar flex-grow py-2">
+        <div className="flex flex-col items-center space-y-2 overflow-y-auto hide-scrollbar flex-grow py-1">
           {pinnedItems.length === 0 && (
-            <div className="text-gray-400 text-xs text-center px-2 py-4">
+            <div className="text-gray-400 text-xs text-center px-2 py-2">
               Прикрепите элементы из меню
             </div>
           )}
