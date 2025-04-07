@@ -173,42 +173,34 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    let searchTimer: NodeJS.Timeout | undefined;
     let contentTimer: NodeJS.Timeout;
-    let visibilityTimer: NodeJS.Timeout;
+    let focusTimer: NodeJS.Timeout;
 
     if (isOpen) {
       setIsVisible(true);
-      setIsClosing(false);
       // Show search bar immediately
       setShowSearchBar(true);
 
-      // Задержка появления контента
+      // Focus search input after it appears
+      focusTimer = setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+        }
+      }, 50);
+
+      // Delay content appearance
       contentTimer = setTimeout(() => {
         setShowContent(true);
       }, 100);
     } else {
-      setIsClosing(true);
-      // Сначала скрываем контент
+      // Reset states when closed
+      setShowSearchBar(false);
       setShowContent(false);
-      // Затем скрываем поиск
-      setTimeout(() => {
-        setShowSearchBar(false);
-      }, 50);
-      // И только потом убираем компонент из DOM
-      visibilityTimer = setTimeout(() => {
-        setIsVisible(false);
-        // Через 300мс после закрытия меню разрешаем его открыть снова
-        setTimeout(() => {
-          setIsClosing(false);
-        }, 300);
-      }, 200);
     }
 
     return () => {
-      if (searchTimer) clearTimeout(searchTimer);
+      clearTimeout(focusTimer);
       clearTimeout(contentTimer);
-      clearTimeout(visibilityTimer);
     };
   }, [isOpen]);
 
