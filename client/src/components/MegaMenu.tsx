@@ -295,9 +295,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Menu Categories Grid - новая структура */}
-                <div className="flex max-w-7xl mx-auto">
+                <div
+                  className="flex gap-20 mx-auto"
+                  style={{ width: "fit-content" }}
+                >
                   {/* Resources колонка (занимает всю высоту слева) */}
-                  <div className="w-1/4 pr-8">
+                  <div className="w-[202px]">
                     {categories
                       .filter((category) => category.id === "resources")
                       .map((category: Category) => (
@@ -341,9 +344,15 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Остальные категории (в правой части) */}
-                  <div className="w-3/4 grid grid-cols-3 gap-5">
+                  <div
+                    className="grid grid-cols-3 gap-x-20 gap-y-10"
+                    style={{
+                      width: "fit-content",
+                      gridTemplateColumns: "repeat(3, 235px)",
+                    }}
+                  >
                     {/* Верхний ряд (Notebooks, API, Database) */}
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "notebooks")
                         .map((category: Category) => (
@@ -386,7 +395,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         ))}
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "api")
                         .map((category: Category) => (
@@ -429,7 +438,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         ))}
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "database")
                         .map((category: Category) => (
@@ -473,7 +482,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     </div>
 
                     {/* Нижний ряд (IAM, FAR, Plugins & Modules) */}
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "iam")
                         .map((category: Category) => (
@@ -516,7 +525,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         ))}
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "far")
                         .map((category: Category) => (
@@ -559,7 +568,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         ))}
                     </div>
 
-                    <div className="mb-8">
+                    <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "plugins")
                         .map((category: Category) => (
