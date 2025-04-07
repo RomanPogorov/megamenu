@@ -8,13 +8,14 @@ export interface Category {
 export interface MenuItem {
   id: string;
   name: string;
-  icon: string;
+  icon: React.ReactNode;
   category: string;
   important?: boolean;
   categoryName?: string;
   isParent?: boolean;
   parentId?: string;
   fromRecent?: boolean;
+  isPinned?: boolean;
 }
 
 export interface SearchFilter {
