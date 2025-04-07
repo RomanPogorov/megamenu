@@ -58,8 +58,12 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         {item.parentId ? (
           <div className="relative">
             {renderIcon(getParentIcon(item))}
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-none absolute inline-flex h-full w-full rounded-full bg-blue-500"></span>
+            <span className="absolute -top-1 -right-1 flex h-5 w-5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-white border border-gray-200 shadow-xl flex items-center justify-center">
+                <span className="text-[10px] font-bold text-gray-900">
+                  {item.name.slice(0, 2).toUpperCase()}
+                </span>
+              </span>
             </span>
           </div>
         ) : (
