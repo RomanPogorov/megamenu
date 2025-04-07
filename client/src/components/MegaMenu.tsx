@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Icon } from "./Icon";
+import { FaPuzzlePiece } from "react-icons/fa";
 import {
   ICON_SEARCH,
   ICON_RESOURCES,
@@ -9,7 +10,9 @@ import {
   ICON_DATABASE,
   ICON_IAM,
   ICON_FAR,
-  ICON_PLUGINS
+  ICON_PLUGINS,
+  ICON_PIN,
+  ICON_PIN_FILLED,
 } from "../assets/icons";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
@@ -49,7 +52,7 @@ const CategoryPinButton = ({
         handlePinToggle(category);
       }}
     >
-      <FaThumbtack size={14} />
+      <Icon name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN} size={16} />
     </button>
   );
 };
@@ -166,7 +169,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    let searchTimer: NodeJS.Timeout;
+    let searchTimer: NodeJS.Timeout | undefined;
     let contentTimer: NodeJS.Timeout;
 
     if (isOpen) {
@@ -184,7 +187,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     }
 
     return () => {
-      clearTimeout(searchTimer);
+      if (searchTimer) clearTimeout(searchTimer);
       clearTimeout(contentTimer);
     };
   }, [isOpen]);
@@ -213,7 +216,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Icon name={ICON_SEARCH} className="absolute left-4 top-3 text-red-500" />
+                <Icon
+                  name={ICON_SEARCH}
+                  className="absolute left-4 top-3 text-red-500"
+                />
               </div>
             </div>
           </div>
@@ -261,8 +267,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         <div key={category.id} className="mb-8">
                           <div className="mb-4 flex items-center justify-between">
                             <div className="flex items-center">
-                              <Icon name={ICON_RESOURCES} className="text-red-500 mr-2" />
-                              <h3 className="font-medium text-red-500">
+                              <Icon
+                                name={ICON_RESOURCES}
+                                className="text-red-500 mr-2"
+                                size={24}
+                              />
+                              <h3 className="font-medium text-gray-900">
                                 {category.name}
                               </h3>
                             </div>
@@ -305,8 +315,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <Icon name={ICON_NOTEBOOKS} className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <Icon
+                                  name={ICON_NOTEBOOKS}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>
@@ -345,8 +359,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <Icon name={ICON_API} className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <Icon
+                                  name={ICON_API}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>
@@ -385,8 +403,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <Icon name={ICON_DATABASE} className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <Icon
+                                  name={ICON_DATABASE}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>
@@ -426,8 +448,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <Icon name={ICON_IAM} className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <Icon
+                                  name={ICON_IAM}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>
@@ -466,8 +492,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <Icon name={ICON_FAR} className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <Icon
+                                  name={ICON_FAR}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>
@@ -506,8 +536,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div key={category.id} className="mb-8">
                             <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
                               <div className="flex items-center">
-                                <FaPuzzlePiece className="text-red-500 mr-2" />
-                                <h3 className="font-medium text-red-500">
+                                <FaPuzzlePiece className="text-red-500 mr-2 text-2xl" />
+                                <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
                               </div>

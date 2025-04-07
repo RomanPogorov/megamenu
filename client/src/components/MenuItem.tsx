@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "./Icon";
-import { ICON_PIN } from "../assets/icons";
+import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons";
 import { MenuItem as MenuItemType } from "../types/menu";
 
 interface MenuItemProps {
@@ -48,7 +48,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
           }
           onClick={handlePinClick}
         >
-          <Icon name={ICON_PIN} size={14} />
+          <Icon name={isPinned ? ICON_PIN_FILLED : ICON_PIN} size={16} />
         </button>
       </div>
     </li>

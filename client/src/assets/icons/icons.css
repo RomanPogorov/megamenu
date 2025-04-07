@@ -47,6 +47,10 @@
   background-image: url("./svg/thumbtack.svg");
 }
 
+.icon-pin-filled {
+  background-image: url("./svg/thumbtack-filled.svg");
+}
+
 .icon-plus {
   background-image: url("./svg/plus.svg");
 }
