@@ -50,7 +50,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     setActiveFilter,
     filterOptions,
   } = useSearch();
-  const { isCustomizationEnabled } = useCustomization();
+  const { isCustomizationEnabled, resetToDefault } = useCustomization();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -178,45 +178,64 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 : "-translate-y-4 opacity-0"
             }`}
           >
-            {/* Верхняя панель с поиском и кастомизацией */}
+            {/* Поисковая строка */}
             <div className="pt-3 px-6 pb-4">
-              <div className="flex items-center justify-between mb-4">
-                <div
-                  className="relative max-w-xl"
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Поиск в меню..."
-                    className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
-                    value={searchQuery}
-                    onChange={(e) => setActiveFilter(e.target.value)}
-                  />
-                  <Icon
-                    name={ICON_SEARCH}
-                    size={16}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setActiveFilter("all");
-                      }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                      <Icon name={ICON_CLOSE_MENU} size={16} />
-                    </button>
-                  )}
+              <div
+                className="relative max-w-xl mx-auto"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Поиск в меню..."
+                  className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Icon
+                  name={ICON_SEARCH}
+                  size={16}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSearchQuery("");
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <Icon name={ICON_CLOSE_MENU} size={16} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Навигационные кнопки и контролы */}
+            <div className="flex justify-center items-center px-16 pb-11">
+              <div className="flex items-center gap-20">
+                <div className="flex gap-4">
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
+                    Resource Browser
+                  </button>
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_API} className="mr-2 text-red-500" />
+                    REST Console
+                  </button>
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
+                    DB Console
+                  </button>
                 </div>
+
                 <div className="flex items-center gap-4">
                   <CustomizationControls />
                   <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={onClose}
+                    onClick={resetToDefault}
+                    className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
                   >
-                    <Icon name={ICON_CLOSE_MENU} size={24} />
+                    Reset to Default
                   </button>
                 </div>
               </div>
@@ -244,22 +263,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             ) : (
               // Initial Menu State - Fullscreen version
               <div className="px-16 pb-8 container mx-auto">
-                {/* Top Navigation Buttons */}
-                <div className="flex justify-center space-x-4 pt-6 pb-11">
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
-                    Resource Browser
-                  </button>
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_API} className="mr-2 text-red-500" />
-                    REST Console
-                  </button>
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
-                    DB Console
-                  </button>
-                </div>
-
                 {/* Menu Categories Grid - новая структура */}
                 <div
                   className="flex gap-20 mx-auto"

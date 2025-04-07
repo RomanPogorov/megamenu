@@ -2,8 +2,7 @@ import React from "react";
 import { useCustomization } from "../hooks/useCustomization";
 
 const CustomizationControls: React.FC = () => {
-  const { isCustomizationEnabled, toggleCustomization, resetToDefault } =
-    useCustomization();
+  const { isCustomizationEnabled, toggleCustomization } = useCustomization();
 
   return (
     <div className="flex items-center gap-4">
@@ -19,12 +18,6 @@ const CustomizationControls: React.FC = () => {
           Customization
         </span>
       </label>
-      <button
-        onClick={resetToDefault}
-        className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
-      >
-        Reset to Default
-      </button>
     </div>
   );
 };
