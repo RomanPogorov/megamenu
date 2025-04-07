@@ -20,43 +20,8 @@ import { useSearch } from "../hooks/useSearch";
 import MenuItem from "./MenuItem";
 import SearchResults from "./SearchResults";
 import { Category } from "../types/menu";
-
-// Компонент кнопки закрепления категории
-const CategoryPinButton = ({
-  category,
-  isPinned,
-  handlePinToggle,
-}: {
-  category: Category;
-  isPinned: (id: string) => boolean;
-  handlePinToggle: (category: Category) => void;
-}) => {
-  const categoryId = `category-${category.id}`;
-  const isPinnedValue = isPinned(categoryId);
-
-  return (
-    <button
-      className={`${isPinnedValue ? "text-red-500 hover:text-red-600" : "text-gray-300 hover:text-red-500"} 
-        transition-colors flex items-center justify-center w-6 h-6`}
-      aria-label={
-        isPinnedValue
-          ? `Открепить ${category.name}`
-          : `Прикрепить ${category.name}`
-      }
-      title={
-        isPinnedValue
-          ? `Открепить ${category.name}`
-          : `Прикрепить ${category.name}`
-      }
-      onClick={(e) => {
-        e.stopPropagation();
-        handlePinToggle(category);
-      }}
-    >
-      <Icon name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN} size={16} />
-    </button>
-  );
-};
+import CustomizationControls from "./CustomizationControls";
+import CategoryPinButton from "./CategoryPinButton";
 
 interface MegaMenuProps {
   isOpen: boolean;
@@ -223,36 +188,47 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 : "-translate-y-4 opacity-0"
             }`}
           >
-            {/* Search input - на всю ширину */}
+            {/* Верхняя панель с поиском и кастомизацией */}
             <div className="pt-3 px-6 pb-4">
-              <div
-                className="relative max-w-4xl mx-auto"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Поиск в меню..."
-                  className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Icon
-                  name={ICON_SEARCH}
-                  size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
-                />
-                {searchQuery && (
+              <div className="flex items-center justify-between mb-4">
+                <div
+                  className="relative max-w-xl"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Поиск в меню..."
+                    className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Icon
+                    name={ICON_SEARCH}
+                    size={16}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setSearchQuery("");
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <Icon name={ICON_CLOSE_MENU} size={16} />
+                    </button>
+                  )}
+                </div>
+                <div className="flex items-center gap-4">
+                  <CustomizationControls />
                   <button
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setSearchQuery("");
-                    }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={onClose}
                   >
-                    <Icon name={ICON_CLOSE_MENU} size={16} />
+                    <Icon name={ICON_CLOSE_MENU} size={24} />
                   </button>
-                )}
+                </div>
               </div>
             </div>
           </div>

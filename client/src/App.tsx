@@ -6,6 +6,7 @@ import ResourceTypeView from "./pages/ResourceTypeView";
 import NotFound from "./pages/not-found";
 import { MenuProvider } from "./hooks/useMenu";
 import { useShortcut } from "./hooks/useShortcut";
+import { CustomizationProvider } from "./hooks/useCustomization";
 
 function App() {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
@@ -15,27 +16,33 @@ function App() {
     () => setIsMegaMenuOpen(false) // Для ESC
   );
 
+  const toggleMegaMenu = () => {
+    setIsMegaMenuOpen(!isMegaMenuOpen);
+  };
+
   return (
     <MenuProvider>
-      <div className="bg-gray-50 h-screen flex overflow-hidden">
-        <SidebarMenu
-          toggleMegaMenu={() => setIsMegaMenuOpen((prev) => !prev)}
-          isMegaMenuOpen={isMegaMenuOpen}
-        />
+      <CustomizationProvider>
+        <div className="bg-gray-50 h-screen flex overflow-hidden">
+          <SidebarMenu
+            toggleMegaMenu={toggleMegaMenu}
+            isMegaMenuOpen={isMegaMenuOpen}
+          />
 
-        <div className="flex-1 overflow-x-hidden overflow-y-auto ml-[60px] h-full">
-          <Switch>
-            <Route path="/" component={ResourceTypeView} />
-            <Route path="/resource/:id" component={ResourceTypeView} />
-            <Route component={NotFound} />
-          </Switch>
+          <div className="flex-1 overflow-x-hidden overflow-y-auto ml-[60px] h-full">
+            <Switch>
+              <Route path="/" component={ResourceTypeView} />
+              <Route path="/resource/:id" component={ResourceTypeView} />
+              <Route component={NotFound} />
+            </Switch>
+          </div>
+
+          <MegaMenu
+            isOpen={isMegaMenuOpen}
+            onClose={() => setIsMegaMenuOpen(false)}
+          />
         </div>
-
-        <MegaMenu
-          isOpen={isMegaMenuOpen}
-          onClose={() => setIsMegaMenuOpen(false)}
-        />
-      </div>
+      </CustomizationProvider>
     </MenuProvider>
   );
 }

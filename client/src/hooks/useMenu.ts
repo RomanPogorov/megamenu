@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import {
@@ -18,8 +19,10 @@ type MenuContextType = {
   categories: typeof categories;
   pinnedItems: MenuItem[];
   recentItems: MenuItem[];
+  setPinnedItems: (items: MenuItem[]) => void;
   addToPinned: (item: MenuItem) => void;
   removeFromPinned: (itemId: string) => void;
+  removeAllPinned: () => void;
   trackRecentItem: (item: MenuItem) => void;
   addCategoryToPinned: (categoryId: string) => void;
   isPinned: (itemId: string) => boolean;
@@ -41,57 +44,6 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     "recentItems",
     []
   );
-  const [initializedPinned, setInitializedPinned] = useState(false);
-
-  // Очистка временно отключена
-  // useEffect(() => {
-  //   localStorage.removeItem('pinnedItems');
-  //   localStorage.removeItem('recentItems');
-  //   console.log('Cleared localStorage');
-  // }, []);
-
-  // Функция для установки правильной связи элемента с родителем
-  const setCorrectParentForItem = (item: MenuItem): MenuItem => {
-    if (!item.isParent && !item.parentId) {
-      // Найдем родителя по категории
-      const parentItem = menuItems.find(
-        (m) => m.isParent && m.category === item.category
-      );
-
-      if (parentItem) {
-        return { ...item, parentId: parentItem.id };
-      }
-    }
-    return item;
-  };
-
-  // Обработка закрепленных элементов при загрузке
-  useEffect(() => {
-    // Обработаем уже загруженные элементы в pinnedItems
-    if (pinnedItems.length > 0 && !initializedPinned) {
-      // Установка правильных родителей для всех элементов
-      const updatedPinnedItems = pinnedItems.map((item) =>
-        setCorrectParentForItem(item)
-      );
-
-      // Обновление только если были изменения
-      if (JSON.stringify(updatedPinnedItems) !== JSON.stringify(pinnedItems)) {
-        setPinnedItems(updatedPinnedItems);
-      }
-
-      setInitializedPinned(true);
-    }
-    // Инициализация начальными элементами, если ничего нет
-    else if (!initializedPinned && pinnedItems.length === 0) {
-      // Initially pin items marked as important
-      const importantItems = menuItemsWithCategoryNames
-        .filter((item) => item.important)
-        .map((item) => setCorrectParentForItem(item));
-
-      setPinnedItems(importantItems);
-      setInitializedPinned(true);
-    }
-  }, [initializedPinned, pinnedItems, setPinnedItems]);
 
   const addToPinned = (item: MenuItem) => {
     // Don't add duplicates
@@ -134,7 +86,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
   // Check if an item is pinned
   const isPinned = (itemId: string): boolean => {
-    return pinnedItems.some((item) => item.id === itemId);
+    // Проверяем как с префиксом category-, так и без него
+    return pinnedItems.some(
+      (item) =>
+        item.id === itemId ||
+        item.id === `category-${itemId}` ||
+        `category-${item.id}` === itemId
+    );
   };
 
   // Get category icon by category id
@@ -190,14 +148,20 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     return parent?.name || "";
   };
 
+  const removeAllPinned = useCallback(() => {
+    setPinnedItems([]);
+  }, []);
+
   // Create the value object to be passed to consumers
   const contextValue: MenuContextType = {
     allMenuItems: menuItemsWithCategoryNames,
     categories,
     pinnedItems,
     recentItems,
+    setPinnedItems,
     addToPinned,
     removeFromPinned,
+    removeAllPinned,
     trackRecentItem,
     addCategoryToPinned,
     isPinned,

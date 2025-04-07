@@ -2,6 +2,7 @@ import React from "react";
 import { Icon } from "./Icon";
 import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons";
 import { Category } from "../types/menu";
+import { useCustomization } from "../hooks/useCustomization";
 
 interface CategoryPinButtonProps {
   category: Category;
@@ -14,23 +15,29 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
   isPinned,
   handlePinToggle,
 }) => {
+  const { isCustomizationEnabled } = useCustomization();
+
+  if (!isCustomizationEnabled) {
+    return null;
+  }
+
   const categoryId = `category-${category.id}`;
   const isPinnedValue = isPinned(categoryId);
 
   return (
     <button
       className={`${
-        isPinned(category.id)
+        isPinnedValue
           ? "text-red-500 hover:text-red-600"
           : "text-gray-300 hover:text-red-500"
       } transition-colors flex items-center justify-center w-6 h-6`}
       aria-label={
-        isPinned(category.id)
+        isPinnedValue
           ? `Открепить ${category.name}`
           : `Прикрепить ${category.name}`
       }
       title={
-        isPinned(category.id)
+        isPinnedValue
           ? `Открепить ${category.name}`
           : `Прикрепить ${category.name}`
       }
@@ -39,10 +46,7 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
         handlePinToggle(category);
       }}
     >
-      <Icon
-        name={isPinned(category.id) ? ICON_PIN_FILLED : ICON_PIN}
-        size={16}
-      />
+      <Icon name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN} size={16} />
     </button>
   );
 };
