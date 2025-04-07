@@ -41,15 +41,15 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
 
   const renderIcon = (iconName: string) => {
     return ICON_MAP[iconName] ? (
-      <Icon name={ICON_MAP[iconName]} size={24} />
+      <Icon name={ICON_MAP[iconName]} size={20} className="text-gray-900" />
     ) : (
-      <FaCircle />
+      <FaCircle className="text-gray-900 text-xl" />
     );
   };
 
   return (
     <button
-      className="p-3 rounded-lg text-red-500 hover:bg-gray-100 transition-colors"
+      className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
       aria-label={item.name}
       title={item.name}
       onClick={onClick}

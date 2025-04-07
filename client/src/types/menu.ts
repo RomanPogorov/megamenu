@@ -14,6 +14,7 @@ export interface MenuItem {
   categoryName?: string;
   isParent?: boolean;
   parentId?: string;
+  fromRecent?: boolean;
 }
 
 export interface SearchFilter {

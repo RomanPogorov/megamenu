@@ -13,6 +13,7 @@ import {
   ICON_PLUGINS,
   ICON_PIN,
   ICON_PIN_FILLED,
+  ICON_CLOSE_MENU,
 } from "../assets/icons";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
@@ -229,14 +230,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   ref={searchInputRef}
                   type="text"
                   placeholder="Поиск в меню..."
-                  className="w-full px-4 py-2 pl-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
+                  className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Icon
                   name={ICON_SEARCH}
-                  className="absolute left-4 top-3 text-red-500"
+                  size={16}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <Icon name={ICON_CLOSE_MENU} size={16} />
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -263,7 +273,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               // Initial Menu State - Fullscreen version
               <div className="px-16 pb-8 container mx-auto">
                 {/* Top Navigation Buttons */}
-                <div className="flex space-x-4 mb-8 max-w-4xl mx-auto">
+                <div className="flex justify-center space-x-4 mb-8">
                   <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-red-500 transition-colors shadow-sm">
                     <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
                     Resource Browser

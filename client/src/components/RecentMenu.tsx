@@ -1,6 +1,7 @@
 import { useMenu } from "../hooks/useMenu";
 import { MenuItem } from "../types/menu";
 import { Icon } from "./Icon";
+import { createPortal } from "react-dom";
 import {
   ICON_RESOURCES,
   ICON_NOTEBOOKS,
@@ -15,9 +16,10 @@ import {
 
 interface RecentMenuProps {
   items: MenuItem[];
+  buttonRect?: DOMRect;
 }
 
-const RecentMenu: React.FC<RecentMenuProps> = ({ items }) => {
+const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
   const { addToPinned, removeFromPinned, pinnedItems, getCategoryIcon } =
     useMenu();
 
@@ -31,7 +33,10 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items }) => {
     if (isPinned(item.id)) {
       removeFromPinned(item.id);
     } else {
-      addToPinned(item);
+      addToPinned({
+        ...item,
+        fromRecent: true,
+      });
     }
   };
 
@@ -42,52 +47,56 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items }) => {
           <Icon
             name={ICON_RESOURCES}
             size={20}
-            className="text-gray-500 mr-2"
+            className="text-gray-900 mr-2"
           />
         );
       case "code":
         return (
-          <Icon name={ICON_API} size={20} className="text-gray-500 mr-2" />
+          <Icon name={ICON_API} size={20} className="text-gray-900 mr-2" />
         );
       case "database":
         return (
-          <Icon name={ICON_DATABASE} size={20} className="text-gray-500 mr-2" />
+          <Icon name={ICON_DATABASE} size={20} className="text-gray-900 mr-2" />
         );
       case "book":
         return (
           <Icon
             name={ICON_NOTEBOOKS}
             size={20}
-            className="text-gray-500 mr-2"
+            className="text-gray-900 mr-2"
           />
         );
       case "tasks":
         return (
-          <Icon name={ICON_FAR} size={20} className="text-gray-500 mr-2" />
+          <Icon name={ICON_FAR} size={20} className="text-gray-900 mr-2" />
         );
       case "puzzle-piece":
         return (
-          <Icon name={ICON_PLUGINS} size={20} className="text-gray-500 mr-2" />
+          <Icon name={ICON_PLUGINS} size={20} className="text-gray-900 mr-2" />
         );
       case "user-shield":
         return (
-          <Icon name={ICON_IAM} size={20} className="text-gray-500 mr-2" />
+          <Icon name={ICON_IAM} size={20} className="text-gray-900 mr-2" />
         );
       default:
         return (
           <Icon
             name={ICON_RESOURCES}
             size={20}
-            className="text-gray-500 mr-2"
+            className="text-gray-900 mr-2"
           />
         );
     }
   };
 
-  return (
+  return createPortal(
     <div
       id="recentDropdown"
-      className="absolute left-full ml-2 bottom-0 bg-white shadow-lg rounded-lg w-56 border border-gray-200 z-20"
+      className="fixed bg-white shadow-lg rounded-lg w-56 border border-gray-200 z-[9999]"
+      style={{
+        left: buttonRect ? buttonRect.right + 8 : 0,
+        top: buttonRect ? buttonRect.top - 8 : 0,
+      }}
     >
       <div className="p-2 border-b border-gray-200 font-medium text-gray-800">
         RECENT
@@ -141,7 +150,8 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items }) => {
           ))
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

@@ -25,6 +25,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const recentButtonRef = useRef<HTMLButtonElement>(null);
   const { pinnedItems, recentItems, getCategoryIcon } = useMenu();
 
+  // Разделяем pinnedItems на две группы
+  const regularPinnedItems = pinnedItems.filter((item) => !item.fromRecent);
+  const recentPinnedItems = pinnedItems.filter((item) => item.fromRecent);
+
   const toggleRecentMenu = () => {
     setRecentMenuOpen(!recentMenuOpen);
   };
@@ -54,7 +58,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
       <div className="flex flex-col items-center pt-4 h-full">
         {/* Logo/Menu/Close icon with appropriate states */}
         <button
-          className={`p-3 mb-4 rounded-lg text-red-500 hover:bg-gray-100 transition-all duration-300 group relative ${isMegaMenuOpen ? "bg-gray-100" : ""}`}
+          className={`p-3 mb-4 rounded-lg text-gray-900 hover:bg-gray-100 transition-all duration-300 group relative ${
+            isMegaMenuOpen ? "bg-gray-100" : ""
+          }`}
           aria-label={isMegaMenuOpen ? "Закрыть меню" : "Открыть меню"}
           onClick={toggleMegaMenu}
         >
@@ -67,7 +73,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                   : "group-hover:opacity-0 group-hover:scale-0"
               } absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}
             >
-              <Icon name={ICON_LOGO} size={24} className="text-red-500" />
+              <Icon name={ICON_LOGO} size={20} className="text-red-500" />
             </div>
           )}
 
@@ -75,7 +81,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {!isMegaMenuOpen && (
             <Icon
               name={ICON_MENU}
-              size={24}
+              size={20}
               className="text-gray-900 transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative"
             />
           )}
@@ -84,7 +90,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {isMegaMenuOpen && (
             <Icon
               name={ICON_CLOSE_MENU}
-              size={24}
+              size={20}
               className="text-gray-900 relative"
             />
           )}
@@ -93,7 +99,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
         {/* Divider */}
         <div className="w-8 h-px bg-gray-200 my-2"></div>
 
-        {/* Pinned Items Section */}
+        {/* Regular Pinned Items Section */}
         <div className="flex flex-col items-center space-y-2 overflow-y-auto hide-scrollbar flex-grow py-1">
           {pinnedItems.length === 0 && (
             <div className="text-gray-400 text-xs text-center px-2 py-2">
@@ -101,34 +107,50 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             </div>
           )}
 
-          {pinnedItems.map((item) => (
+          {regularPinnedItems.map((item) => (
             <div key={item.id} className="relative group">
               <SidebarMenuItem
                 item={item}
                 onClick={() => handleItemClick(item.id)}
                 getCategoryIcon={getCategoryIcon}
               />
-              {/* Unpin button overlay временно скрыт (по требованию) */}
             </div>
           ))}
-        </div>
 
-        {/* Recent Items Button */}
-        <div className="mt-auto mb-2 relative">
-          <button
-            ref={recentButtonRef}
-            className="p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-            aria-label="Недавние элементы"
-            title="Недавние элементы"
-            onClick={toggleRecentMenu}
-          >
-            <Icon name={ICON_CLOCK} size={24} />
-          </button>
+          {/* Divider before Recent Search */}
+          <div className="w-8 h-px bg-gray-200 mt-auto mb-2"></div>
 
-          {/* Recent Items Dropdown */}
-          {recentMenuOpen && recentItems.length > 0 && (
-            <RecentMenu items={recentItems} />
-          )}
+          {/* Recent Items Button */}
+          <div className="relative">
+            <button
+              ref={recentButtonRef}
+              className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
+              aria-label="Недавние элементы"
+              title="Недавние элементы"
+              onClick={toggleRecentMenu}
+            >
+              <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
+            </button>
+
+            {/* Recent Items Dropdown */}
+            {recentMenuOpen && recentItems.length > 0 && (
+              <RecentMenu
+                items={recentItems}
+                buttonRect={recentButtonRef.current?.getBoundingClientRect()}
+              />
+            )}
+          </div>
+
+          {/* Recent Pinned Items */}
+          {recentPinnedItems.map((item) => (
+            <div key={item.id} className="relative group">
+              <SidebarMenuItem
+                item={item}
+                onClick={() => handleItemClick(item.id)}
+                getCategoryIcon={getCategoryIcon}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </aside>

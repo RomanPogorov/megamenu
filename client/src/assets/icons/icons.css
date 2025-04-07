@@ -9,6 +9,13 @@
   vertical-align: middle;
 }
 
+/* Color variants */
+.text-gray-900 .icon:not(.icon-logo),
+.icon.text-gray-900:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(0%)
+    hue-rotate(206deg) brightness(95%) contrast(90%);
+}
+
 /* Logo icon */
 .icon-logo {
   background-image: url("./svg/logo.svg");
