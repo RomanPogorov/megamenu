@@ -21,6 +21,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   isMegaMenuOpen = false,
 }) => {
   const [recentMenuOpen, setRecentMenuOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [, setLocation] = useLocation();
   const recentButtonRef = useRef<HTMLButtonElement>(null);
   const { pinnedItems, recentItems, getCategoryIcon } = useMenu();
@@ -53,6 +54,19 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     setLocation(`/resource/${itemId}`);
   };
 
+  const handleMenuClick = () => {
+    if (isClosing) return;
+
+    if (isMegaMenuOpen) {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsClosing(false);
+      }, 300);
+    }
+
+    toggleMegaMenu();
+  };
+
   return (
     <aside className="w-[60px] bg-white h-full border-r border-gray-200 flex flex-col fixed left-0 top-0 z-50 transition-all duration-300">
       <div className="flex flex-col items-center pt-4 h-full">
@@ -62,7 +76,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             isMegaMenuOpen ? "bg-gray-100" : ""
           }`}
           aria-label={isMegaMenuOpen ? "Закрыть меню" : "Открыть меню"}
-          onClick={toggleMegaMenu}
+          onClick={handleMenuClick}
         >
           {/* Logo (SVG) - visible only in default state when closed and not hovering */}
           {!isMegaMenuOpen && (
@@ -82,7 +96,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             <Icon
               name={ICON_MENU}
               size={20}
-              className="text-gray-900 transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative"
+              className="text-gray-900 transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative pointer-events-none"
             />
           )}
 

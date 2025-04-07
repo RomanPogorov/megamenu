@@ -88,6 +88,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  const [isClosing, setIsClosing] = useState(false);
+
   useEffect(() => {
     if (isOpen && searchInputRef.current) {
       searchInputRef.current.focus();
@@ -177,6 +179,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
 
     if (isOpen) {
       setIsVisible(true);
+      setIsClosing(false);
       // Show search bar immediately
       setShowSearchBar(true);
 
@@ -185,6 +188,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
         setShowContent(true);
       }, 100);
     } else {
+      setIsClosing(true);
       // Сначала скрываем контент
       setShowContent(false);
       // Затем скрываем поиск
@@ -194,6 +198,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
       // И только потом убираем компонент из DOM
       visibilityTimer = setTimeout(() => {
         setIsVisible(false);
+        // Через 300мс после закрытия меню разрешаем его открыть снова
+        setTimeout(() => {
+          setIsClosing(false);
+        }, 300);
       }, 200);
     }
 
@@ -204,11 +212,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
+  // Передаем состояние isClosing наверх через onClose
+  const handleClose = () => {
+    if (!isClosing) {
+      onClose();
+    }
+  };
+
   if (!isVisible) return null;
 
   return (
     <div
       className={`fixed inset-0 bg-white z-40 ml-[60px] transition-opacity duration-100 ${isOpen ? "opacity-100" : "opacity-0"}`}
+      onClick={handleClose}
     >
       <div ref={menuRef} className="w-full h-full overflow-auto relative">
         {/* Убираем крестик из мегаменю, оставляем только в боковом меню */}
@@ -335,7 +351,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Остальные категории (в правой части) */}
-                  <div className="w-3/4 grid grid-cols-3 gap-8">
+                  <div className="w-3/4 grid grid-cols-3 gap-5">
                     {/* Верхний ряд (Notebooks, API, Database) */}
                     <div className="mb-8">
                       {categories
