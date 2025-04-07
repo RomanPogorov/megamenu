@@ -24,20 +24,20 @@ const ResourcesTable = () => {
   );
 
   const columns = [
-    { id: "typeName", header: "Type name", width: "4" },
+    { id: "typeName", header: "Type name", width: "2" },
     { id: "category", header: "Category", width: "1" },
-    { id: "description", header: "Description", width: "3" },
-    { id: "version", header: "Version", width: "1" },
-    { id: "instancesCount", header: "Instances", width: "1" },
-    { id: "size", header: "Size (GB)", width: "1" },
-    { id: "lastUpdated", header: "Last updated", width: "1" },
+    { id: "description", header: "Description", width: "6" },
+    { id: "version", header: "Version", width: "0.5" },
+    { id: "instancesCount", header: "Instances", width: "0.75" },
+    { id: "size", header: "Size (GB)", width: "0.5" },
+    { id: "lastUpdated", header: "Last updated", width: "0.75" },
     { id: "status", header: "Status", width: "1" },
     { id: "actions", header: "Actions", width: "1", align: "left" as const },
   ];
 
   return (
-    <div className="container mx-auto px-6 py-4 h-full">
-      <div className="flex items-center justify-between mb-6">
+    <div className="container mx-auto px-0 py-4 h-full">
+      <div className="flex items-center justify-between mb-6 px-6">
         <h1 className="text-xl font-semibold text-gray-800">Resource Types</h1>
         <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 hover:bg-gray-50 transition-colors">
           <FaPlus className="inline mr-2" />
@@ -53,7 +53,7 @@ const ResourcesTable = () => {
       />
 
       {/* Search input */}
-      <div className="mb-4">
+      <div className="mb-4 px-6">
         <div className="relative">
           <input
             type="text"
