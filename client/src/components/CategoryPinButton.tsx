@@ -1,6 +1,7 @@
-import React from 'react';
-import { FaThumbtack, FaTimes } from 'react-icons/fa';
-import { Category } from '../types/menu';
+import React from "react";
+import { Icon } from "./Icon";
+import { ICON_PIN } from "../assets/icons";
+import { Category } from "../types/menu";
 
 interface CategoryPinButtonProps {
   category: Category;
@@ -8,27 +9,37 @@ interface CategoryPinButtonProps {
   handlePinToggle: (category: Category) => void;
 }
 
-const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({ 
-  category, 
-  isPinned, 
-  handlePinToggle 
+const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
+  category,
+  isPinned,
+  handlePinToggle,
 }) => {
-  const isPinnedCategory = isPinned(category.id);
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    handlePinToggle(category);
-  };
+  const categoryId = `category-${category.id}`;
+  const isPinnedValue = isPinned(categoryId);
 
   return (
     <button
-      className={`${isPinnedCategory ? 'text-red-500 hover:text-red-600' : 'text-gray-300 hover:text-red-500'} 
-        transition-colors flex-shrink-0 p-1 rounded-full`}
-      aria-label={isPinnedCategory ? `Открепить ${category.name}` : `Прикрепить ${category.name}`}
-      title={isPinnedCategory ? `Открепить ${category.name}` : `Прикрепить ${category.name}`}
-      onClick={handleClick}
+      className={`${
+        isPinnedValue
+          ? "text-red-500 hover:text-red-600"
+          : "text-gray-300 hover:text-red-500"
+      } transition-colors flex items-center justify-center w-6 h-6`}
+      aria-label={
+        isPinnedValue
+          ? `Открепить ${category.name}`
+          : `Прикрепить ${category.name}`
+      }
+      title={
+        isPinnedValue
+          ? `Открепить ${category.name}`
+          : `Прикрепить ${category.name}`
+      }
+      onClick={(e) => {
+        e.stopPropagation();
+        handlePinToggle(category);
+      }}
     >
-      {isPinnedCategory ? <FaTimes size={14} /> : <FaThumbtack size={14} />}
+      <Icon name={ICON_PIN} size={14} />
     </button>
   );
 };

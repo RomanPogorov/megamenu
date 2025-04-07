@@ -1,5 +1,6 @@
 import React from "react";
-import { FaThumbtack } from "react-icons/fa";
+import { Icon } from "./Icon";
+import { ICON_PIN } from "../assets/icons";
 import { MenuItem as MenuItemType } from "../types/menu";
 
 interface MenuItemProps {
@@ -26,23 +27,30 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   return (
     <li
-      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors relative"
+      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors"
       onClick={onClick}
     >
-      <div className="flex items-center flex-grow gap-2">
-        <span className="text-gray-800">{item.name}</span>
+      <div className="flex items-center min-w-0">
+        <span className="text-gray-800 truncate">{item.name}</span>
       </div>
-      <button
-        className={`${isPinned ? "text-red-500 hover:text-red-600" : "text-gray-300 hover:text-red-500"} 
-          transition-colors flex-shrink-0 p-1 absolute right-2 top-1/2 transform -translate-y-1/2`}
-        aria-label={
-          isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
-        }
-        title={isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`}
-        onClick={handlePinClick}
-      >
-        <FaThumbtack size={14} />
-      </button>
+      <div className="flex items-center flex-shrink-0">
+        <button
+          className={`${
+            isPinned
+              ? "text-red-500 hover:text-red-600"
+              : "text-gray-300 hover:text-red-500"
+          } transition-colors flex items-center justify-center w-6 h-6`}
+          aria-label={
+            isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
+          }
+          title={
+            isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
+          }
+          onClick={handlePinClick}
+        >
+          <Icon name={ICON_PIN} size={14} />
+        </button>
+      </div>
     </li>
   );
 };

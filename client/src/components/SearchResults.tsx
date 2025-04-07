@@ -1,15 +1,16 @@
 import { useMenu } from "../hooks/useMenu";
 import { MenuItem } from "../types/menu";
+import { Icon } from "./Icon";
 import {
-  FaFolderOpen,
-  FaDatabase,
-  FaLayerGroup,
-  FaBook,
-  FaCode,
-  FaTasks,
-  FaPuzzlePiece,
-  FaUserShield,
-} from "react-icons/fa";
+  ICON_RESOURCES,
+  ICON_DATABASE,
+  ICON_API,
+  ICON_NOTEBOOKS,
+  ICON_FAR,
+  ICON_PLUGINS,
+  ICON_IAM,
+  ICON_LAYER_GROUP,
+} from "../assets/icons";
 
 interface SearchResultsProps {
   results: MenuItem[];
@@ -37,21 +38,21 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const renderCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
       case "resources":
-        return <FaFolderOpen className="mr-1" />;
+        return <Icon name={ICON_RESOURCES} className="mr-1" />;
       case "database":
-        return <FaDatabase className="mr-1" />;
+        return <Icon name={ICON_DATABASE} className="mr-1" />;
       case "api":
-        return <FaCode className="mr-1" />;
+        return <Icon name={ICON_API} className="mr-1" />;
       case "notebooks":
-        return <FaBook className="mr-1" />;
+        return <Icon name={ICON_NOTEBOOKS} className="mr-1" />;
       case "far":
-        return <FaTasks className="mr-1" />;
+        return <Icon name={ICON_FAR} className="mr-1" />;
       case "plugins":
-        return <FaPuzzlePiece className="mr-1" />;
+        return <Icon name={ICON_PLUGINS} className="mr-1" />;
       case "iam":
-        return <FaUserShield className="mr-1" />;
+        return <Icon name={ICON_IAM} className="mr-1" />;
       default:
-        return <FaLayerGroup className="mr-1" />;
+        return <Icon name={ICON_LAYER_GROUP} className="mr-1" />;
     }
   };
 

@@ -1,0 +1,64 @@
+/* Base icon styles */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+}
+
+/* Category icons */
+.icon-resources {
+  background-image: url("./svg/folder-open.svg");
+}
+
+.icon-notebooks {
+  background-image: url("./svg/book.svg");
+}
+
+.icon-api {
+  background-image: url("./svg/code.svg");
+}
+
+.icon-database {
+  background-image: url("./svg/database.svg");
+}
+
+.icon-iam {
+  background-image: url("./svg/user-shield.svg");
+}
+
+.icon-far {
+  background-image: url("./svg/tasks.svg");
+}
+
+.icon-plugins {
+  background-image: url("./svg/puzzle-piece.svg");
+}
+
+/* Action icons */
+.icon-search {
+  background-image: url("./svg/search.svg");
+}
+
+.icon-pin {
+  background-image: url("./svg/thumbtack.svg");
+}
+
+.icon-plus {
+  background-image: url("./svg/plus.svg");
+}
+
+.icon-table {
+  background-image: url("./svg/table.svg");
+}
+
+.icon-sort {
+  background-image: url("./svg/sort.svg");
+}
+
+.icon-layer-group {
+  background-image: url("./svg/layer-group.svg");
+}
