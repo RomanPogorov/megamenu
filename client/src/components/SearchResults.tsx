@@ -73,7 +73,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         {filterOptions.map((filter) => (
           <button
             key={filter.id}
-            className={`px-2 py-1 rounded-full text-sm flex items-center mb-2 ${
+            className={`pl-2 pr-1 py-1 rounded-full text-sm flex items-center mb-2 ${
               activeFilter === filter.id
                 ? "bg-red-500 text-white"
                 : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
