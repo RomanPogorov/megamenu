@@ -211,40 +211,28 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* Навигационные кнопки и контролы */}
+            {/* Навигационные кнопки */}
             <div className="flex justify-center items-center px-16 pb-11">
-              <div className="flex items-center gap-20">
-                <div className="flex gap-4">
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
-                    Resource Browser
-                  </button>
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_API} className="mr-2 text-red-500" />
-                    REST Console
-                  </button>
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                    <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
-                    DB Console
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <CustomizationControls />
-                  <button
-                    onClick={resetToDefault}
-                    className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-                  >
-                    Reset to Default
-                  </button>
-                </div>
+              <div className="flex gap-4">
+                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                  <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
+                  Resource Browser
+                </button>
+                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                  <Icon name={ICON_API} className="mr-2 text-red-500" />
+                  REST Console
+                </button>
+                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                  <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
+                  DB Console
+                </button>
               </div>
             </div>
           </div>
 
           {/* Content section */}
           <div
-            className={`transition-all duration-100 transform ${
+            className={`transition-all duration-100 transform pb-24 ${
               showContent
                 ? "translate-y-0 opacity-100"
                 : "-translate-y-4 opacity-0"
@@ -583,6 +571,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Fixed bottom controls */}
+        <div className="fixed bottom-0 left-[60px] right-0 bg-gray-50 py-4 border-t border-gray-200">
+          <div className="container mx-auto flex justify-center items-center gap-8">
+            <CustomizationControls />
+            <button
+              onClick={resetToDefault}
+              className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+            >
+              Reset to Default
+            </button>
           </div>
         </div>
       </div>
