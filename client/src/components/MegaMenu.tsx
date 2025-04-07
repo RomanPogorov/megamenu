@@ -313,8 +313,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               handlePinToggle={handleCategoryPinToggle}
                             />
                           </div>
-
-                          {/* Для Resources добавляем увеличенную высоту и скролл */}
+                          <div className="h-px bg-gray-200 mb-4" />
                           <ul className="h-[640px] overflow-y-auto pr-2 space-y-3">
                             {allMenuItems
                               .filter((item) => item.category === category.id)
@@ -344,7 +343,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "notebooks")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
                                 <Icon
                                   name={ICON_NOTEBOOKS}
@@ -361,7 +360,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
@@ -388,7 +387,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "api")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
                                 <Icon
                                   name={ICON_API}
@@ -405,7 +404,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
@@ -432,7 +431,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "database")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
                                 <Icon
                                   name={ICON_DATABASE}
@@ -449,7 +448,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
@@ -477,7 +476,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "iam")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
                                 <Icon
                                   name={ICON_IAM}
@@ -494,7 +493,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
@@ -521,7 +520,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "far")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
                                 <Icon
                                   name={ICON_FAR}
@@ -538,7 +537,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
@@ -565,9 +564,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "plugins")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors">
+                            <div className="mb-4 flex items-center justify-between">
                               <div className="flex items-center">
-                                <FaPuzzlePiece className="text-red-500 mr-2 text-2xl" />
+                                <Icon
+                                  name={ICON_PLUGINS}
+                                  className="text-red-500 mr-2"
+                                  size={24}
+                                />
                                 <h3 className="font-medium text-gray-900">
                                   {category.name}
                                 </h3>
@@ -578,7 +581,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 handlePinToggle={handleCategoryPinToggle}
                               />
                             </div>
-
+                            <div className="h-px bg-gray-200 mb-4" />
                             <ul className="space-y-3">
                               {allMenuItems
                                 .filter((item) => item.category === category.id)
