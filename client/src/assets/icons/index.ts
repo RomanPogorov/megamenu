@@ -26,6 +26,7 @@ export const ICON_PLUGINS = "icon-plugins";
 export const ICON_SEARCH = "icon-search";
 export const ICON_PIN = "icon-pin";
 export const ICON_PIN_FILLED = "icon-pin-filled";
+export const ICON_CLOCK = "icon-clock";
 export const ICON_PLUS = "icon-plus";
 export const ICON_TABLE = "icon-table";
 export const ICON_SORT = "icon-sort";

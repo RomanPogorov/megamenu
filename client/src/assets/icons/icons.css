@@ -51,6 +51,10 @@
   background-image: url("./svg/thumbtack-filled.svg");
 }
 
+.icon-clock {
+  background-image: url("./svg/clock.svg");
+}
+
 .icon-plus {
   background-image: url("./svg/plus.svg");
 }
