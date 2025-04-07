@@ -282,7 +282,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           <div className="h-px bg-gray-200 mb-4" />
 
                           {allMenuItems
-                            .filter((item) => item.category === category.id)
+                            .filter(
+                              (item) =>
+                                item.category === category.id && item.parentId
+                            )
                             .map((item) => (
                               <MenuItem
                                 key={item.id}
@@ -334,7 +337,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
@@ -377,7 +383,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
@@ -420,7 +429,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
@@ -464,7 +476,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
@@ -507,7 +522,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
@@ -550,7 +568,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             <div className="h-px bg-gray-200 mb-4" />
 
                             {allMenuItems
-                              .filter((item) => item.category === category.id)
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
                               .map((item) => (
                                 <MenuItem
                                   key={item.id}
