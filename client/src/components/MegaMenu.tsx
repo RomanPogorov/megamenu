@@ -299,14 +299,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   className="flex gap-20 mx-auto"
                   style={{ width: "fit-content" }}
                 >
-                  {/* Resources колонка (занимает всю высоту слева) */}
+                  {/* Resources колонка */}
                   <div className="w-[202px]">
                     {categories
                       .filter((category) => category.id === "resources")
                       .map((category: Category) => (
                         <div key={category.id} className="mb-8">
-                          <div className="mb-4 flex items-center justify-between">
-                            <div className="flex items-center">
+                          <div className="mb-4 flex items-center group">
+                            <CategoryPinButton
+                              category={category}
+                              isPinned={isPinned}
+                              handlePinToggle={handleCategoryPinToggle}
+                            />
+                            <div className="flex items-center ml-2">
                               <Icon
                                 name={ICON_RESOURCES}
                                 className="text-red-500 mr-2"
@@ -316,11 +321,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 {category.name}
                               </h3>
                             </div>
-                            <CategoryPinButton
-                              category={category}
-                              isPinned={isPinned}
-                              handlePinToggle={handleCategoryPinToggle}
-                            />
                           </div>
                           <div className="h-px bg-gray-200 mb-4" />
 
@@ -357,8 +357,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "notebooks")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_NOTEBOOKS}
                                   className="text-red-500 mr-2"
@@ -368,11 +373,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
@@ -400,8 +400,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "api")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_API}
                                   className="text-red-500 mr-2"
@@ -411,11 +416,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
@@ -443,8 +443,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "database")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_DATABASE}
                                   className="text-red-500 mr-2"
@@ -454,11 +459,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
@@ -487,8 +487,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "iam")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_IAM}
                                   className="text-red-500 mr-2"
@@ -498,11 +503,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
@@ -530,8 +530,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "far")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_FAR}
                                   className="text-red-500 mr-2"
@@ -541,11 +546,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
@@ -573,8 +573,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "plugins")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between">
-                              <div className="flex items-center">
+                            <div className="mb-4 flex items-center group">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
+                              <div className="flex items-center ml-2">
                                 <Icon
                                   name={ICON_PLUGINS}
                                   className="text-red-500 mr-2"
@@ -584,11 +589,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   {category.name}
                                 </h3>
                               </div>
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
 
