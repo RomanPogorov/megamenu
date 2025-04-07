@@ -212,22 +212,24 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Навигационные кнопки */}
-            <div className="flex justify-center items-center px-16 pb-11">
-              <div className="flex gap-4">
-                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                  <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
-                  Resource Browser
-                </button>
-                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                  <Icon name={ICON_API} className="mr-2 text-red-500" />
-                  REST Console
-                </button>
-                <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                  <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
-                  DB Console
-                </button>
+            {!searchQuery && (
+              <div className="flex justify-center items-center px-16 pb-11">
+                <div className="flex gap-4">
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
+                    Resource Browser
+                  </button>
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_API} className="mr-2 text-red-500" />
+                    REST Console
+                  </button>
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                    <Icon name={ICON_DATABASE} className="mr-2 text-red-500" />
+                    DB Console
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Content section */}
