@@ -87,7 +87,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                   : "group-hover:opacity-0 group-hover:scale-0"
               } absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}
             >
-              <Icon name={ICON_LOGO} size={20} className="text-red-500" />
+              <Icon name={ICON_LOGO} size={32} className="text-gray-900" />
             </div>
           )}
 
