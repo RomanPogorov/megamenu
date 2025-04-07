@@ -27,7 +27,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   return (
     <li
-      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1 rounded transition-colors"
+      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors"
       onClick={onClick}
     >
       <div className="flex items-center min-w-0">

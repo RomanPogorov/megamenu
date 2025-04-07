@@ -273,8 +273,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               // Initial Menu State - Fullscreen version
               <div className="px-16 pb-8 container mx-auto">
                 {/* Top Navigation Buttons */}
-                <div className="flex justify-center space-x-4 mb-8">
-                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-red-500 transition-colors shadow-sm">
+                <div className="flex justify-center space-x-4 pt-6 pb-11">
+                  <button className="px-5 py-3 bg-white border border-gray-200 rounded-lg flex items-center text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
                     <Icon name={ICON_RESOURCES} className="mr-2 text-red-500" />
                     Resource Browser
                   </button>
