@@ -44,7 +44,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       >
         <Icon name={isPinned ? ICON_PIN_FILLED : ICON_PIN} size={16} />
       </button>
-      <div className="flex items-center min-w-0 ml-2">
+      <div className="flex items-center min-w-0 ml-1">
         <span className="text-gray-800 truncate">{item.name}</span>
       </div>
     </li>

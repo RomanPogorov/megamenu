@@ -311,7 +311,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               isPinned={isPinned}
                               handlePinToggle={handleCategoryPinToggle}
                             />
-                            <div className="flex items-center ml-2">
+                            <div className="flex items-center ml-1">
                               <Icon
                                 name={ICON_RESOURCES}
                                 className="text-red-500 mr-2"
@@ -363,7 +363,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_NOTEBOOKS}
                                   className="text-red-500 mr-2"
@@ -406,7 +406,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_API}
                                   className="text-red-500 mr-2"
@@ -449,7 +449,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_DATABASE}
                                   className="text-red-500 mr-2"
@@ -493,7 +493,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_IAM}
                                   className="text-red-500 mr-2"
@@ -536,7 +536,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_FAR}
                                   className="text-red-500 mr-2"
@@ -579,7 +579,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
                               />
-                              <div className="flex items-center ml-2">
+                              <div className="flex items-center ml-1">
                                 <Icon
                                   name={ICON_PLUGINS}
                                   className="text-red-500 mr-2"
