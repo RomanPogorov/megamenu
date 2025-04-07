@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "./Icon";
-import { ICON_PIN } from "../assets/icons";
+import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons";
 import { Category } from "../types/menu";
 
 interface CategoryPinButtonProps {
@@ -22,8 +22,8 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
       className={`${
         isPinnedValue
           ? "text-red-500 hover:text-red-600"
-          : "text-gray-300 hover:text-red-500"
-      } transition-colors flex items-center justify-center w-6 h-6`}
+          : "text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100"
+      } transition-all flex items-center justify-center w-6 h-6 flex-shrink-0`}
       aria-label={
         isPinnedValue
           ? `Открепить ${category.name}`
@@ -39,7 +39,7 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
         handlePinToggle(category);
       }}
     >
-      <Icon name={ICON_PIN} size={14} />
+      <Icon name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN} size={16} />
     </button>
   );
 };

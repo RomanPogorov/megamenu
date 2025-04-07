@@ -27,29 +27,25 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   return (
     <li
-      className="flex items-center justify-between cursor-pointer hover:bg-gray-50 py-1 rounded transition-colors"
+      className="flex items-center cursor-pointer hover:bg-gray-50 py-1 rounded transition-colors group"
       onClick={onClick}
     >
-      <div className="flex items-center min-w-0">
+      <button
+        className={`${
+          isPinned
+            ? "text-red-500 hover:text-red-600"
+            : "text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100"
+        } transition-all flex items-center justify-center w-6 h-6 flex-shrink-0`}
+        aria-label={
+          isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
+        }
+        title={isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`}
+        onClick={handlePinClick}
+      >
+        <Icon name={isPinned ? ICON_PIN_FILLED : ICON_PIN} size={16} />
+      </button>
+      <div className="flex items-center min-w-0 flex-1">
         <span className="text-gray-800 truncate">{item.name}</span>
-      </div>
-      <div className="flex items-center flex-shrink-0">
-        <button
-          className={`${
-            isPinned
-              ? "text-red-500 hover:text-red-600"
-              : "text-gray-300 hover:text-red-500"
-          } transition-colors flex items-center justify-center w-6 h-6`}
-          aria-label={
-            isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
-          }
-          title={
-            isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
-          }
-          onClick={handlePinClick}
-        >
-          <Icon name={isPinned ? ICON_PIN_FILLED : ICON_PIN} size={16} />
-        </button>
       </div>
     </li>
   );
