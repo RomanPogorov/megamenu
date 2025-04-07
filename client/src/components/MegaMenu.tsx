@@ -314,23 +314,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             />
                           </div>
                           <div className="h-px bg-gray-200 mb-4" />
-                          <ul className="h-[640px] overflow-y-auto pr-2 space-y-3">
-                            {allMenuItems
-                              .filter((item) => item.category === category.id)
-                              .map((item) => (
-                                <MenuItem
-                                  key={item.id}
-                                  item={item}
-                                  isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
-                                  onClick={() =>
-                                    handleItemClick(category.id, item.id)
-                                  }
-                                  isChild={!!item.parentId}
-                                  parentIcon={getCategoryIcon(item.category)}
-                                />
-                              ))}
-                          </ul>
+
+                          {allMenuItems
+                            .filter((item) => item.category === category.id)
+                            .map((item) => (
+                              <MenuItem
+                                key={item.id}
+                                item={item}
+                                isPinned={isPinned(item.id)}
+                                onPinToggle={() => handlePinToggle(item.id)}
+                                onClick={() =>
+                                  handleItemClick(category.id, item.id)
+                                }
+                                isChild={!!item.parentId}
+                                parentIcon={getCategoryIcon(item.category)}
+                              />
+                            ))}
                         </div>
                       ))}
                   </div>
@@ -361,23 +360,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
@@ -405,23 +403,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
@@ -449,23 +446,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
@@ -494,23 +490,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
@@ -538,23 +533,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
@@ -582,23 +576,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
-                            <ul className="space-y-3">
-                              {allMenuItems
-                                .filter((item) => item.category === category.id)
-                                .map((item) => (
-                                  <MenuItem
-                                    key={item.id}
-                                    item={item}
-                                    isPinned={isPinned(item.id)}
-                                    onPinToggle={() => handlePinToggle(item.id)}
-                                    onClick={() =>
-                                      handleItemClick(category.id, item.id)
-                                    }
-                                    isChild={!!item.parentId}
-                                    parentIcon={getCategoryIcon(item.category)}
-                                  />
-                                ))}
-                            </ul>
+
+                            {allMenuItems
+                              .filter((item) => item.category === category.id)
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                />
+                              ))}
                           </div>
                         ))}
                     </div>
