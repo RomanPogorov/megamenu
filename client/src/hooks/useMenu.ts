@@ -86,13 +86,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
   // Check if an item is pinned
   const isPinned = (itemId: string): boolean => {
-    // Проверяем как с префиксом category-, так и без него
-    return pinnedItems.some(
-      (item) =>
-        item.id === itemId ||
-        item.id === `category-${itemId}` ||
-        `category-${item.id}` === itemId
-    );
+    // Если это ID с префиксом category-, проверяем точное совпадение
+    if (itemId.startsWith("category-")) {
+      return pinnedItems.some((item) => item.id === itemId);
+    }
+
+    // Для обычных элементов проверяем точное совпадение
+    return pinnedItems.some((item) => item.id === itemId);
   };
 
   // Get category icon by category id
@@ -154,7 +154,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
   // Create the value object to be passed to consumers
   const contextValue: MenuContextType = {
-    allMenuItems: menuItemsWithCategoryNames,
+    allMenuItems: menuItems,
     categories,
     pinnedItems,
     recentItems,

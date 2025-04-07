@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Icon } from "./Icon";
 import { FaPuzzlePiece } from "react-icons/fa";
@@ -17,9 +17,10 @@ import {
 } from "../assets/icons";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
+import { useCustomization } from "../hooks/useCustomization";
 import MenuItem from "./MenuItem";
 import SearchResults from "./SearchResults";
-import { Category } from "../types/menu";
+import { Category, MenuItem as MenuItemType } from "../types/menu";
 import CustomizationControls from "./CustomizationControls";
 import CategoryPinButton from "./CategoryPinButton";
 
@@ -49,6 +50,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     setActiveFilter,
     filterOptions,
   } = useSearch();
+  const { isCustomizationEnabled } = useCustomization();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -79,10 +81,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   // Reset search when closing the menu
   useEffect(() => {
     if (!isOpen) {
-      setSearchQuery("");
       setActiveFilter("all");
     }
-  }, [isOpen, setSearchQuery, setActiveFilter]);
+  }, [isOpen, setActiveFilter]);
 
   const handleItemClick = (categoryId: string, itemId: string) => {
     // Track the item in recent history
@@ -98,30 +99,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  const handlePinToggle = (itemId: string) => {
-    if (isPinned(itemId)) {
-      removeFromPinned(itemId);
+  const handlePinToggle = (item: MenuItemType) => {
+    if (isPinned(item.id)) {
+      removeFromPinned(item.id);
     } else {
-      const item = allMenuItems.find((item) => item.id === itemId);
-      if (item) {
-        addToPinned({
-          id: item.id,
-          name: item.name,
-          icon: item.icon,
-          category: item.category,
-          parentId: item.parentId,
-        });
-      }
+      addToPinned(item);
     }
   };
 
   const handleCategoryPinToggle = (category: Category) => {
     const categoryId = `category-${category.id}`;
-
     if (isPinned(categoryId)) {
       removeFromPinned(categoryId);
     } else {
-      // Создаем родительский элемент и добавляем его в закрепленные
       addToPinned({
         id: categoryId,
         name: category.name,
@@ -201,7 +191,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     placeholder="Поиск в меню..."
                     className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => setActiveFilter(e.target.value)}
                   />
                   <Icon
                     name={ICON_SEARCH}
@@ -212,7 +202,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     <button
                       onClick={(event) => {
                         event.stopPropagation();
-                        setSearchQuery("");
+                        setActiveFilter("all");
                       }}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     >
@@ -307,7 +297,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 key={item.id}
                                 item={item}
                                 isPinned={isPinned(item.id)}
-                                onPinToggle={() => handlePinToggle(item.id)}
+                                onPinToggle={() => handlePinToggle(item)}
                                 onClick={() =>
                                   handleItemClick(category.id, item.id)
                                 }
@@ -359,7 +349,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }
@@ -402,7 +392,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }
@@ -445,7 +435,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }
@@ -489,7 +479,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }
@@ -532,7 +522,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }
@@ -575,7 +565,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   key={item.id}
                                   item={item}
                                   isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
                                   onClick={() =>
                                     handleItemClick(category.id, item.id)
                                   }

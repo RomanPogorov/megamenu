@@ -19,21 +19,18 @@ export const menuItems: MenuItem[] = [
     icon: "folder-open",
     category: "resources",
     isParent: true,
-    important: true,
   },
   {
     id: "resources-1",
     name: "Resource Management",
     icon: "folder-open",
     category: "resources",
-    important: false,
   },
   {
     id: "patient",
     name: "Patient",
     icon: "user-injured",
     category: "resources",
-    important: true,
     parentId: "resources",
   },
   {
@@ -41,7 +38,6 @@ export const menuItems: MenuItem[] = [
     name: "Observation",
     icon: "notes-medical",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -49,7 +45,6 @@ export const menuItems: MenuItem[] = [
     name: "MedicationRequest",
     icon: "prescription",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -57,7 +52,6 @@ export const menuItems: MenuItem[] = [
     name: "Encounter",
     icon: "clipboard-list",
     category: "resources",
-    important: true,
     parentId: "resources",
   },
   {
@@ -65,7 +59,6 @@ export const menuItems: MenuItem[] = [
     name: "Condition",
     icon: "heartbeat",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -73,7 +66,6 @@ export const menuItems: MenuItem[] = [
     name: "DiagnosticReport",
     icon: "file-medical-alt",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -81,7 +73,6 @@ export const menuItems: MenuItem[] = [
     name: "AllergyIntolerance",
     icon: "allergies",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -89,7 +80,6 @@ export const menuItems: MenuItem[] = [
     name: "CarePlan",
     icon: "clipboard-check",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -97,7 +87,6 @@ export const menuItems: MenuItem[] = [
     name: "Appointment",
     icon: "calendar-check",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -105,7 +94,6 @@ export const menuItems: MenuItem[] = [
     name: "Immunization",
     icon: "syringe",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -113,7 +101,6 @@ export const menuItems: MenuItem[] = [
     name: "Goal",
     icon: "bullseye",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -121,7 +108,6 @@ export const menuItems: MenuItem[] = [
     name: "ServiceRequest",
     icon: "concierge-bell",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -129,7 +115,6 @@ export const menuItems: MenuItem[] = [
     name: "Referral",
     icon: "exchange-alt",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
   {
@@ -137,7 +122,6 @@ export const menuItems: MenuItem[] = [
     name: "SupplyRequest",
     icon: "box",
     category: "resources",
-    important: false,
     parentId: "resources",
   },
 
@@ -147,21 +131,18 @@ export const menuItems: MenuItem[] = [
     icon: "book",
     category: "notebooks",
     isParent: true,
-    important: true,
   },
   {
     id: "notebooks-1",
     name: "Notebook Management",
     icon: "book",
     category: "notebooks",
-    important: false,
   },
   {
     id: "createResource",
     name: "Create resource",
     icon: "plus-circle",
     category: "notebooks",
-    important: true,
     parentId: "notebooks",
   },
   {
@@ -169,7 +150,6 @@ export const menuItems: MenuItem[] = [
     name: "SQL on FHIR",
     icon: "code",
     category: "notebooks",
-    important: false,
     parentId: "notebooks",
   },
   {
@@ -177,7 +157,6 @@ export const menuItems: MenuItem[] = [
     name: "Groups",
     icon: "users",
     category: "notebooks",
-    important: false,
     parentId: "notebooks",
   },
   {
@@ -185,7 +164,6 @@ export const menuItems: MenuItem[] = [
     name: "Implementation Guides",
     icon: "book-open",
     category: "notebooks",
-    important: false,
     parentId: "notebooks",
   },
 
@@ -195,21 +173,18 @@ export const menuItems: MenuItem[] = [
     icon: "code",
     category: "api",
     isParent: true,
-    important: true,
   },
   {
     id: "api-1",
     name: "API Management",
     icon: "code",
     category: "api",
-    important: false,
   },
   {
     id: "bulkDataApi",
     name: "Bulk data API",
     icon: "database",
     category: "api",
-    important: true,
     parentId: "api",
   },
   {
@@ -217,7 +192,6 @@ export const menuItems: MenuItem[] = [
     name: "GraphQL",
     icon: "project-diagram",
     category: "api",
-    important: false,
     parentId: "api",
   },
   {
@@ -225,7 +199,6 @@ export const menuItems: MenuItem[] = [
     name: "Compartment API",
     icon: "layer-group",
     category: "api",
-    important: false,
     parentId: "api",
   },
 
@@ -235,21 +208,18 @@ export const menuItems: MenuItem[] = [
     icon: "database",
     category: "database",
     isParent: true,
-    important: true,
   },
   {
     id: "database-1",
     name: "Database Management",
     icon: "database",
     category: "database",
-    important: false,
   },
   {
     id: "runningQueries",
     name: "Running queries",
     icon: "running",
     category: "database",
-    important: false,
     parentId: "database",
   },
   {
@@ -257,7 +227,6 @@ export const menuItems: MenuItem[] = [
     name: "Tables",
     icon: "table",
     category: "database",
-    important: false,
     parentId: "database",
   },
   {
@@ -265,7 +234,6 @@ export const menuItems: MenuItem[] = [
     name: "ViewDefinitions",
     icon: "eye",
     category: "database",
-    important: false,
     parentId: "database",
   },
   {
@@ -273,7 +241,6 @@ export const menuItems: MenuItem[] = [
     name: "Indexes",
     icon: "sort-alpha-down",
     category: "database",
-    important: false,
     parentId: "database",
   },
 
@@ -283,21 +250,18 @@ export const menuItems: MenuItem[] = [
     icon: "user-shield",
     category: "iam",
     isParent: true,
-    important: true,
   },
   {
     id: "iam-1",
     name: "IAM Management",
     icon: "user-shield",
     category: "iam",
-    important: false,
   },
   {
     id: "overview",
     name: "Overview",
     icon: "th-large",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -305,7 +269,6 @@ export const menuItems: MenuItem[] = [
     name: "Users",
     icon: "users",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -313,7 +276,6 @@ export const menuItems: MenuItem[] = [
     name: "Apps",
     icon: "mobile-alt",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -321,7 +283,6 @@ export const menuItems: MenuItem[] = [
     name: "Groups",
     icon: "users",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -329,7 +290,6 @@ export const menuItems: MenuItem[] = [
     name: "Access Policies",
     icon: "lock",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -337,7 +297,6 @@ export const menuItems: MenuItem[] = [
     name: "Audit Logs",
     icon: "clipboard-list",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -345,7 +304,6 @@ export const menuItems: MenuItem[] = [
     name: "ID Providers",
     icon: "id-card",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
   {
@@ -353,7 +311,6 @@ export const menuItems: MenuItem[] = [
     name: "Token Introspectors",
     icon: "key",
     category: "iam",
-    important: false,
     parentId: "iam",
   },
 
@@ -363,21 +320,18 @@ export const menuItems: MenuItem[] = [
     icon: "tasks",
     category: "far",
     isParent: true,
-    important: true,
   },
   {
     id: "far-1",
     name: "FAR Management",
     icon: "tasks",
     category: "far",
-    important: false,
   },
   {
     id: "structureDefs",
     name: "StructureDefs",
     icon: "cubes",
     category: "far",
-    important: false,
     parentId: "far",
   },
   {
@@ -385,7 +339,6 @@ export const menuItems: MenuItem[] = [
     name: "SearchParams",
     icon: "search",
     category: "far",
-    important: false,
     parentId: "far",
   },
   {
@@ -393,7 +346,6 @@ export const menuItems: MenuItem[] = [
     name: "Groups",
     icon: "users",
     category: "far",
-    important: false,
     parentId: "far",
   },
   {
@@ -401,7 +353,6 @@ export const menuItems: MenuItem[] = [
     name: "Implementation Guides",
     icon: "book-open",
     category: "far",
-    important: false,
     parentId: "far",
   },
 
@@ -411,21 +362,18 @@ export const menuItems: MenuItem[] = [
     icon: "puzzle-piece",
     category: "plugins",
     isParent: true,
-    important: true,
   },
   {
     id: "plugins-1",
     name: "Plugin Management",
     icon: "puzzle-piece",
     category: "plugins",
-    important: false,
   },
   {
     id: "hl7v2",
     name: "HL7 v2",
     icon: "code",
     category: "plugins",
-    important: false,
     parentId: "plugins",
   },
   {
@@ -433,7 +381,6 @@ export const menuItems: MenuItem[] = [
     name: "CCDA to FHIR",
     icon: "exchange-alt",
     category: "plugins",
-    important: false,
     parentId: "plugins",
   },
   {
@@ -441,7 +388,6 @@ export const menuItems: MenuItem[] = [
     name: "Aidbox Forms",
     icon: "wpforms",
     category: "plugins",
-    important: false,
     parentId: "plugins",
   },
   {
@@ -449,7 +395,6 @@ export const menuItems: MenuItem[] = [
     name: "Master Patient Index",
     icon: "id-card",
     category: "plugins",
-    important: false,
     parentId: "plugins",
   },
 ];
