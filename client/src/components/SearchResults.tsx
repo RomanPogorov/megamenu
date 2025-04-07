@@ -67,13 +67,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const filteredResults = getFilteredResults();
 
   return (
-    <div className="px-16 pb-8 max-w-4xl mx-auto">
+    <div className="px-16 pb-8 max-w-6xl mx-auto">
       {/* Category Filters */}
       <div className="flex items-center mb-6 space-x-3 flex-wrap">
         {filterOptions.map((filter) => (
           <button
             key={filter.id}
-            className={`px-4 py-1 rounded-full text-sm flex items-center mb-2 ${
+            className={`px-2 py-1 rounded-full text-sm flex items-center mb-2 ${
               activeFilter === filter.id
                 ? "bg-red-500 text-white"
                 : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"

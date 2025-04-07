@@ -181,21 +181,21 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             {/* Поисковая строка */}
             <div className="pt-3 px-6 pb-4">
               <div
-                className="relative max-w-xl mx-auto"
+                className="relative max-w-5xl mx-auto"
                 onClick={(event) => event.stopPropagation()}
               >
                 <input
                   ref={searchInputRef}
                   type="text"
                   placeholder="Поиск в меню..."
-                  className="w-full px-4 py-2 pl-10 pr-10 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
+                  className="w-full px-4 py-2 pl-12 pr-12 border border-red-500 rounded-full focus:outline-none focus:ring-1 focus:ring-red-500 text-gray-800 transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Icon
                   name={ICON_SEARCH}
-                  size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
+                  size={20}
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-red-500"
                 />
                 {searchQuery && (
                   <button
@@ -203,9 +203,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       event.stopPropagation();
                       setSearchQuery("");
                     }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    <Icon name={ICON_CLOSE_MENU} size={16} />
+                    <Icon name={ICON_CLOSE_MENU} size={20} />
                   </button>
                 )}
               </div>
