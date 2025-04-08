@@ -108,68 +108,70 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           </div>
         </div>
 
-        {/* Разделитель после основного меню */}
-        <div className="w-8 h-px bg-gray-200 my-2"></div>
-
-        {/* Системные припиненные элементы */}
-        {hasSystemItems && (
-          <div className="w-full flex flex-col items-center space-y-1">
-            {systemPinnedItems.map((item) => (
-              <SidebarMenuItem
-                key={item.id}
-                item={item}
-                onClick={() => {}}
-                getCategoryIcon={getCategoryIcon}
-                isCentral={true}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Разделитель между системными и пользовательскими элементами */}
-        {hasSystemItems && hasUserItems && (
+        <div className="w-full flex flex-col items-center flex-grow overflow-y-auto">
+          {/* Разделитель после основного меню */}
           <div className="w-8 h-px bg-gray-200 my-2"></div>
-        )}
 
-        {/* Пользовательские припиненные элементы */}
-        {hasUserItems && (
-          <div className="w-full flex flex-col items-center space-y-1">
-            {userPinnedItems.map((item) => (
-              <SidebarMenuItem
-                key={item.id}
-                item={item}
-                onClick={() => {}}
-                getCategoryIcon={getCategoryIcon}
-                isCentral={!item.fromRecent}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Разделитель перед Recent Search Button */}
-        {(hasSystemItems || hasUserItems) && (
-          <div className="w-8 h-px bg-gray-200 my-2"></div>
-        )}
-
-        {/* Recent Search Button */}
-        <div className="relative">
-          <button
-            ref={recentButtonRef}
-            className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
-            aria-label="Недавние элементы"
-            title="Недавние элементы"
-            onClick={() => setRecentMenuOpen(!recentMenuOpen)}
-          >
-            <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
-          </button>
-
-          {/* Recent Items Dropdown */}
-          {recentMenuOpen && recentItems.length > 0 && (
-            <RecentMenu
-              items={recentItems}
-              buttonRect={recentButtonRef.current?.getBoundingClientRect()}
-            />
+          {/* Системные припиненные элементы */}
+          {hasSystemItems && (
+            <div className="w-full flex flex-col items-center space-y-1 mb-2">
+              {systemPinnedItems.map((item) => (
+                <SidebarMenuItem
+                  key={item.id}
+                  item={item}
+                  onClick={() => {}}
+                  isCentral={true}
+                />
+              ))}
+            </div>
           )}
+
+          {/* Разделитель между системными и пользовательскими элементами */}
+          {hasSystemItems && hasUserItems && (
+            <div className="w-8 h-px bg-gray-200 my-2"></div>
+          )}
+
+          {/* Пользовательские припиненные элементы */}
+          {hasUserItems && (
+            <div className="w-full flex flex-col items-center space-y-1 mb-2">
+              {userPinnedItems.map((item) => (
+                <SidebarMenuItem
+                  key={item.id}
+                  item={item}
+                  onClick={() => {}}
+                  isCentral={!item.fromRecent}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Разделитель перед Recent Search Button (если есть pinned items) */}
+        {(hasSystemItems || hasUserItems) && (
+          <div className="w-8 h-px  bg-gray-200 my-2 mt-4"></div>
+        )}
+
+        {/* Нижняя часть с кнопкой Recent */}
+        <div className="mt-auto w-full flex justify-center ">
+          <div className="relative">
+            <button
+              ref={recentButtonRef}
+              className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
+              aria-label="Недавние элементы"
+              title="Недавние элементы"
+              onClick={() => setRecentMenuOpen(!recentMenuOpen)}
+            >
+              <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
+            </button>
+
+            {/* Recent Items Dropdown */}
+            {recentMenuOpen && recentItems.length > 0 && (
+              <RecentMenu
+                items={recentItems}
+                buttonRect={recentButtonRef.current?.getBoundingClientRect()}
+              />
+            )}
+          </div>
         </div>
       </div>
     </aside>

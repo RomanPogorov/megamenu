@@ -29,15 +29,15 @@ const ICON_MAP: Record<string, string> = {
 interface SidebarMenuItemProps {
   item: MenuItem;
   onClick: () => void;
-  getCategoryIcon: (categoryId: string) => string;
   isCentral?: boolean;
+  activeCategoryId?: string | null;
 }
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   item,
   onClick,
-  getCategoryIcon,
-  isCentral = false,
+  isCentral = true,
+  activeCategoryId,
 }) => {
   // Access the getParentIcon function from the menu context
   const { getParentIcon, getParentName } = useMenu();
