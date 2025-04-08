@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useMenu } from "../hooks/useMenu";
 import { MenuItem } from "../types/menu";
 import { Icon } from "./Icon";
@@ -34,6 +35,58 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   onItemClick,
 }) => {
   const { getCategoryIcon: getIconName } = useMenu();
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const resultsContainerRef = useRef<HTMLDivElement>(null);
+
+  const filteredResults = useMemo(() => {
+    if (activeFilter === "all") {
+      return results;
+    }
+    return resultsByCategory[activeFilter] || [];
+  }, [activeFilter, results, resultsByCategory]);
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [filteredResults]);
+
+  useEffect(() => {
+    if (filteredResults.length === 0) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setActiveIndex((prevIndex) =>
+          prevIndex >= filteredResults.length - 1 ? 0 : prevIndex + 1
+        );
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setActiveIndex((prevIndex) =>
+          prevIndex <= 0 ? filteredResults.length - 1 : prevIndex - 1
+        );
+      } else if (event.key === "Enter") {
+        if (activeIndex >= 0 && activeIndex < filteredResults.length) {
+          event.preventDefault();
+          const activeItem = filteredResults[activeIndex];
+          onItemClick(activeItem.category, activeItem.id);
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeIndex, filteredResults, onItemClick]);
+
+  useEffect(() => {
+    if (activeIndex < 0 || !resultsContainerRef.current) return;
+    const activeElement = resultsContainerRef.current.querySelector(
+      `[data-result-index="${activeIndex}"]`
+    );
+    if (activeElement) {
+      activeElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [activeIndex]);
 
   const renderCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
@@ -55,16 +108,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         return <Icon name={ICON_LAYER_GROUP} className="mr-1" />;
     }
   };
-
-  // Get the filtered results based on active filter
-  const getFilteredResults = () => {
-    if (activeFilter === "all") {
-      return results;
-    }
-    return resultsByCategory[activeFilter] || [];
-  };
-
-  const filteredResults = getFilteredResults();
 
   return (
     <div className="px-16 pb-8 max-w-6xl mx-auto">
@@ -104,25 +147,34 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           фильтры.
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
-          {filteredResults.map((item, index) => (
-            <div
-              key={item.id}
-              className="py-4 px-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer border-b border-gray-200 last:border-b-0"
-              onClick={(event) => {
-                onItemClick(item.category, item.id);
-                event.stopPropagation();
-              }}
-            >
-              <div className="flex items-center pl-2">
-                <span className="font-medium text-gray-800">{item.name}</span>
+        <div
+          ref={resultsContainerRef}
+          className="rounded-lg border border-gray-200 bg-white overflow-hidden"
+        >
+          {filteredResults.map((item, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <div
+                key={item.id}
+                data-result-index={index}
+                className={`py-4 px-4 flex items-center justify-between cursor-pointer border-b border-gray-200 last:border-b-0 ${
+                  isActive ? "bg-gray-100" : "hover:bg-gray-50"
+                }`}
+                onClick={(event) => {
+                  onItemClick(item.category, item.id);
+                  event.stopPropagation();
+                }}
+              >
+                <div className="flex items-center pl-2">
+                  <span className="font-medium text-gray-800">{item.name}</span>
+                </div>
+                <div className="text-sm text-gray-500 flex items-center">
+                  {renderCategoryIcon(item.category)}
+                  {item.categoryName}
+                </div>
               </div>
-              <div className="text-sm text-gray-500 flex items-center">
-                {renderCategoryIcon(item.category)}
-                {item.categoryName}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
