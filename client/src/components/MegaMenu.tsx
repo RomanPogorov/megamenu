@@ -14,6 +14,7 @@ import {
   ICON_PIN,
   ICON_PIN_FILLED,
   ICON_CLOSE_MENU,
+  ICON_CLOCK,
 } from "../assets/icons";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
@@ -40,6 +41,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     trackRecentItem,
     isPinned,
     getCategoryIcon,
+    recentItems,
   } = useMenu();
   const {
     searchQuery,
@@ -589,6 +591,50 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               ))}
                           </div>
                         ))}
+                    </div>
+                  </div>
+
+                  {/* Recent Search колонка */}
+                  <div className="w-[202px]">
+                    <div className="mb-8">
+                      <div className="mb-4 flex items-center group">
+                        <CategoryPinButton
+                          category={{
+                            id: "recent-search",
+                            name: "Recent Search",
+                            icon: "clock",
+                            order: 7,
+                          }}
+                          isPinned={isPinned}
+                          handlePinToggle={handleCategoryPinToggle}
+                        />
+                        <div className="flex items-center ml-1">
+                          <Icon
+                            name={ICON_CLOCK}
+                            className="text-red-500 mr-2"
+                            size={24}
+                          />
+                          <h3 className="font-medium text-gray-900">
+                            Recent Search
+                          </h3>
+                        </div>
+                      </div>
+                      <div className="h-px bg-gray-200 mb-4" />
+
+                      {/* Здесь будут элементы Recent Search */}
+                      {recentItems.map((item) => (
+                        <MenuItem
+                          key={item.id}
+                          item={item}
+                          isPinned={isPinned(item.id)}
+                          onPinToggle={() => handlePinToggle(item)}
+                          onClick={() =>
+                            handleItemClick(item.category, item.id)
+                          }
+                          isChild={!!item.parentId}
+                          parentIcon={getCategoryIcon(item.category)}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>

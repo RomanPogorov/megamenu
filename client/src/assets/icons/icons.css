@@ -16,6 +16,27 @@
     hue-rotate(206deg) brightness(95%) contrast(90%);
 }
 
+/* Добавляем фильтр для серых иконок - используйте класс text-gray-500 */
+.text-gray-500 .icon:not(.icon-logo),
+.icon.text-gray-500:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(50%) sepia(10%) saturate(0%)
+    hue-rotate(206deg) brightness(95%) contrast(80%);
+}
+
+/* Добавляем фильтр для красных иконок - используйте класс text-red-500 */
+.text-red-500 .icon:not(.icon-logo),
+.icon.text-red-500:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(3918%)
+    hue-rotate(346deg) brightness(101%) contrast(92%);
+}
+
+/* Добавляем effect для hover в красных иконках */
+.text-red-600 .icon:not(.icon-logo),
+.icon.text-red-600:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(95%) saturate(2841%)
+    hue-rotate(345deg) brightness(92%) contrast(93%);
+}
+
 /* Logo icon */
 .icon-logo {
   background-image: url("./svg/logo.svg");
