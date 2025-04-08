@@ -2,7 +2,6 @@ import React from "react";
 import { Icon } from "./Icon";
 import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons";
 import { Category } from "../types/menu";
-import { useCustomization } from "../hooks/useCustomization";
 
 interface CategoryPinButtonProps {
   category: Category;
@@ -15,12 +14,6 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
   isPinned,
   handlePinToggle,
 }) => {
-  const { isCustomizationEnabled } = useCustomization();
-
-  if (!isCustomizationEnabled) {
-    return null;
-  }
-
   const categoryId = `category-${category.id}`;
   const isPinnedValue = isPinned(categoryId);
 

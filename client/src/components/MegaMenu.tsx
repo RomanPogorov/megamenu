@@ -18,11 +18,9 @@ import {
 } from "../assets/icons";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
-import { useCustomization } from "../hooks/useCustomization";
 import MenuItem from "./MenuItem";
 import SearchResults from "./SearchResults";
 import { Category, MenuItem as MenuItemType } from "../types/menu";
-import CustomizationControls from "./CustomizationControls";
 import CategoryPinButton from "./CategoryPinButton";
 
 interface MegaMenuProps {
@@ -52,7 +50,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     setActiveFilter,
     filterOptions,
   } = useSearch();
-  const { isCustomizationEnabled, resetToDefault } = useCustomization();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -656,19 +653,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Fixed bottom controls */}
-        <div className="fixed bottom-0 left-[60px] right-0 bg-gray-50 py-4 border-t border-gray-200">
-          <div className="container mx-auto flex justify-center items-center gap-8">
-            <CustomizationControls />
-            <button
-              onClick={resetToDefault}
-              className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
-            >
-              Reset to Default
-            </button>
           </div>
         </div>
       </div>
