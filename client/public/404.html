@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // Сохраняем запрошенный путь
+      const path = location.pathname;
+      // Сохраняем строку запроса и хеш
+      const search = location.search;
+      const hash = location.hash;
+
+      // Определяем базовый путь (из vite.config.ts, у нас это /megamenu/)
+      const basePath = "/megamenu/";
+
+      // Формируем новый путь для SPA роутера
+      // Убираем базовый путь и добавляем хеш/параметры
+      let redirectPath = path.startsWith(basePath)
+        ? path.substring(basePath.length)
+        : path;
+      // Добавляем начальный слэш, если его нет
+      if (!redirectPath.startsWith("/")) {
+        redirectPath = "/" + redirectPath;
+      }
+
+      // Полный URL для перенаправления
+      const redirectUrl = basePath + "#" + redirectPath + search + hash;
+
+      // Используем sessionStorage, чтобы избежать бесконечного цикла редиректа,
+      // если что-то пойдет не так.
+      sessionStorage.redirect = redirectUrl;
+
+      // Перенаправляем на главную страницу с нужным путем в хеше
+      // (или можно использовать history API, но хеш надежнее для gh-pages)
+      location.replace(basePath);
+    </script>
+  </head>
+  <body>
+    If you are not redirected automatically,
+    <a href="/megamenu/">click here</a>.
+  </body>
+</html>

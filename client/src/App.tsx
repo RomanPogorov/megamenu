@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Router } from "wouter";
 import { useState, useEffect } from "react";
 import SidebarMenu from "./components/SidebarMenu";
 import MegaMenu from "./components/MegaMenu";
@@ -7,8 +7,9 @@ import NotFound from "./pages/not-found";
 import { MenuProvider } from "./hooks/useMenu";
 import { useShortcut } from "./hooks/useShortcut";
 import { CustomizationProvider } from "./hooks/useCustomization";
+import { useHashLocation } from "wouter/use-hash-location";
 
-function App() {
+function AppContent() {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 
   useShortcut(
@@ -44,6 +45,14 @@ function App() {
         </div>
       </CustomizationProvider>
     </MenuProvider>
+  );
+}
+
+function App() {
+  return (
+    <Router hook={useHashLocation}>
+      <AppContent />
+    </Router>
   );
 }
 

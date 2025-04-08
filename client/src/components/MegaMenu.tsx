@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 import { Icon } from "./Icon";
 import { FaPuzzlePiece } from "react-icons/fa";
 import {
@@ -31,7 +31,7 @@ interface MegaMenuProps {
 }
 
 const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
-  const [, setLocation] = useLocation();
+  const [, setLocation] = useHashLocation();
   const {
     allMenuItems,
     categories,
