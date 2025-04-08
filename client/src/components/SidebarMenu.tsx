@@ -23,10 +23,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const recentButtonRef = useRef<HTMLButtonElement>(null);
   const { pinnedItems, recentItems, getCategoryIcon } = useMenu();
 
-  // Разделяем pinnedItems на две группы
-  const regularPinnedItems = pinnedItems.filter((item) => !item.fromRecent);
-  const recentPinnedItems = pinnedItems.filter((item) => item.fromRecent);
-
   // Close recent menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,6 +38,21 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Разделяем pinnedItems по типам
+  const systemPinnedItems = pinnedItems.filter(
+    (item) => item.isParent || item.id.startsWith("category-")
+  );
+  const userPinnedItems = pinnedItems.filter(
+    (item) => !item.isParent && !item.id.startsWith("category-")
+  );
+
+  // Проверяем наличие разных типов элементов
+  const hasSystemItems = systemPinnedItems.length > 0;
+  const hasUserItems = userPinnedItems.length > 0;
+
+  console.log("System pinned items:", systemPinnedItems);
+  console.log("User pinned items:", userPinnedItems);
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[60px] bg-white border-r border-gray-200 flex flex-col items-center py-4">
@@ -96,23 +107,49 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             )}
           </div>
         </div>
+
+        {/* Разделитель после основного меню */}
         <div className="w-8 h-px bg-gray-200 my-2"></div>
 
-        {/* Regular Pinned Items */}
-        <div className="w-full flex flex-col items-center space-y-1">
-          {regularPinnedItems.map((item) => (
-            <SidebarMenuItem
-              key={item.id}
-              item={item}
-              onClick={() => {}}
-              getCategoryIcon={getCategoryIcon}
-              isCentral={true}
-            />
-          ))}
-        </div>
+        {/* Системные припиненные элементы */}
+        {hasSystemItems && (
+          <div className="w-full flex flex-col items-center space-y-1">
+            {systemPinnedItems.map((item) => (
+              <SidebarMenuItem
+                key={item.id}
+                item={item}
+                onClick={() => {}}
+                getCategoryIcon={getCategoryIcon}
+                isCentral={true}
+              />
+            ))}
+          </div>
+        )}
 
-        {/* Divider before Recent Search */}
-        <div className="w-8 h-px bg-gray-200 my-2"></div>
+        {/* Разделитель между системными и пользовательскими элементами */}
+        {hasSystemItems && hasUserItems && (
+          <div className="w-8 h-px bg-gray-200 my-2"></div>
+        )}
+
+        {/* Пользовательские припиненные элементы */}
+        {hasUserItems && (
+          <div className="w-full flex flex-col items-center space-y-1">
+            {userPinnedItems.map((item) => (
+              <SidebarMenuItem
+                key={item.id}
+                item={item}
+                onClick={() => {}}
+                getCategoryIcon={getCategoryIcon}
+                isCentral={!item.fromRecent}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Разделитель перед Recent Search Button */}
+        {(hasSystemItems || hasUserItems) && (
+          <div className="w-8 h-px bg-gray-200 my-2"></div>
+        )}
 
         {/* Recent Search Button */}
         <div className="relative">
@@ -134,16 +171,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             />
           )}
         </div>
-
-        {/* Recent Pinned Items */}
-        {recentPinnedItems.map((item) => (
-          <SidebarMenuItem
-            key={item.id}
-            item={item}
-            onClick={() => {}}
-            getCategoryIcon={getCategoryIcon}
-          />
-        ))}
       </div>
     </aside>
   );
