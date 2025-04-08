@@ -1,13 +1,25 @@
 import FilterTabs from "./ui/filter-tabs";
-import { useState } from "react";
-import { FaSearch, FaPlus, FaTable, FaSortDown } from "react-icons/fa";
+import { useState, useMemo } from "react";
+import {
+  FaSearch,
+  FaPlus,
+  FaTable,
+  FaSortUp,
+  FaSortDown,
+} from "react-icons/fa";
 import { ResourceType } from "../types/resources";
 import { resourceTypes } from "../data/resourceTypesData";
-import DataTable from "./ui/data-table";
+import DataTable, { Column } from "./ui/data-table";
+
+interface SortableColumn extends Column {
+  isSortable?: boolean;
+}
 
 const ResourcesTable = () => {
   const [activeTab, setActiveTab] = useState("Categorised");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortColumn, setSortColumn] = useState<string | null>("typeName");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const tabs = [
     "Categorised",
@@ -17,22 +29,84 @@ const ResourcesTable = () => {
     "Failed validation",
   ];
 
-  const filteredResources = resourceTypes.filter(
-    (resource) =>
-      resource.typeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.category.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredResources = useMemo(
+    () =>
+      resourceTypes.filter(
+        (resource) =>
+          resource.typeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          resource.category.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [searchTerm]
   );
 
-  const columns = [
-    { id: "typeName", header: "Type name", width: "2" },
-    { id: "category", header: "Category", width: "1" },
-    { id: "description", header: "Description", width: "6" },
-    { id: "version", header: "Version", width: "0.5" },
-    { id: "instancesCount", header: "Instances", width: "0.75" },
-    { id: "size", header: "Size (GB)", width: "0.5" },
-    { id: "lastUpdated", header: "Last updated", width: "0.75" },
-    { id: "status", header: "Status", width: "1" },
-    { id: "actions", header: "Actions", width: "1", align: "left" as const },
+  const handleSort = (columnId: string) => {
+    const column = columns.find((col) => col.id === columnId);
+    if (!column || !column.isSortable) {
+      return;
+    }
+
+    if (sortColumn === columnId) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(columnId);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedResources = useMemo(() => {
+    if (!sortColumn) {
+      return filteredResources;
+    }
+
+    return [...filteredResources].sort((a, b) => {
+      const aValue = a[sortColumn as keyof ResourceType];
+      const bValue = b[sortColumn as keyof ResourceType];
+
+      const valA = aValue === undefined || aValue === null ? "" : aValue;
+      const valB = bValue === undefined || bValue === null ? "" : bValue;
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sortDirection === "asc" ? valA - valB : valB - valA;
+      } else if (typeof valA === "string" && typeof valB === "string") {
+        return sortDirection === "asc"
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      } else {
+        const strA = String(valA);
+        const strB = String(valB);
+        return sortDirection === "asc"
+          ? strA.localeCompare(strB)
+          : strB.localeCompare(strA);
+      }
+    });
+  }, [filteredResources, sortColumn, sortDirection]);
+
+  const columns: SortableColumn[] = [
+    { id: "typeName", header: "Type name", width: "2", isSortable: true },
+    { id: "category", header: "Category", width: "1", isSortable: true },
+    { id: "description", header: "Description", width: "6", isSortable: false },
+    { id: "version", header: "Version", width: "0.5", isSortable: true },
+    {
+      id: "instancesCount",
+      header: "Instances",
+      width: "0.75",
+      isSortable: true,
+    },
+    { id: "size", header: "Size (GB)", width: "0.5", isSortable: true },
+    {
+      id: "lastUpdated",
+      header: "Last updated",
+      width: "0.75",
+      isSortable: true,
+    },
+    { id: "status", header: "Status", width: "1", isSortable: true },
+    {
+      id: "actions",
+      header: "Actions",
+      width: "1",
+      align: "left" as const,
+      isSortable: false,
+    },
   ];
 
   return (
@@ -72,7 +146,10 @@ const ResourcesTable = () => {
       <div className="px-6">
         <DataTable
           columns={columns}
-          data={filteredResources}
+          data={sortedResources}
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
+          onSort={handleSort}
           renderCell={(row: ResourceType, columnId: string) => {
             switch (columnId) {
               case "table":

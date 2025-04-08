@@ -1,19 +1,45 @@
 import React from "react";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
-interface Column {
+export interface Column {
   id: string;
   header: string;
   width: string;
   align?: "left" | "right" | "center";
+  isSortable?: boolean;
 }
 
 interface DataTableProps<T> {
   columns: Column[];
   data: T[];
   renderCell: (row: T, columnId: string) => React.ReactNode;
+  sortColumn: string | null;
+  sortDirection: "asc" | "desc";
+  onSort: (columnId: string) => void;
 }
 
-function DataTable<T>({ columns, data, renderCell }: DataTableProps<T>) {
+function DataTable<T>({
+  columns,
+  data,
+  renderCell,
+  sortColumn,
+  sortDirection,
+  onSort,
+}: DataTableProps<T>) {
+  const renderSortIcon = (columnId: string) => {
+    if (!columns.find((col) => col.id === columnId)?.isSortable) {
+      return null;
+    }
+    if (sortColumn === columnId) {
+      return sortDirection === "asc" ? (
+        <FaSortUp className="ml-1 inline text-gray-800" />
+      ) : (
+        <FaSortDown className="ml-1 inline text-gray-800" />
+      );
+    }
+    return <FaSort className="ml-1 inline text-gray-400" />;
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden w-full">
       {/* Table header */}
@@ -21,9 +47,13 @@ function DataTable<T>({ columns, data, renderCell }: DataTableProps<T>) {
         {columns.map((column) => (
           <div
             key={column.id}
-            className={`${column.align ? `text-${column.align}` : ""} truncate`}
+            className={`${column.align ? `text-${column.align}` : ""} truncate${
+              column.isSortable ? " cursor-pointer hover:text-gray-700" : ""
+            }`}
+            onClick={() => column.isSortable && onSort(column.id)}
           >
             {column.header}
+            {renderSortIcon(column.id)}
           </div>
         ))}
       </div>
