@@ -601,7 +601,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         <CategoryPinButton
                           category={{
                             id: "recent-search",
-                            name: "Recent Search",
+                            name: "Recent",
                             icon: "clock",
                             order: 7,
                           }}
@@ -614,9 +614,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             className="text-red-500 mr-2"
                             size={24}
                           />
-                          <h3 className="font-medium text-gray-900">
-                            Recent Search
-                          </h3>
+                          <h3 className="font-medium text-gray-900">Recent</h3>
                         </div>
                       </div>
                       <div className="h-px bg-gray-200 mb-4" />
