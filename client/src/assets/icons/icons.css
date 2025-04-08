@@ -1,0 +1,93 @@
+/* Base icon styles */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+}
+
+/* Color variants */
+.text-gray-900 .icon:not(.icon-logo),
+.icon.text-gray-900:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(0%)
+    hue-rotate(206deg) brightness(95%) contrast(90%);
+}
+
+/* Logo icon */
+.icon-logo {
+  background-image: url("./svg/logo.svg");
+}
+
+/* Menu icons */
+.icon-menu {
+  background-image: url("./svg/menu.svg");
+}
+
+.icon-close-menu {
+  background-image: url("./svg/close-menu.svg");
+}
+
+/* Category icons */
+.icon-resources {
+  background-image: url("./svg/folder-open.svg");
+}
+
+.icon-notebooks {
+  background-image: url("./svg/book.svg");
+}
+
+.icon-api {
+  background-image: url("./svg/code.svg");
+}
+
+.icon-database {
+  background-image: url("./svg/database.svg");
+}
+
+.icon-iam {
+  background-image: url("./svg/user-shield.svg");
+}
+
+.icon-far {
+  background-image: url("./svg/tasks.svg");
+}
+
+.icon-plugins {
+  background-image: url("./svg/puzzle-piece.svg");
+}
+
+/* Action icons */
+.icon-search {
+  background-image: url("./svg/search.svg");
+}
+
+.icon-pin {
+  background-image: url("./svg/thumbtack.svg");
+}
+
+.icon-pin-filled {
+  background-image: url("./svg/thumbtack-filled.svg");
+}
+
+.icon-clock {
+  background-image: url("./svg/clock.svg");
+}
+
+.icon-plus {
+  background-image: url("./svg/plus.svg");
+}
+
+.icon-table {
+  background-image: url("./svg/table.svg");
+}
+
+.icon-sort {
+  background-image: url("./svg/sort.svg");
+}
+
+.icon-layer-group {
+  background-image: url("./svg/layer-group.svg");
+}
