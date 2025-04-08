@@ -252,23 +252,19 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             ) : (
               // Initial Menu State - Fullscreen version
               <div className="px-16 pb-8 container mx-auto">
-                {/* Menu Categories Grid - новая структура */}
-                <div
-                  className="flex gap-20 mx-auto"
-                  style={{ width: "fit-content" }}
-                >
+                <div className="flex gap-16 mx-auto">
                   {/* Resources колонка */}
-                  <div className="w-[202px]">
+                  <div className="w-60 flex-shrink-0">
                     {categories
                       .filter((category) => category.id === "resources")
                       .map((category: Category) => (
                         <div key={category.id} className="mb-8">
-                          <div className="mb-4 flex items-center justify-between group">
+                          <div className="mb-4 flex items-center justify-between group pl-2">
                             <div className="flex items-center flex-1 min-w-0">
                               <Icon
                                 name={ICON_RESOURCES}
                                 className="text-red-500 mr-2"
-                                size={24}
+                                size={20}
                               />
                               <h3 className="font-medium text-gray-900 truncate">
                                 {category.name}
@@ -306,9 +302,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       ))}
                   </div>
 
-                  {/* Остальные категории (в правой части) */}
+                  {/* Остальные категории (сетка справа) */}
                   <div
-                    className="grid grid-cols-3 gap-x-20 gap-y-10"
+                    className="grid grid-cols-3 gap-x-8 gap-y-10"
                     style={{
                       width: "fit-content",
                       gridTemplateColumns: "repeat(3, 235px)",
@@ -320,12 +316,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "notebooks")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_NOTEBOOKS}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -368,12 +364,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "api")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_API}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -416,12 +412,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "database")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_DATABASE}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -465,12 +461,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "iam")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_IAM}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -513,12 +509,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "far")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_FAR}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -561,12 +557,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "plugins")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center justify-between group">
+                            <div className="mb-4 flex items-center justify-between group pl-2">
                               <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_PLUGINS}
                                   className="text-red-500 mr-2"
-                                  size={24}
+                                  size={20}
                                 />
                                 <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
@@ -605,31 +601,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Recent Search колонка */}
-                  <div className="w-[202px]">
+                  {/* Recent колонка */}
+                  <div>
                     <div className="mb-8">
-                      <div className="mb-4 flex items-center justify-between group">
-                        <div className="flex items-center flex-1 min-w-0">
-                          <Icon
-                            name={ICON_CLOCK}
-                            className="text-red-500 mr-2"
-                            size={24}
-                          />
-                          <h3 className="font-medium text-gray-900 truncate">
-                            Recent
-                          </h3>
-                        </div>
-                        <div className="ml-2 flex-shrink-0">
-                          <CategoryPinButton
-                            category={{
-                              id: "recent-search",
-                              name: "Recent",
-                              icon: "clock",
-                              order: 7,
-                            }}
-                            isPinned={isPinned}
-                            handlePinToggle={handleCategoryPinToggle}
-                          />
+                      <div className="mb-4 flex items-center group pl-2">
+                        <div className="flex items-center">
+                          <h3 className="font-medium text-gray-900">Recent</h3>
                         </div>
                       </div>
                       <div className="h-px bg-gray-200 mb-4" />
@@ -646,6 +623,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           }
                           isChild={!!item.parentId}
                           parentIcon={getCategoryIcon(item.category)}
+                          showPinButton={false}
                         />
                       ))}
                     </div>
