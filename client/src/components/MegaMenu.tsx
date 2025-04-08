@@ -266,21 +266,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       .filter((category) => category.id === "resources")
                       .map((category: Category) => (
                         <div key={category.id} className="mb-8">
-                          <div className="mb-4 flex items-center group">
-                            <CategoryPinButton
-                              category={category}
-                              isPinned={isPinned}
-                              handlePinToggle={handleCategoryPinToggle}
-                            />
-                            <div className="flex items-center ml-1">
+                          <div className="mb-4 flex items-center justify-between group">
+                            <div className="flex items-center flex-1 min-w-0">
                               <Icon
                                 name={ICON_RESOURCES}
                                 className="text-red-500 mr-2"
                                 size={24}
                               />
-                              <h3 className="font-medium text-gray-900">
+                              <h3 className="font-medium text-gray-900 truncate">
                                 {category.name}
                               </h3>
+                            </div>
+                            <div className="ml-2 flex-shrink-0">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                              />
                             </div>
                           </div>
                           <div className="h-px bg-gray-200 mb-4" />
@@ -321,21 +323,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "notebooks")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_NOTEBOOKS}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -367,21 +371,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "api")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_API}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -413,21 +419,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "database")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_DATABASE}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -460,21 +468,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "iam")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_IAM}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -506,21 +516,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "far")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_FAR}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -552,21 +564,23 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         .filter((category) => category.id === "plugins")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
-                            <div className="mb-4 flex items-center group">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                              />
-                              <div className="flex items-center ml-1">
+                            <div className="mb-4 flex items-center justify-between group">
+                              <div className="flex items-center flex-1 min-w-0">
                                 <Icon
                                   name={ICON_PLUGINS}
                                   className="text-red-500 mr-2"
                                   size={24}
                                 />
-                                <h3 className="font-medium text-gray-900">
+                                <h3 className="font-medium text-gray-900 truncate">
                                   {category.name}
                                 </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                />
                               </div>
                             </div>
                             <div className="h-px bg-gray-200 mb-4" />
@@ -597,24 +611,28 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   {/* Recent Search колонка */}
                   <div className="w-[202px]">
                     <div className="mb-8">
-                      <div className="mb-4 flex items-center group">
-                        <CategoryPinButton
-                          category={{
-                            id: "recent-search",
-                            name: "Recent",
-                            icon: "clock",
-                            order: 7,
-                          }}
-                          isPinned={isPinned}
-                          handlePinToggle={handleCategoryPinToggle}
-                        />
-                        <div className="flex items-center ml-1">
+                      <div className="mb-4 flex items-center justify-between group">
+                        <div className="flex items-center flex-1 min-w-0">
                           <Icon
                             name={ICON_CLOCK}
                             className="text-red-500 mr-2"
                             size={24}
                           />
-                          <h3 className="font-medium text-gray-900">Recent</h3>
+                          <h3 className="font-medium text-gray-900 truncate">
+                            Recent
+                          </h3>
+                        </div>
+                        <div className="ml-2 flex-shrink-0">
+                          <CategoryPinButton
+                            category={{
+                              id: "recent-search",
+                              name: "Recent",
+                              icon: "clock",
+                              order: 7,
+                            }}
+                            isPinned={isPinned}
+                            handlePinToggle={handleCategoryPinToggle}
+                          />
                         </div>
                       </div>
                       <div className="h-px bg-gray-200 mb-4" />

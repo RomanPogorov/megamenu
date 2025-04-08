@@ -120,8 +120,14 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
                       <span className="animate-none absolute inline-flex h-full w-full rounded-full bg-blue-500"></span>
                     </span>
                   </div>
-                ) : (
+                ) : typeof item.icon === "string" ? (
                   getIconComponent(item.icon)
+                ) : (
+                  <Icon
+                    name={ICON_RESOURCES}
+                    size={20}
+                    className="text-gray-900 mr-2"
+                  />
                 )}
                 <span className="text-sm text-gray-800 truncate max-w-[150px]">
                   {item.name}
