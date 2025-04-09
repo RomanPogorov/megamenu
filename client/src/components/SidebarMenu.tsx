@@ -17,11 +17,20 @@ import { MenuItem } from "../types/menu";
 const SIDEBAR_MENU_STYLES = {
   // Основные контейнеры
   container:
-    "fixed left-0 top-0 h-screen w-[80px] bg-white border-r border-gray-200 flex flex-col items-center py-4",
-  innerContainer: "w-full flex flex-col items-center h-full",
+    "fixed left-0 top-0 h-screen w-[80px] bg-white border-r border-gray-200 flex flex-col items-center",
+  innerContainer: "w-full flex flex-col items-center h-full relative",
 
-  // Верхняя зона (логотип и pinned items)
-  upperZone: "w-full flex flex-col items-center flex-grow overflow-y-auto",
+  // Фиксированная верхняя зона
+  fixedTopZone: "w-full flex flex-col items-center pt-4 px-2",
+
+  // Скроллируемая зона для элементов
+  scrollableZone:
+    "w-full flex-1 overflow-y-auto flex flex-col items-center px-2 py-2 scrollbar-hide",
+
+  // Фиксированная нижняя зона
+  fixedBottomZone: "w-full flex flex-col items-center border-gray-200 pt-2",
+
+  // Стили логотипа
   logo: {
     button:
       "p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-all duration-300 group relative",
@@ -31,6 +40,7 @@ const SIDEBAR_MENU_STYLES = {
 
   // Разделители и заголовки
   divider: "w-8 h-px bg-gray-200 my-2",
+
   sectionHeader: {
     container: "flex flex-col items-center w-full py-2",
     titleContainer: "flex items-center justify-center mb-2",
@@ -42,13 +52,12 @@ const SIDEBAR_MENU_STYLES = {
   // Контейнеры для элементов
   itemsContainer: "w-full flex flex-col items-center space-y-1 mb-2",
 
-  // Зона профиля (теперь внизу)
-  profileZone: "w-full flex justify-center mt-6 pb-2",
+  // Зона профиля
+  profileZone: "w-full flex justify-center mt-2 pb-4",
   profileButton:
     "p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors",
 
   // Зона recent items
-  recentZone: "w-full flex flex-col items-center border-t border-gray-200",
   recentItems: "w-full flex flex-col items-center space-y-1 pb-2",
 };
 
@@ -130,11 +139,49 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     // Дополнительная логика навигации, если требуется
   };
 
+  // В конце файла, прямо перед export default SidebarMenu
+  // Добавляем стили для скрытия скроллбара через CSS
+  const scrollbarHideStyles = `
+    /* Для WebKit (Chrome, Safari, новые версии Edge) */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Для Firefox */
+    .scrollbar-hide {
+      scrollbar-width: none;
+    }
+    
+    /* Для IE и Edge */
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+    }
+  `;
+
+  // Вставляем стили в head при монтировании компонента
+  useEffect(() => {
+    // Проверяем, существует ли уже стиль
+    if (!document.getElementById("scrollbar-hide-styles")) {
+      const style = document.createElement("style");
+      style.id = "scrollbar-hide-styles";
+      style.innerHTML = scrollbarHideStyles;
+      document.head.appendChild(style);
+    }
+
+    return () => {
+      // Cleanup при размонтировании
+      const style = document.getElementById("scrollbar-hide-styles");
+      if (style) {
+        document.head.removeChild(style);
+      }
+    };
+  }, []);
+
   return (
     <aside className={SIDEBAR_MENU_STYLES.container}>
       <div className={SIDEBAR_MENU_STYLES.innerContainer}>
-        {/* ВЕРХНЯЯ ЗОНА: Логотип и Pinned Items */}
-        <div className={SIDEBAR_MENU_STYLES.upperZone}>
+        {/* ФИКСИРОВАННАЯ ВЕРХНЯЯ ЗОНА: Логотип и заголовок PINNED */}
+        <div className={SIDEBAR_MENU_STYLES.fixedTopZone}>
           {/* Логотип и переключатель меню */}
           <div className="flex flex-col items-center gap-2 mb-2">
             <button
@@ -188,7 +235,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           </div>
 
           {/* Разделитель после основного меню */}
-          <div className={SIDEBAR_MENU_STYLES.divider}></div>
 
           {/* Заголовок PINNED */}
           <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
@@ -204,8 +250,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             </div>
             <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
           </div>
+        </div>
 
-          {/* Системные припиненные элементы (теперь включая Getting Started) */}
+        {/* СКРОЛЛИРУЕМАЯ ЗОНА: только припиненные элементы */}
+        <div className={SIDEBAR_MENU_STYLES.scrollableZone}>
+          {/* Системные припиненные элементы */}
           {hasSystemItems && (
             <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
               {systemPinnedItems.map((item) => (
@@ -220,6 +269,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             </div>
           )}
 
+          {/* Пользовательские припиненные элементы */}
           {hasUserItems && (
             <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
               {userPinnedItems.map((item) => (
@@ -235,8 +285,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           )}
         </div>
 
-        {/* НИЖНЯЯ ЗОНА: Recent Items */}
-        <div className={SIDEBAR_MENU_STYLES.recentZone}>
+        {/* ФИКСИРОВАННАЯ НИЖНЯЯ ЗОНА: RECENT и Profile */}
+        <div className={SIDEBAR_MENU_STYLES.fixedBottomZone}>
           {/* Заголовок RECENT */}
           <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
             <div className={SIDEBAR_MENU_STYLES.sectionHeader.titleContainer}>
@@ -264,17 +314,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
               />
             ))}
           </div>
-        </div>
 
-        {/* САМАЯ НИЖНЯЯ ЗОНА: Profile */}
-        <div className={SIDEBAR_MENU_STYLES.profileZone}>
-          <button
-            className={SIDEBAR_MENU_STYLES.profileButton}
-            aria-label="Профиль пользователя"
-            title="Профиль пользователя"
-          >
-            <Icon name={ICON_PROFILE} size={24} className="text-gray-700" />
-          </button>
+          {/* Профиль пользователя */}
+          <div className={SIDEBAR_MENU_STYLES.profileZone}>
+            <button
+              className={SIDEBAR_MENU_STYLES.profileButton}
+              aria-label="Профиль пользователя"
+              title="Профиль пользователя"
+            >
+              <Icon name={ICON_PROFILE} size={20} className="text-gray-500" />
+            </button>
+          </div>
         </div>
       </div>
     </aside>
