@@ -28,12 +28,12 @@ const SIDEBAR_MENU_STYLES = {
     "w-full flex-1 overflow-y-auto flex flex-col items-center px-2 py-2 scrollbar-hide",
 
   // Фиксированная нижняя зона
-  fixedBottomZone: "w-full flex flex-col items-center border-gray-200 pt-2",
+  fixedBottomZone: "w-full flex flex-col items-center pt-2",
 
   // Стили логотипа
   logo: {
     button:
-      "p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-all duration-300 group relative",
+      "px-5 py-5 mt-2 rounded-lg text-gray-900 hover:bg-gray-100 transition-all duration-300 group relative",
     buttonActive: "bg-gray-100",
     keyboardHint: "flex items-center gap-0.5 text-xs text-gray-600",
   },
@@ -192,27 +192,31 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             >
               {/* Logo (SVG) - visible only in default state when closed and not hovering */}
               {!isMegaMenuOpen && (
-                <div className="transform transition-all duration-300 group-hover:opacity-0 group-hover:scale-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="transform transition-all duration-300 group-hover:opacity-0 group-hover:scale-0 flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                   <Icon name={ICON_LOGO} size={32} preserveColors={true} />
                 </div>
               )}
 
               {/* Menu icon - shown on hover when closed */}
               {!isMegaMenuOpen && (
-                <Icon
-                  name={ICON_MENU}
-                  size={20}
-                  className="text-gray-900 transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 relative pointer-events-none"
-                />
+                <div className="transform transition-all duration-300 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <Icon
+                    name={ICON_MENU}
+                    size={20}
+                    className="text-gray-900 pointer-events-none"
+                  />
+                </div>
               )}
 
               {/* Close (X) icon - shown when menu is open */}
               {isMegaMenuOpen && (
-                <Icon
-                  name={ICON_CLOSE_MENU}
-                  size={20}
-                  className="text-gray-900 relative"
-                />
+                <div className="flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <Icon
+                    name={ICON_CLOSE_MENU}
+                    size={20}
+                    className="text-gray-900"
+                  />
+                </div>
               )}
             </button>
             <div className={SIDEBAR_MENU_STYLES.logo.keyboardHint}>
