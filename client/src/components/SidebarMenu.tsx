@@ -346,23 +346,24 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Отображаем 3 последних элемента из recentItems или placeholder */}
           <div className={SIDEBAR_MENU_STYLES.recentItems}>
             {recentItems.length > 0 ? (
-              recentItems
-                .slice(0, 3)
-                .map((item) => (
+              recentItems.slice(0, 3).map((item) => {
+                // Проверяем, есть ли этот элемент в приколотых (pinned)
+                const isPinnedItem = pinnedItems.some(
+                  (pinnedItem) => pinnedItem.id === item.id
+                );
+
+                return (
                   <SidebarMenuItem
                     key={item.id}
                     item={item}
                     onClick={() => handleItemClick(item)}
                     isCentral={true}
                     showParent={true}
-                    isActive={
-                      isActiveItem(item.id) &&
-                      !pinnedItems.some(
-                        (pinnedItem) => pinnedItem.id === item.id
-                      )
-                    }
+                    // Элемент в Recent активен только если он активен И НЕ приколот
+                    isActive={isActiveItem(item.id) && !isPinnedItem}
                   />
-                ))
+                );
+              })
             ) : (
               <div
                 className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.container}
