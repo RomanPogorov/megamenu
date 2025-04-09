@@ -16,6 +16,7 @@ export interface MenuItem {
   parentId?: string;
   fromRecent?: boolean;
   isPinned?: boolean;
+  originalId?: string;
 }
 
 export interface SearchFilter {
