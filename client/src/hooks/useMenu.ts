@@ -14,6 +14,10 @@ import {
 } from "../data/menuData";
 import { MenuItem } from "../types/menu";
 
+// Добавим константы вверху файла после импортов
+const MAX_RECENT_ITEMS = 10;
+const CATEGORIES_EXCLUDED_FROM_RECENTS: string[] = [];
+
 type MenuContextType = {
   allMenuItems: MenuItem[];
   categories: typeof categories;
@@ -23,7 +27,7 @@ type MenuContextType = {
   addToPinned: (item: MenuItem) => void;
   removeFromPinned: (itemId: string) => void;
   removeAllPinned: () => void;
-  trackRecentItem: (item: MenuItem) => void;
+  trackRecentItem: (item: MenuItem, skipPersist?: boolean) => void;
   addCategoryToPinned: (categoryId: string) => void;
   isPinned: (itemId: string) => boolean;
   getCategoryIcon: (categoryId: string) => string | React.ReactNode;
@@ -173,173 +177,54 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     setPinnedItems(pinnedItems.filter((item) => item.id !== itemId));
   };
 
-  const trackRecentItem = (item: MenuItem) => {
-    // Проверяем, не был ли этот элемент недавно добавлен
-    const now = Date.now();
+  const trackRecentItem = (item: MenuItem, skipPersist = false) => {
+    // Don't track if the category is excluded or if it's a parent item
     if (
-      item.id === lastTrackedItemId &&
-      now - lastTrackedTimestamp < MIN_TRACKING_INTERVAL
+      CATEGORIES_EXCLUDED_FROM_RECENTS.includes(item.category) ||
+      item.isParent ||
+      !item
     ) {
-      // Если элемент был добавлен совсем недавно, пропускаем повторное добавление
       return;
     }
 
-    // Обновляем информацию о последнем добавленном элементе
-    setLastTrackedItemId(item.id);
-    setLastTrackedTimestamp(now);
+    const normalizedId = item.parentId
+      ? `${item.category}-${item.parentId}`
+      : item.id;
 
-    // Проверяем и преобразуем item перед добавлением в recentItems
-    const itemToTrack = { ...item };
-
-    // Устанавливаем фиксированный флаг презентации (всегда один и тот же тип элемента в Recent)
-    // Это позволит избежать различных вариаций представления одного и того же элемента
-    // (с parentId или без и т.д.)
-    itemToTrack.isParent = true;
-    itemToTrack.parentId = undefined;
-
-    // Для всех элементов в recentItems используем строковые идентификаторы иконок
-    // чтобы они правильно отображались через ICON_MAP
-    if (typeof itemToTrack.icon !== "string") {
-      // Если иконка не строка, определяем подходящую строковую иконку по категории
-      if (itemToTrack.parentId) {
-        const parentItem = menuItems.find((m) => m.id === itemToTrack.parentId);
-        if (parentItem && typeof parentItem.icon === "string") {
-          itemToTrack.icon = parentItem.icon;
-        }
-      }
-
-      if (typeof itemToTrack.icon !== "string") {
-        // Если до сих пор не определили строковую иконку, используем категорию
-        const categoryId = itemToTrack.category;
-        const category = categories.find((c) => c.id === categoryId);
-        if (category) {
-          itemToTrack.icon = category.icon;
-        } else {
-          // Если ничего не помогло, используем дефолтную иконку
-          itemToTrack.icon = "folder-open";
-        }
-      }
-    }
-
-    // Нормализуем идентификаторы для предотвращения дублирования
-    // Некоторые специальные элементы могут иметь разные ID, но представлять одно и то же
-    let normalizedId = itemToTrack.id;
-
-    // Сопоставление специальных элементов, которые могут приходить с разными ID
-    const idMappings: Record<string, string> = {
-      // Маппинги для ресурсов/браузера
-      "folder-open": "resources",
-      "resource-browser": "resources",
-      resources: "resources",
-      browser: "resources",
-      Browser: "resources",
-      Start: "resources", // Иногда Start может относиться к resources
-
-      // Маппинги для API/консоли
-      console: "api",
-      "rest-console": "api",
-      api: "api",
-      API: "api",
-      "rest-api": "api",
-
-      // Маппинги для базы данных
-      database: "database",
-      "db-console": "database",
-      db: "database",
-      Database: "database",
+    // Сохраняем оригинальный ID если это дочерний элемент
+    const itemToAdd = {
+      ...item,
+      originalId: item.parentId ? item.id : undefined,
+      id: normalizedId,
+      fromRecent: true,
     };
 
-    // Словарь локализованных имен для согласованности элементов
-    const localizedNames: Record<string, string[]> = {
-      resources: ["Ресурсы", "Resources", "Браузер", "Browser"],
-      api: [
-        "API",
-        "АПИ",
-        "Console",
-        "REST Console",
-        "Rest Console",
-        "REST API",
-      ],
-      database: ["База данных", "Database", "БД", "DB Console", "База Данных"],
-    };
+    // Сначала получаем текущие элементы, модифицируем и затем устанавливаем новый массив
+    const currentItems = [...recentItems];
 
-    if (idMappings[normalizedId]) {
-      normalizedId = idMappings[normalizedId];
-      // Также обновляем ID элемента для согласованности
-      itemToTrack.id = normalizedId;
-
-      // Унифицируем также имя и категорию для элементов
-      if (normalizedId === "resources") {
-        itemToTrack.name = "Resources"; // Локализованное имя
-        itemToTrack.category = "resources";
-      } else if (normalizedId === "api") {
-        itemToTrack.name = "API";
-        itemToTrack.category = "api";
-      } else if (normalizedId === "database") {
-        itemToTrack.name = "Database"; // Локализованное имя
-        itemToTrack.category = "database";
-      }
-    } else {
-      // Проверяем, может ли имя элемента быть локализованным вариантом
-      // известного ресурса, и если да - нормализуем его
-      for (const [normId, nameVariants] of Object.entries(localizedNames)) {
-        if (nameVariants.includes(itemToTrack.name)) {
-          normalizedId = normId;
-          itemToTrack.id = normId;
-
-          // Назначаем единообразное имя в зависимости от типа ресурса
-          if (normId === "resources") {
-            itemToTrack.name = "Resources";
-            itemToTrack.category = "resources";
-          } else if (normId === "api") {
-            itemToTrack.name = "API";
-            itemToTrack.category = "api";
-          } else if (normId === "database") {
-            itemToTrack.name = "Database";
-            itemToTrack.category = "database";
-          }
-          break;
+    // Фильтруем существующие элементы, чтобы удалить тот же элемент если он уже есть
+    const filteredItems = currentItems.filter((prevItem) => {
+      if (prevItem.id === normalizedId) {
+        // Если это дочерний элемент (есть originalId), сравнивать и по originalId
+        if (item.parentId) {
+          return prevItem.originalId !== item.id && prevItem.name !== item.name;
         }
+        return false; // Если это обычный элемент, удаляем существующий с таким же ID
       }
-    }
-
-    // Отфильтровываем элементы с таким же ID или нормализованным ID
-    const filteredRecents = recentItems.filter((recentItem) => {
-      // Проверяем точное совпадение ID
-      if (recentItem.id === itemToTrack.id) return false;
-
-      // Проверяем нормализованные ID
-      const recentNormalizedId = idMappings[recentItem.id] || recentItem.id;
-      if (recentNormalizedId === normalizedId) return false;
-
-      // Проверяем, является ли имя одним из локализованных вариантов
-      for (const [normId, nameVariants] of Object.entries(localizedNames)) {
-        if (normId === normalizedId && nameVariants.includes(recentItem.name)) {
-          return false;
-        }
-      }
-
-      // Проверяем совпадение по имени и категории для элементов с разными ID
-      // Это дополнительная проверка для исключения дублей с разными ID, но одинаковыми данными
-      if (
-        recentItem.name === itemToTrack.name ||
-        (recentItem.category === itemToTrack.category &&
-          (itemToTrack.category === "resources" ||
-            itemToTrack.category === "api" ||
-            itemToTrack.category === "database"))
-      ) {
-        return false;
-      }
-
-      // Если нет совпадений, сохраняем элемент
-      return true;
+      return true; // Сохраняем все другие элементы
     });
 
-    // Добавляем новый элемент в начало
-    const updatedRecents = [itemToTrack, ...filteredRecents];
+    const newRecentItems = [itemToAdd, ...filteredItems].slice(
+      0,
+      MAX_RECENT_ITEMS
+    );
 
-    // Ограничиваем список 10 последними элементами
-    setRecentItems(updatedRecents.slice(0, 10));
+    if (!skipPersist) {
+      // Сохранение в локальное хранилище
+      localStorage.setItem("recentItems", JSON.stringify(newRecentItems));
+    }
+
+    setRecentItems(newRecentItems);
   };
 
   // Check if an item is pinned
