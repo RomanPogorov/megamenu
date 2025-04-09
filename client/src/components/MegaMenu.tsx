@@ -889,6 +889,11 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     <div className="mb-8">
                       <div className="mb-4 flex items-center group pl-2">
                         <div className="flex items-center">
+                          <Icon
+                            name={ICON_CLOCK}
+                            className={`mr-2 text-gray-500`}
+                            size={ICON_STYLES.categories.size}
+                          />
                           <h3 className="font-medium text-gray-900">Recent</h3>
                         </div>
                       </div>
