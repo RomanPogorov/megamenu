@@ -168,6 +168,21 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     // Проверяем и преобразуем item перед добавлением в recentItems
     const itemToTrack = { ...item };
 
+    // Убедимся, что у элемента есть parentId, если это дочерний элемент
+    if (
+      !itemToTrack.parentId &&
+      !itemToTrack.isParent &&
+      itemToTrack.category
+    ) {
+      // Ищем родительский элемент для этой категории
+      const parentItem = menuItems.find(
+        (m) => m.isParent && m.category === itemToTrack.category
+      );
+      if (parentItem) {
+        itemToTrack.parentId = parentItem.id;
+      }
+    }
+
     // Для всех элементов в recentItems используем строковые идентификаторы иконок
     // чтобы они правильно отображались через ICON_MAP
     if (typeof itemToTrack.icon !== "string") {
@@ -264,8 +279,25 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
   const getParentName = (item: MenuItem) => {
     if (!item.parentId) return "";
+
+    // Сначала ищем родителя в menuItems
     const parent = menuItems.find((i) => i.id === item.parentId);
-    return parent?.name || "";
+    if (parent) return parent.name;
+
+    // Если не нашли в menuItems, проверяем специальный формат ID категории (category-...)
+    if (item.parentId.startsWith("category-")) {
+      const categoryId = item.parentId.replace("category-", "");
+      const category = categories.find((cat) => cat.id === categoryId);
+      if (category) return category.name;
+    }
+
+    // Если по parentId ничего не нашли, смотрим на категорию элемента
+    if (item.category) {
+      const category = categories.find((cat) => cat.id === item.category);
+      if (category) return category.name;
+    }
+
+    return "";
   };
 
   const removeAllPinned = useCallback(() => {

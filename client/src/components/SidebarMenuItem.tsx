@@ -15,6 +15,43 @@ import {
 } from "../assets/icons/icon-map";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
+// Централизованные стили для элементов бокового меню
+const SIDEBAR_STYLES = {
+  // Основные стили меню
+  button: {
+    base: "px-1 rounded-lg w-[64px] text-icon-text hover:bg-gray-100 transition-colors flex flex-col items-center",
+    central: "py-2",
+    nonCentral: "py-3",
+    active: "bg-red-50",
+  },
+
+  // Стили иконок
+  icon: {
+    active: "text-red-500",
+    inactive: "text-icon-text",
+    fallback: "text-icon-text text-xl", // для FaCircle когда нет нужной иконки
+    fallbackActive: "text-red-500", // для FaCircle в активном состоянии
+  },
+
+  // Стили текста
+  text: {
+    base: "text-xs text-[11px] tracking-[0.02em] w-full text-center truncate px-2",
+    active: "text-gray-900 font-medium",
+    inactive: "text-icon-text",
+  },
+
+  // Индикатор закрепленного элемента
+  pinIndicator:
+    "absolute -left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-blue-500/20 border border-blue-500 rounded-full shadow-[0_0_4px_rgba(59,130,246,0.5)]",
+
+  // Стили тултипа
+  tooltip: {
+    content:
+      "rounded-lg bg-gray-900 px-3 py-2 text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade",
+    arrow: "fill-gray-900",
+  },
+};
+
 // Маппинг строковых идентификаторов иконок на константы
 const ICON_MAP: Record<string, string> = {
   "folder-open": ICON_RESOURCES,
@@ -60,7 +97,11 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
           <Icon
             name={ICON_MAP[iconName]}
             size={iconSize}
-            className={isActive ? "text-red-500" : "text-icon-text"}
+            className={
+              isActive
+                ? SIDEBAR_STYLES.icon.active
+                : SIDEBAR_STYLES.icon.inactive
+            }
           />
         );
       } else {
@@ -74,14 +115,22 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
             <Icon
               name={ICON_MAP[categoryIcon]}
               size={iconSize}
-              className={isActive ? "text-red-500" : "text-icon-text"}
+              className={
+                isActive
+                  ? SIDEBAR_STYLES.icon.active
+                  : SIDEBAR_STYLES.icon.inactive
+              }
             />
           );
         } else {
           // В крайнем случае показываем круг как заглушку
           return (
             <FaCircle
-              className={isActive ? "text-red-500" : "text-icon-text text-xl"}
+              className={
+                isActive
+                  ? SIDEBAR_STYLES.icon.fallbackActive
+                  : SIDEBAR_STYLES.icon.fallback
+              }
             />
           );
         }
@@ -102,16 +151,16 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         {/* Триггер тултипа (сам элемент меню) */}
         <Tooltip.Trigger asChild>
           <button
-            className={`px-1 ${isCentral ? "py-2" : "py-3"} rounded-lg w-16  text-icon-text hover:bg-gray-100 transition-colors flex flex-col items-center ${
-              isActive ? "bg-gray-50" : ""
-            }`}
+            className={`${SIDEBAR_STYLES.button.base} ${
+              isCentral
+                ? SIDEBAR_STYLES.button.central
+                : SIDEBAR_STYLES.button.nonCentral
+            } ${isActive ? SIDEBAR_STYLES.button.active : ""}`}
             onClick={onClick}
           >
             <div className="relative">
               {/* Индикатор закрепленного элемента */}
-              {item.isPinned && (
-                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-blue-500/20 border border-blue-500 rounded-full shadow-[0_0_4px_rgba(59,130,246,0.5)]" />
-              )}
+              {item.isPinned && <div className={SIDEBAR_STYLES.pinIndicator} />}
 
               {/* Отображаем иконку без метки с буквами */}
               {item.parentId
@@ -121,8 +170,10 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
 
             {/* Добавляем название под иконкой */}
             <span
-              className={`text-xs text-[11px] tracking-[0.02em] mt-1 w-full text-center truncate ${
-                isActive ? "text-gray-900 font-medium" : "text-icon-text"
+              className={`${SIDEBAR_STYLES.text.base} ${
+                isActive
+                  ? SIDEBAR_STYLES.text.active
+                  : SIDEBAR_STYLES.text.inactive
               }`}
             >
               {item.name}
@@ -133,12 +184,12 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         {/* Контент тултипа с анимацией */}
         <Tooltip.Portal>
           <Tooltip.Content
-            className="rounded-lg bg-gray-900 px-3 py-2  text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade"
+            className={SIDEBAR_STYLES.tooltip.content}
             sideOffset={5}
             side="right"
           >
             {tooltipContent}
-            <Tooltip.Arrow className="fill-gray-900" />
+            <Tooltip.Arrow className={SIDEBAR_STYLES.tooltip.arrow} />
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
