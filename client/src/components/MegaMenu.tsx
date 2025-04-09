@@ -282,6 +282,28 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
+  // Добавим функцию для обработки клика на заголовок категории
+  const handleCategoryTitleClick = (category: Category) => {
+    // Создаем объект элемента для трекинга
+    const categoryItem: MenuItemType = {
+      id: category.id,
+      name: category.name,
+      icon: category.icon,
+      category: category.id,
+      isParent: true,
+    };
+
+    // Добавляем в недавние
+    trackRecentItem(categoryItem);
+
+    // Устанавливаем активный элемент
+    setActiveItem(category.id);
+
+    // Переходим по ссылке
+    setLocation(`/resource/${category.id}`);
+    onClose();
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -417,6 +439,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           >
                             <div
                               className={MENU_STYLES.components.categoryTitle}
+                              onClick={() => handleCategoryTitleClick(category)}
+                              style={{ cursor: "pointer" }}
                             >
                               <Icon
                                 name={ICON_RESOURCES}
@@ -484,6 +508,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_NOTEBOOKS}
@@ -544,6 +572,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_API}
@@ -604,6 +636,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_DATABASE}
@@ -665,6 +701,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_IAM}
@@ -725,6 +765,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_FAR}
@@ -785,6 +829,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <div
                                 className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
                               >
                                 <Icon
                                   name={ICON_PLUGINS}

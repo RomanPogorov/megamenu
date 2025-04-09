@@ -78,6 +78,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     setActiveItem,
     addToPinned,
     setPinnedItems,
+    trackRecentItem,
   } = useMenu();
 
   // Добавляем Getting Started при первой загрузке и делаем активным
@@ -136,7 +137,19 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   // Обработчик клика на элемент меню
   const handleItemClick = (item: MenuItem) => {
     setActiveItem(item.id);
-    // Дополнительная логика навигации, если требуется
+
+    // Отслеживаем элемент в недавних
+    trackRecentItem(item);
+
+    // Переходим по ссылке
+    if (item.id.startsWith("category-")) {
+      // Для категорий используем ID без префикса
+      const categoryId = item.id.replace("category-", "");
+      window.location.hash = `/resource/${categoryId}`;
+    } else {
+      // Для обычных элементов используем ID как есть
+      window.location.hash = `/resource/${item.id}`;
+    }
   };
 
   // В конце файла, прямо перед export default SidebarMenu
