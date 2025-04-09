@@ -164,6 +164,36 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     }
   };
 
+  // Проверка, содержится ли элемент в списке закрепленных элементов
+  // Это более гибкая функция, которая учитывает нормализованные идентификаторы
+  const isItemPinned = (itemId: string): boolean => {
+    // Проверка прямого совпадения ID
+    if (pinnedItems.some((pin) => pin.id === itemId)) {
+      return true;
+    }
+
+    // Специальная обработка для известных алиасов/маппингов
+    const normalizedIdMap: Record<string, string[]> = {
+      resources: ["folder-open", "resource-browser", "browser", "Browser"],
+      api: ["console", "rest-console", "API"],
+      database: ["db-console", "db", "Database"],
+    };
+
+    // Проверка, является ли itemId одним из алиасов для закрепленного элемента
+    for (const [normalizedId, aliases] of Object.entries(normalizedIdMap)) {
+      if (
+        aliases.includes(itemId) &&
+        pinnedItems.some(
+          (pin) => pin.id === normalizedId || aliases.includes(pin.id)
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   // В конце файла, прямо перед export default SidebarMenu
   // Добавляем стили для скрытия скроллбара через CSS
   const scrollbarHideStyles = `
@@ -350,22 +380,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Отображаем 3 последних элемента из recentItems */}
           <div className={SIDEBAR_MENU_STYLES.recentItems}>
             {recentItems.length > 0 ? (
-              recentItems
-                .slice(0, 3)
-                .map((item) => (
-                  <SidebarMenuItem
-                    key={item.id}
-                    item={item}
-                    onClick={() => handleItemClick(item)}
-                    isCentral={true}
-                    isActive={
-                      isActiveItem(item.id) &&
-                      !pinnedItems.some(
-                        (pinnedItem) => pinnedItem.id === item.id
-                      )
-                    }
-                  />
-                ))
+              recentItems.slice(0, 3).map((item) => (
+                <SidebarMenuItem
+                  key={item.id}
+                  item={item}
+                  onClick={() => handleItemClick(item)}
+                  isCentral={true}
+                  isActive={
+                    isActiveItem(item.id) && !isItemPinned(item.id) // Используем новую функцию вместо прямого сравнения
+                  }
+                />
+              ))
             ) : (
               <div className={SIDEBAR_MENU_STYLES.emptyState.container}>
                 {/* Три прямоугольника-заполнителя */}

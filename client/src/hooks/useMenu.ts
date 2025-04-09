@@ -249,21 +249,57 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       Database: "database",
     };
 
+    // Словарь локализованных имен для согласованности элементов
+    const localizedNames: Record<string, string[]> = {
+      resources: ["Ресурсы", "Resources", "Браузер", "Browser"],
+      api: [
+        "API",
+        "АПИ",
+        "Console",
+        "REST Console",
+        "Rest Console",
+        "REST API",
+      ],
+      database: ["База данных", "Database", "БД", "DB Console", "База Данных"],
+    };
+
     if (idMappings[normalizedId]) {
       normalizedId = idMappings[normalizedId];
       // Также обновляем ID элемента для согласованности
       itemToTrack.id = normalizedId;
 
-      // Унифицируем также имя и категорию для элементов ресурсов
+      // Унифицируем также имя и категорию для элементов
       if (normalizedId === "resources") {
-        itemToTrack.name = "Ресурсы"; // Или какое правильное имя в вашем приложении
+        itemToTrack.name = "Resources"; // Локализованное имя
         itemToTrack.category = "resources";
       } else if (normalizedId === "api") {
         itemToTrack.name = "API";
         itemToTrack.category = "api";
       } else if (normalizedId === "database") {
-        itemToTrack.name = "База данных"; // Или какое правильное имя
+        itemToTrack.name = "Database"; // Локализованное имя
         itemToTrack.category = "database";
+      }
+    } else {
+      // Проверяем, может ли имя элемента быть локализованным вариантом
+      // известного ресурса, и если да - нормализуем его
+      for (const [normId, nameVariants] of Object.entries(localizedNames)) {
+        if (nameVariants.includes(itemToTrack.name)) {
+          normalizedId = normId;
+          itemToTrack.id = normId;
+
+          // Назначаем единообразное имя в зависимости от типа ресурса
+          if (normId === "resources") {
+            itemToTrack.name = "Resources";
+            itemToTrack.category = "resources";
+          } else if (normId === "api") {
+            itemToTrack.name = "API";
+            itemToTrack.category = "api";
+          } else if (normId === "database") {
+            itemToTrack.name = "Database";
+            itemToTrack.category = "database";
+          }
+          break;
+        }
       }
     }
 
@@ -276,6 +312,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       const recentNormalizedId = idMappings[recentItem.id] || recentItem.id;
       if (recentNormalizedId === normalizedId) return false;
 
+      // Проверяем, является ли имя одним из локализованных вариантов
+      for (const [normId, nameVariants] of Object.entries(localizedNames)) {
+        if (normId === normalizedId && nameVariants.includes(recentItem.name)) {
+          return false;
+        }
+      }
+
       // Проверяем совпадение по имени и категории для элементов с разными ID
       // Это дополнительная проверка для исключения дублей с разными ID, но одинаковыми данными
       if (
@@ -284,20 +327,6 @@ export function MenuProvider({ children }: { children: ReactNode }) {
           (itemToTrack.category === "resources" ||
             itemToTrack.category === "api" ||
             itemToTrack.category === "database"))
-      ) {
-        return false;
-      }
-
-      // Специальная проверка для ресурсов/браузера
-      if (
-        (recentItem.name === "Ресурсы" ||
-          recentItem.name === "Браузер" ||
-          recentItem.id === "resources" ||
-          recentItem.id === "browser") &&
-        (itemToTrack.name === "Ресурсы" ||
-          itemToTrack.name === "Браузер" ||
-          itemToTrack.id === "resources" ||
-          itemToTrack.id === "browser")
       ) {
         return false;
       }
