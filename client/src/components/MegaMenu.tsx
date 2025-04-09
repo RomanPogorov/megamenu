@@ -197,19 +197,24 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     if (categoryId === "navigation") {
       const navButton = NAV_BUTTONS.find((btn) => btn.id === itemId);
       if (navButton) {
-        // Используем функцию-помощник
-        trackRecentItem(createMenuItemFromNavButton(navButton));
+        // Используем функцию-помощник и добавляем parentId
+        const menuItem = createMenuItemFromNavButton(navButton);
+        trackRecentItem({
+          ...menuItem,
+          parentId: "navigation", // Добавляем parentId для правильного отображения
+        });
       }
     } else {
       // Для обычных пунктов меню - стандартная логика
       const menuItem = allMenuItems.find((item) => item.id === itemId);
       if (menuItem) {
-        // Track the item in recent history
+        // Track the item in recent history и добавляем parentId
         trackRecentItem({
           id: itemId,
           name: menuItem.name,
           category: categoryId,
           icon: menuItem.icon,
+          parentId: menuItem.parentId || categoryId, // Добавляем parentId - берем существующий или используем categoryId
         });
       }
     }
@@ -291,6 +296,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
       icon: category.icon,
       category: category.id,
       isParent: true,
+      parentId: "categories", // Добавляем parentId для отображения родителя в тултипах
     };
 
     // Добавляем в недавние

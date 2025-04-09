@@ -20,8 +20,13 @@ interface RecentMenuProps {
 }
 
 const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
-  const { addToPinned, removeFromPinned, pinnedItems, getCategoryIcon } =
-    useMenu();
+  const {
+    addToPinned,
+    removeFromPinned,
+    pinnedItems,
+    getCategoryIcon,
+    getParentName,
+  } = useMenu();
 
   const isPinned = (itemId: string) => {
     return pinnedItems.some((item) => item.id === itemId);
@@ -134,7 +139,9 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
                   />
                 )}
                 <span className="text-sm text-gray-800 truncate max-w-[150px]">
-                  {item.name}
+                  {item.parentId
+                    ? `${item.name} (${getParentName(item)})`
+                    : item.name}
                 </span>
               </div>
               <button

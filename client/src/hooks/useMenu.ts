@@ -187,33 +187,34 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const normalizedId = item.parentId
-      ? `${item.category}-${item.parentId}`
-      : item.id;
-
-    // Сохраняем оригинальный ID если это дочерний элемент
+    // Копируем элемент с указанием fromRecent
     const itemToAdd = {
       ...item,
-      originalId: item.parentId ? item.id : undefined,
-      id: normalizedId,
       fromRecent: true,
     };
 
-    // Сначала получаем текущие элементы, модифицируем и затем устанавливаем новый массив
+    // Если это элемент из категории без родителя, нужно установить родителя
+    if (!itemToAdd.isParent && !itemToAdd.parentId) {
+      // Найдем родителя по категории
+      const parentItem = menuItems.find(
+        (m) => m.isParent && m.category === itemToAdd.category
+      );
+
+      if (parentItem) {
+        // Устанавливаем связь с родителем
+        itemToAdd.parentId = parentItem.id;
+      }
+    }
+
+    // Сначала получаем текущие элементы
     const currentItems = [...recentItems];
 
-    // Фильтруем существующие элементы, чтобы удалить тот же элемент если он уже есть
-    const filteredItems = currentItems.filter((prevItem) => {
-      if (prevItem.id === normalizedId) {
-        // Если это дочерний элемент (есть originalId), сравнивать и по originalId
-        if (item.parentId) {
-          return prevItem.originalId !== item.id && prevItem.name !== item.name;
-        }
-        return false; // Если это обычный элемент, удаляем существующий с таким же ID
-      }
-      return true; // Сохраняем все другие элементы
-    });
+    // Простая логика - убираем элементы с тем же id
+    const filteredItems = currentItems.filter(
+      (existingItem) => existingItem.id !== itemToAdd.id
+    );
 
+    // Добавляем элемент в начало списка
     const newRecentItems = [itemToAdd, ...filteredItems].slice(
       0,
       MAX_RECENT_ITEMS
