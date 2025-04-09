@@ -59,7 +59,7 @@ const SIDEBAR_MENU_STYLES = {
     "p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors",
 
   // Зона recent items
-  recentItems: "w-full flex flex-col items-center space-y-1 pb-2",
+  recentItems: "w-full flex flex-col items-center space-y-1 pb-2 h-[200px]",
 };
 
 interface SidebarMenuProps {
