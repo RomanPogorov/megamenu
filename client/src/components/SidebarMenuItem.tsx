@@ -19,10 +19,10 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 const SIDEBAR_STYLES = {
   // Основные стили меню
   button: {
-    base: "px-1 rounded-lg w-[64px] text-icon-text hover:bg-gray-100 transition-colors flex flex-col items-center",
+    base: "rounded-lg w-[64px] text-icon-text hover:bg-gray-50 transition-colors flex flex-col items-center",
     central: "py-2",
-    nonCentral: "py-3",
-    active: "bg-red-50",
+    nonCentral: "py-2",
+    active: "bg-red-300/10",
   },
 
   // Стили иконок
@@ -35,8 +35,8 @@ const SIDEBAR_STYLES = {
 
   // Стили текста
   text: {
-    base: "text-xs text-[11px] tracking-[0.02em] w-full text-center truncate px-2",
-    active: "text-gray-900 font-medium",
+    base: "text-xs text-[11px] text-gray-900 tracking-[0.02em] w-full text-center truncate px-2",
+    active: "text-gray-900",
     inactive: "text-icon-text",
   },
 
@@ -47,8 +47,8 @@ const SIDEBAR_STYLES = {
   // Стили тултипа
   tooltip: {
     content:
-      "rounded-lg bg-gray-900 px-3 py-2 text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade",
-    arrow: "fill-gray-900",
+      "rounded-lg bg-gray-600 px-3 py-2 text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade",
+    arrow: "fill-gray-600",
   },
 };
 
