@@ -141,7 +141,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     setActiveItem(item.id);
 
     // Отслеживаем элемент в недавних
-    trackRecentItem(item);
+    // Добавляем свойство fromSidebar для избежания дублирования в Recent
+    const itemToTrack = { ...item, fromSidebar: true };
+    trackRecentItem(itemToTrack);
 
     // Переходим по ссылке
     if (item.id.startsWith("category-")) {

@@ -15,7 +15,7 @@ export const categories: Category[] = [
 export const menuItems: MenuItem[] = [
   {
     id: "resources",
-    name: "Ресурсы",
+    name: "Browser",
     icon: "folder-open",
     category: "resources",
     isParent: true,

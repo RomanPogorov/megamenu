@@ -55,6 +55,14 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  // Добавляем состояния для отслеживания последнего добавленного элемента
+  const [lastTrackedItemId, setLastTrackedItemId] = useState<string | null>(
+    null
+  );
+  const [lastTrackedTimestamp, setLastTrackedTimestamp] = useState<number>(0);
+  // Минимальный интервал между добавлениями одного и того же элемента (в мс)
+  const MIN_TRACKING_INTERVAL = 1000;
+
   // Синхронизация названий элементов в pinnedItems с menuData
   useEffect(() => {
     if (pinnedItems.length > 0) {
@@ -166,23 +174,28 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   };
 
   const trackRecentItem = (item: MenuItem) => {
+    // Проверяем, не был ли этот элемент недавно добавлен
+    const now = Date.now();
+    if (
+      item.id === lastTrackedItemId &&
+      now - lastTrackedTimestamp < MIN_TRACKING_INTERVAL
+    ) {
+      // Если элемент был добавлен совсем недавно, пропускаем повторное добавление
+      return;
+    }
+
+    // Обновляем информацию о последнем добавленном элементе
+    setLastTrackedItemId(item.id);
+    setLastTrackedTimestamp(now);
+
     // Проверяем и преобразуем item перед добавлением в recentItems
     const itemToTrack = { ...item };
 
-    // Убедимся, что у элемента есть parentId, если это дочерний элемент
-    if (
-      !itemToTrack.parentId &&
-      !itemToTrack.isParent &&
-      itemToTrack.category
-    ) {
-      // Ищем родительский элемент для этой категории
-      const parentItem = menuItems.find(
-        (m) => m.isParent && m.category === itemToTrack.category
-      );
-      if (parentItem) {
-        itemToTrack.parentId = parentItem.id;
-      }
-    }
+    // Устанавливаем фиксированный флаг презентации (всегда один и тот же тип элемента в Recent)
+    // Это позволит избежать различных вариаций представления одного и того же элемента
+    // (с parentId или без и т.д.)
+    itemToTrack.isParent = true;
+    itemToTrack.parentId = undefined;
 
     // Для всех элементов в recentItems используем строковые идентификаторы иконок
     // чтобы они правильно отображались через ICON_MAP
@@ -208,15 +221,95 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // Create a copy without the recent items that match this ID
-    const filteredRecents = recentItems.filter(
-      (recentItem) => recentItem.id !== itemToTrack.id
-    );
+    // Нормализуем идентификаторы для предотвращения дублирования
+    // Некоторые специальные элементы могут иметь разные ID, но представлять одно и то же
+    let normalizedId = itemToTrack.id;
 
-    // Add the new item to the beginning
+    // Сопоставление специальных элементов, которые могут приходить с разными ID
+    const idMappings: Record<string, string> = {
+      // Маппинги для ресурсов/браузера
+      "folder-open": "resources",
+      "resource-browser": "resources",
+      resources: "resources",
+      browser: "resources",
+      Browser: "resources",
+      Start: "resources", // Иногда Start может относиться к resources
+
+      // Маппинги для API/консоли
+      console: "api",
+      "rest-console": "api",
+      api: "api",
+      API: "api",
+      "rest-api": "api",
+
+      // Маппинги для базы данных
+      database: "database",
+      "db-console": "database",
+      db: "database",
+      Database: "database",
+    };
+
+    if (idMappings[normalizedId]) {
+      normalizedId = idMappings[normalizedId];
+      // Также обновляем ID элемента для согласованности
+      itemToTrack.id = normalizedId;
+
+      // Унифицируем также имя и категорию для элементов ресурсов
+      if (normalizedId === "resources") {
+        itemToTrack.name = "Ресурсы"; // Или какое правильное имя в вашем приложении
+        itemToTrack.category = "resources";
+      } else if (normalizedId === "api") {
+        itemToTrack.name = "API";
+        itemToTrack.category = "api";
+      } else if (normalizedId === "database") {
+        itemToTrack.name = "База данных"; // Или какое правильное имя
+        itemToTrack.category = "database";
+      }
+    }
+
+    // Отфильтровываем элементы с таким же ID или нормализованным ID
+    const filteredRecents = recentItems.filter((recentItem) => {
+      // Проверяем точное совпадение ID
+      if (recentItem.id === itemToTrack.id) return false;
+
+      // Проверяем нормализованные ID
+      const recentNormalizedId = idMappings[recentItem.id] || recentItem.id;
+      if (recentNormalizedId === normalizedId) return false;
+
+      // Проверяем совпадение по имени и категории для элементов с разными ID
+      // Это дополнительная проверка для исключения дублей с разными ID, но одинаковыми данными
+      if (
+        recentItem.name === itemToTrack.name ||
+        (recentItem.category === itemToTrack.category &&
+          (itemToTrack.category === "resources" ||
+            itemToTrack.category === "api" ||
+            itemToTrack.category === "database"))
+      ) {
+        return false;
+      }
+
+      // Специальная проверка для ресурсов/браузера
+      if (
+        (recentItem.name === "Ресурсы" ||
+          recentItem.name === "Браузер" ||
+          recentItem.id === "resources" ||
+          recentItem.id === "browser") &&
+        (itemToTrack.name === "Ресурсы" ||
+          itemToTrack.name === "Браузер" ||
+          itemToTrack.id === "resources" ||
+          itemToTrack.id === "browser")
+      ) {
+        return false;
+      }
+
+      // Если нет совпадений, сохраняем элемент
+      return true;
+    });
+
+    // Добавляем новый элемент в начало
     const updatedRecents = [itemToTrack, ...filteredRecents];
 
-    // Limit to most recent 10 items
+    // Ограничиваем список 10 последними элементами
     setRecentItems(updatedRecents.slice(0, 10));
   };
 
