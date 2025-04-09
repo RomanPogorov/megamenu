@@ -3,10 +3,19 @@ import react from "@vitejs/plugin-react";
 import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      include: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js"],
+      babel: {
+        plugins: [["@babel/plugin-syntax-import-assertions"]],
+      },
+    }),
+    svgr({
+      include: "**/*.svg",
+    }),
     runtimeErrorOverlay(),
     themePlugin(),
     ...(process.env.NODE_ENV !== "production" &&

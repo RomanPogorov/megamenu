@@ -15,7 +15,7 @@ import {
   ICON_PIN_FILLED,
   ICON_CLOSE_MENU,
   ICON_CLOCK,
-} from "../assets/icons";
+} from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
 import MenuItem from "./MenuItem";

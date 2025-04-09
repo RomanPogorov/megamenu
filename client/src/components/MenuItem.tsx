@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "./Icon";
-import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons";
+import { ICON_PIN, ICON_PIN_FILLED } from "../assets/icons/icon-map";
 import { MenuItem as MenuItemType } from "../types/menu";
 
 interface MenuItemProps {

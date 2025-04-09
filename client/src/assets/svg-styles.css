@@ -1,0 +1,34 @@
+/* Стили для SVG иконок */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Цветовые варианты для SVG иконок */
+.text-gray-900 svg path,
+svg.text-gray-900 path {
+  fill: #1f2937; /* gray-900 */
+}
+
+.text-gray-500 svg path,
+svg.text-gray-500 path {
+  fill: #6b7280; /* gray-500 */
+}
+
+.text-red-500 svg path,
+svg.text-red-500 path {
+  fill: #ff00ee; /* red-500 */
+}
+
+/* Эффекты hover */
+.hover\:text-red-600:hover svg path {
+  fill: #dc2626; /* red-600 */
+}
+
+.hover\:text-red-500:hover svg path {
+  fill: #ef4444; /* red-500 */
+}
+
+.hover\:text-gray-500:hover svg path {
+  fill: #6b7280; /* gray-500 */
+}

@@ -5,7 +5,7 @@ import {
   ICON_MENU,
   ICON_CLOSE_MENU,
   ICON_CLOCK,
-} from "../assets/icons";
+} from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import SidebarMenuItem from "./SidebarMenuItem";
 import RecentMenu from "./RecentMenu";
@@ -55,7 +55,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   console.log("User pinned items:", userPinnedItems);
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[60px] bg-white border-r border-gray-200 flex flex-col items-center py-4">
+    <aside className="fixed left-0 top-0 h-screen w-[80px] bg-white border-r border-gray-200 flex flex-col items-center py-4">
       <div className="w-full flex flex-col items-center">
         <div className="flex flex-col items-center gap-2 mb-2">
           <button

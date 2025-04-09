@@ -13,28 +13,35 @@
 .text-gray-900 .icon:not(.icon-logo),
 .icon.text-gray-900:not(.icon-logo) {
   filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(0%)
-    hue-rotate(206deg) brightness(95%) contrast(90%);
+    hue-rotate(206deg) brightness(95%) contrast(98%);
 }
 
 /* Добавляем фильтр для серых иконок - используйте класс text-gray-500 */
 .text-gray-500 .icon:not(.icon-logo),
 .icon.text-gray-500:not(.icon-logo) {
   filter: brightness(0) saturate(100%) invert(50%) sepia(10%) saturate(0%)
-    hue-rotate(206deg) brightness(95%) contrast(80%);
+    hue-rotate(206deg) brightness(95%) contrast(85%);
 }
 
 /* Добавляем фильтр для красных иконок - используйте класс text-red-500 */
 .text-red-500 .icon:not(.icon-logo),
 .icon.text-red-500:not(.icon-logo) {
-  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(3918%)
-    hue-rotate(346deg) brightness(101%) contrast(92%);
+  filter: brightness(0) saturate(100%) invert(27%) sepia(80%) saturate(4000%)
+    hue-rotate(346deg) brightness(101%) contrast(95%);
 }
 
 /* Добавляем effect для hover в красных иконках */
 .text-red-600 .icon:not(.icon-logo),
-.icon.text-red-600:not(.icon-logo) {
-  filter: brightness(0) saturate(100%) invert(15%) sepia(95%) saturate(2841%)
-    hue-rotate(345deg) brightness(92%) contrast(93%);
+.icon.text-red-600:not(.icon-logo),
+.hover\:text-red-600:hover .icon:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(90%) saturate(3500%)
+    hue-rotate(345deg) brightness(90%) contrast(95%);
+}
+
+/* Добавляем эффект для hover в красных иконках */
+.hover\:text-red-500:hover .icon:not(.icon-logo) {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(80%) saturate(4000%)
+    hue-rotate(346deg) brightness(101%) contrast(95%);
 }
 
 /* Logo icon */

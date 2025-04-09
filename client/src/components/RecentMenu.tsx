@@ -12,7 +12,7 @@ import {
   ICON_PLUGINS,
   ICON_PIN,
   ICON_PIN_FILLED,
-} from "../assets/icons";
+} from "../assets/icons/icon-map";
 
 interface RecentMenuProps {
   items: MenuItem[];

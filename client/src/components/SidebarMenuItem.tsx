@@ -11,7 +11,7 @@ import {
   ICON_FAR,
   ICON_PLUGINS,
   ICON_LAYER_GROUP,
-} from "../assets/icons";
+} from "../assets/icons/icon-map";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 // Map of icon strings to icon names for rendering
@@ -45,9 +45,9 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   const renderIcon = (iconName: string | React.ReactNode) => {
     if (typeof iconName === "string") {
       return ICON_MAP[iconName] ? (
-        <Icon name={ICON_MAP[iconName]} size={20} className="text-gray-900" />
+        <Icon name={ICON_MAP[iconName]} size={20} />
       ) : (
-        <FaCircle className="text-gray-900 text-xl" />
+        <FaCircle className="text-xl" />
       );
     }
     return iconName;
