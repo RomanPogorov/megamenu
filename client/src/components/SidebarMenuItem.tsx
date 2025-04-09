@@ -20,10 +20,11 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 const SIDEBAR_STYLES = {
   // Основные стили меню
   button: {
-    base: "rounded-lg w-[64px] text-icon-text hover:bg-gray-50 transition-colors flex flex-col items-center",
+    base: "rounded-lg w-[64px] text-icon-text transition-colors flex flex-col items-center",
     central: "py-2",
     nonCentral: "py-2",
     active: "bg-red-300/10",
+    hover: "hover:bg-gray-50",
   },
 
   // Стили иконок
@@ -147,55 +148,82 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
     : item.name; // Для родительских - только имя
 
   return (
-    // Провайдер тултипов с настройкой задержки
-    <Tooltip.Provider delayDuration={50}>
-      <Tooltip.Root>
-        {/* Триггер тултипа (сам элемент меню) */}
-        <Tooltip.Trigger asChild>
-          <button
-            className={`${SIDEBAR_STYLES.button.base} ${
-              isCentral
-                ? SIDEBAR_STYLES.button.central
-                : SIDEBAR_STYLES.button.nonCentral
-            } ${isActive ? SIDEBAR_STYLES.button.active : ""}`}
-            onClick={onClick}
-          >
-            <div className="relative">
-              {/* Индикатор закрепленного элемента */}
-              {item.isPinned && <div className={SIDEBAR_STYLES.pinIndicator} />}
+    // Если элемент активен, не показываем тултип
+    isActive ? (
+      <button
+        className={`${SIDEBAR_STYLES.button.base} ${
+          isCentral
+            ? SIDEBAR_STYLES.button.central
+            : SIDEBAR_STYLES.button.nonCentral
+        } ${SIDEBAR_STYLES.button.active}`}
+        onClick={onClick}
+      >
+        <div className="relative">
+          {/* Индикатор закрепленного элемента */}
+          {item.isPinned && <div className={SIDEBAR_STYLES.pinIndicator} />}
 
-              {/* Отображаем иконку без метки с буквами */}
-              {item.parentId
-                ? renderIcon(getParentIcon(item))
-                : renderIcon(item.icon)}
-            </div>
+          {/* Отображаем иконку без метки с буквами */}
+          {item.parentId
+            ? renderIcon(getParentIcon(item))
+            : renderIcon(item.icon)}
+        </div>
 
-            {/* Добавляем название под иконкой */}
-            <span
-              className={`${SIDEBAR_STYLES.text.base} ${
-                isActive
-                  ? SIDEBAR_STYLES.text.active
-                  : SIDEBAR_STYLES.text.inactive
-              }`}
+        {/* Добавляем название под иконкой */}
+        <span
+          className={`${SIDEBAR_STYLES.text.base} ${SIDEBAR_STYLES.text.active}`}
+        >
+          {item.name}
+        </span>
+      </button>
+    ) : (
+      // Провайдер тултипов только для неактивных элементов
+      <Tooltip.Provider delayDuration={50}>
+        <Tooltip.Root>
+          {/* Триггер тултипа (сам элемент меню) */}
+          <Tooltip.Trigger asChild>
+            <button
+              className={`${SIDEBAR_STYLES.button.base} ${
+                isCentral
+                  ? SIDEBAR_STYLES.button.central
+                  : SIDEBAR_STYLES.button.nonCentral
+              } ${SIDEBAR_STYLES.button.hover}`}
+              onClick={onClick}
             >
-              {item.name}
-            </span>
-          </button>
-        </Tooltip.Trigger>
+              <div className="relative">
+                {/* Индикатор закрепленного элемента */}
+                {item.isPinned && (
+                  <div className={SIDEBAR_STYLES.pinIndicator} />
+                )}
 
-        {/* Контент тултипа с анимацией */}
-        <Tooltip.Portal>
-          <Tooltip.Content
-            className={SIDEBAR_STYLES.tooltip.content}
-            sideOffset={5}
-            side="right"
-          >
-            {tooltipContent}
-            <Tooltip.Arrow className={SIDEBAR_STYLES.tooltip.arrow} />
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    </Tooltip.Provider>
+                {/* Отображаем иконку без метки с буквами */}
+                {item.parentId
+                  ? renderIcon(getParentIcon(item))
+                  : renderIcon(item.icon)}
+              </div>
+
+              {/* Добавляем название под иконкой */}
+              <span
+                className={`${SIDEBAR_STYLES.text.base} ${SIDEBAR_STYLES.text.inactive}`}
+              >
+                {item.name}
+              </span>
+            </button>
+          </Tooltip.Trigger>
+
+          {/* Контент тултипа с анимацией */}
+          <Tooltip.Portal>
+            <Tooltip.Content
+              className={SIDEBAR_STYLES.tooltip.content}
+              sideOffset={5}
+              side="right"
+            >
+              {tooltipContent}
+              <Tooltip.Arrow className={SIDEBAR_STYLES.tooltip.arrow} />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    )
   );
 };
 

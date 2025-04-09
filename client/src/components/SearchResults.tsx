@@ -91,21 +91,21 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const renderCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
       case "resources":
-        return <Icon name={ICON_RESOURCES} className="mr-1" size={24} />;
+        return <Icon name={ICON_RESOURCES} className="mr-1" size={16} />;
       case "database":
-        return <Icon name={ICON_DATABASE} className="mr-1" size={24} />;
+        return <Icon name={ICON_DATABASE} className="mr-1" size={16} />;
       case "api":
-        return <Icon name={ICON_API} className="mr-1" size={24} />;
+        return <Icon name={ICON_API} className="mr-1" size={16} />;
       case "notebooks":
-        return <Icon name={ICON_NOTEBOOKS} className="mr-1" size={24} />;
+        return <Icon name={ICON_NOTEBOOKS} className="mr-1" size={16} />;
       case "far":
-        return <Icon name={ICON_FAR} className="mr-1" size={24} />;
+        return <Icon name={ICON_FAR} className="mr-1" size={16} />;
       case "plugins":
-        return <Icon name={ICON_PLUGINS} className="mr-1" size={24} />;
+        return <Icon name={ICON_PLUGINS} className="mr-1" size={16} />;
       case "iam":
-        return <Icon name={ICON_IAM} className="mr-1" size={24} />;
+        return <Icon name={ICON_IAM} className="mr-1" size={16} />;
       default:
-        return <Icon name={ICON_LAYER_GROUP} className="mr-1" size={24} />;
+        return <Icon name={ICON_LAYER_GROUP} className="mr-1" size={16} />;
     }
   };
 

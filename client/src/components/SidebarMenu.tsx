@@ -53,7 +53,8 @@ const SIDEBAR_MENU_STYLES = {
   itemsContainer: "w-full flex flex-col items-center space-y-1 mb-2",
 
   // Зона профиля
-  profileZone: "w-full flex justify-center mt-2 pb-4",
+  profileZone:
+    "w-full flex justify-center mt-2 pb-4 border-t border-gray-200 pt-4",
   profileButton:
     "p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors",
 
