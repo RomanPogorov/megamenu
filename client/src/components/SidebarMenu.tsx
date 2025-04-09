@@ -5,10 +5,12 @@ import {
   ICON_MENU,
   ICON_CLOSE_MENU,
   ICON_CLOCK,
+  ICON_GETTING_STARTED,
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import SidebarMenuItem from "./SidebarMenuItem";
 import RecentMenu from "./RecentMenu";
+import { MenuItem } from "../types/menu";
 
 interface SidebarMenuProps {
   toggleMegaMenu?: () => void;
@@ -21,7 +23,48 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 }) => {
   const [recentMenuOpen, setRecentMenuOpen] = useState(false);
   const recentButtonRef = useRef<HTMLButtonElement>(null);
-  const { pinnedItems, recentItems, getCategoryIcon } = useMenu();
+  const {
+    pinnedItems,
+    recentItems,
+    getCategoryIcon,
+    isActiveItem,
+    setActiveItem,
+    addToPinned,
+    setPinnedItems,
+  } = useMenu();
+
+  // Добавляем Getting Started при первой загрузке и делаем активным
+  useEffect(() => {
+    const gettingStartedItem = {
+      id: "getting-started",
+      name: "Start",
+      icon: "getting-started",
+      category: "system",
+      isParent: true,
+    };
+
+    // Проверяем, есть ли уже такой элемент
+    const existingIndex = pinnedItems.findIndex(
+      (item) => item.id === "getting-started"
+    );
+
+    if (existingIndex === -1) {
+      // Если элемента нет, добавляем его
+      addToPinned(gettingStartedItem);
+    } else {
+      // Если элемент уже существует, обновляем его имя
+      const updatedItems = [...pinnedItems];
+      updatedItems[existingIndex] = {
+        ...updatedItems[existingIndex],
+        name: gettingStartedItem.name,
+      };
+      // Обновляем pinnedItems с обновленным именем
+      setPinnedItems(updatedItems);
+    }
+
+    // Устанавливаем элемент активным
+    setActiveItem("getting-started");
+  }, []);
 
   // Close recent menu when clicking outside
   useEffect(() => {
@@ -40,9 +83,14 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   }, []);
 
   // Разделяем pinnedItems по типам
-  const systemPinnedItems = pinnedItems.filter(
-    (item) => item.isParent || item.id.startsWith("category-")
-  );
+  const systemPinnedItems = pinnedItems
+    .filter((item) => item.isParent || item.id.startsWith("category-"))
+    .sort((a, b) => {
+      // getting-started всегда будет первым элементом
+      if (a.id === "getting-started") return -1;
+      if (b.id === "getting-started") return 1;
+      return 0;
+    });
   const userPinnedItems = pinnedItems.filter(
     (item) => !item.isParent && !item.id.startsWith("category-")
   );
@@ -51,8 +99,14 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const hasSystemItems = systemPinnedItems.length > 0;
   const hasUserItems = userPinnedItems.length > 0;
 
-  console.log("System pinned items:", systemPinnedItems);
-  console.log("User pinned items:", userPinnedItems);
+  // console.log("System pinned items:", systemPinnedItems);
+  // console.log("User pinned items:", userPinnedItems);
+
+  // Обработчик клика на элемент меню
+  const handleItemClick = (item: MenuItem) => {
+    setActiveItem(item.id);
+    // Дополнительная логика навигации, если требуется
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-[80px] bg-white border-r border-gray-200 flex flex-col items-center py-4">
@@ -67,7 +121,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             {/* Logo (SVG) - visible only in default state when closed and not hovering */}
             {!isMegaMenuOpen && (
               <div className="transform transition-all duration-300 group-hover:opacity-0 group-hover:scale-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <Icon name={ICON_LOGO} size={32} className="text-gray-900" />
+                <Icon name={ICON_LOGO} size={32} preserveColors={true} />
               </div>
             )}
 
@@ -112,44 +166,35 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Разделитель после основного меню */}
           <div className="w-8 h-px bg-gray-200 my-2"></div>
 
-          {/* Системные припиненные элементы */}
+          {/* Системные припиненные элементы (теперь включая Getting Started) */}
           {hasSystemItems && (
             <div className="w-full flex flex-col items-center space-y-1 mb-2">
               {systemPinnedItems.map((item) => (
                 <SidebarMenuItem
                   key={item.id}
                   item={item}
-                  onClick={() => {}}
+                  onClick={() => handleItemClick(item)}
                   isCentral={true}
+                  isActive={isActiveItem(item.id)}
                 />
               ))}
             </div>
           )}
 
-          {/* Разделитель между системными и пользовательскими элементами */}
-          {hasSystemItems && hasUserItems && (
-            <div className="w-8 h-px bg-gray-200 my-2"></div>
-          )}
-
-          {/* Пользовательские припиненные элементы */}
           {hasUserItems && (
             <div className="w-full flex flex-col items-center space-y-1 mb-2">
               {userPinnedItems.map((item) => (
                 <SidebarMenuItem
                   key={item.id}
                   item={item}
-                  onClick={() => {}}
+                  onClick={() => handleItemClick(item)}
                   isCentral={!item.fromRecent}
+                  isActive={isActiveItem(item.id)}
                 />
               ))}
             </div>
           )}
         </div>
-
-        {/* Разделитель перед Recent Search Button (если есть pinned items) */}
-        {(hasSystemItems || hasUserItems) && (
-          <div className="w-8 h-px  bg-gray-200 my-2 mt-4"></div>
-        )}
 
         {/* Нижняя часть с кнопкой Recent */}
         <div className="mt-auto w-full flex justify-center ">

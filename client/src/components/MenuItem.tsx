@@ -9,8 +9,9 @@ interface MenuItemProps {
   onPinToggle: () => void;
   onClick: () => void;
   isChild?: boolean;
-  parentIcon?: string;
+  parentIcon?: string | React.ReactNode;
   showPinButton?: boolean;
+  pinIconSize?: number;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -21,6 +22,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   isChild = false,
   parentIcon = "",
   showPinButton = true,
+  pinIconSize = 16,
 }) => {
   const handlePinClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,7 +52,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
           }
           onClick={handlePinClick}
         >
-          <Icon name={isPinned ? ICON_PIN_FILLED : ICON_PIN} size={16} />
+          <Icon
+            name={isPinned ? ICON_PIN_FILLED : ICON_PIN}
+            size={pinIconSize}
+          />
         </button>
       )}
     </li>

@@ -7,12 +7,14 @@ interface CategoryPinButtonProps {
   category: Category;
   isPinned: (id: string) => boolean;
   handlePinToggle: (category: Category) => void;
+  pinIconSize?: number;
 }
 
 const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
   category,
   isPinned,
   handlePinToggle,
+  pinIconSize = 16,
 }) => {
   const categoryId = `category-${category.id}`;
   const isPinnedValue = isPinned(categoryId);
@@ -39,7 +41,10 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
         handlePinToggle(category);
       }}
     >
-      <Icon name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN} size={16} />
+      <Icon
+        name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN}
+        size={pinIconSize}
+      />
     </button>
   );
 };

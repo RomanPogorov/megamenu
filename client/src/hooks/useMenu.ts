@@ -26,9 +26,12 @@ type MenuContextType = {
   trackRecentItem: (item: MenuItem) => void;
   addCategoryToPinned: (categoryId: string) => void;
   isPinned: (itemId: string) => boolean;
-  getCategoryIcon: (categoryId: string) => string;
-  getParentIcon: (item: MenuItem) => string;
+  getCategoryIcon: (categoryId: string) => string | React.ReactNode;
+  getParentIcon: (item: MenuItem) => string | React.ReactNode;
   getParentName: (item: MenuItem) => string;
+  activeItemId: string;
+  isActiveItem: (id: string) => boolean;
+  setActiveItem: (id: string) => void;
 };
 
 // Create the context
@@ -44,6 +47,41 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     "recentItems",
     []
   );
+
+  // Синхронизация названий элементов в pinnedItems с menuData
+  useEffect(() => {
+    if (pinnedItems.length > 0) {
+      const updatedItems = pinnedItems.map((pinnedItem) => {
+        // Пытаемся найти соответствующий элемент в menuItems
+        const sourceItem = menuItems.find((item) => item.id === pinnedItem.id);
+
+        // Для категорий проверяем id в формате "category-..."
+        const categoryId = pinnedItem.id.startsWith("category-")
+          ? pinnedItem.id.replace("category-", "")
+          : null;
+        const sourceCategory = categoryId
+          ? categories.find((cat) => cat.id === categoryId)
+          : null;
+
+        if (sourceItem) {
+          // Обновляем название из оригинального источника
+          return { ...pinnedItem, name: sourceItem.name };
+        } else if (sourceCategory) {
+          // Для элементов категорий используем имя из categories
+          return { ...pinnedItem, name: sourceCategory.name };
+        }
+
+        return pinnedItem;
+      });
+
+      // Обновляем pinnedItems только если есть изменения
+      const hasChanges =
+        JSON.stringify(updatedItems) !== JSON.stringify(pinnedItems);
+      if (hasChanges) {
+        setPinnedItems(updatedItems);
+      }
+    }
+  }, [menuItems, categories]); // Зависимости, чтобы эффект срабатывал при изменении исходных данных
 
   const addToPinned = (item: MenuItem) => {
     // Don't add duplicates
@@ -63,7 +101,12 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      setPinnedItems([...pinnedItems, itemToAdd]);
+      // Если это элемент 'getting-started', добавляем его в начало списка
+      if (itemToAdd.id === "getting-started") {
+        setPinnedItems([itemToAdd, ...pinnedItems]);
+      } else {
+        setPinnedItems([...pinnedItems, itemToAdd]);
+      }
     }
   };
 
@@ -96,13 +139,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   };
 
   // Get category icon by category id
-  const getCategoryIcon = (categoryId: string): string => {
+  const getCategoryIcon = (categoryId: string): string | React.ReactNode => {
     const category = categories.find((cat) => cat.id === categoryId);
     return category ? category.icon : "folder-open";
   };
 
   // Get parent icon for a child item
-  const getParentIcon = (item: MenuItem): string => {
+  const getParentIcon = (item: MenuItem): string | React.ReactNode => {
     // Если у элемента есть родитель (parentId), находим его в меню
     if (item.parentId) {
       // Найдем родителя
@@ -152,6 +195,19 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     setPinnedItems([]);
   }, []);
 
+  // Состояние активного элемента
+  const [activeItemId, setActiveItemId] = useState<string>("resources"); // По умолчанию раздел ресурсов
+
+  // Функция проверки активности
+  const isActiveItem = (id: string): boolean => {
+    return id === activeItemId;
+  };
+
+  // Функция установки активного элемента
+  const setActiveItem = (id: string) => {
+    setActiveItemId(id);
+  };
+
   // Create the value object to be passed to consumers
   const contextValue: MenuContextType = {
     allMenuItems: menuItems,
@@ -168,6 +224,9 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     getCategoryIcon,
     getParentIcon,
     getParentName,
+    activeItemId,
+    isActiveItem,
+    setActiveItem,
   };
 
   // Return the Provider component with the value

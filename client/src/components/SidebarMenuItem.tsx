@@ -11,10 +11,11 @@ import {
   ICON_FAR,
   ICON_PLUGINS,
   ICON_LAYER_GROUP,
+  ICON_GETTING_STARTED,
 } from "../assets/icons/icon-map";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
-// Map of icon strings to icon names for rendering
+// Маппинг строковых идентификаторов иконок на константы
 const ICON_MAP: Record<string, string> = {
   "folder-open": ICON_RESOURCES,
   book: ICON_NOTEBOOKS,
@@ -24,71 +25,94 @@ const ICON_MAP: Record<string, string> = {
   tasks: ICON_FAR,
   "puzzle-piece": ICON_PLUGINS,
   "layer-group": ICON_LAYER_GROUP,
+  "getting-started": ICON_GETTING_STARTED,
 };
 
+// Пропсы компонента элемента бокового меню
 interface SidebarMenuItemProps {
-  item: MenuItem;
-  onClick: () => void;
-  isCentral?: boolean;
-  activeCategoryId?: string | null;
+  item: MenuItem; // Данные элемента меню
+  onClick: () => void; // Обработчик клика
+  isCentral?: boolean; // Флаг центрального позиционирования
+  activeCategoryId?: string | null; // ID активной категории
+  iconSize?: number; // Добавляем опциональный пропс
+  isActive?: boolean; // Новый параметр
 }
 
+// Основной компонент элемента бокового меню
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   item,
   onClick,
   isCentral = true,
   activeCategoryId,
+  iconSize = 24, // Значение по умолчанию
+  isActive = false, // Активное состояние
 }) => {
-  // Access the getParentIcon function from the menu context
+  // Получение методов работы с меню через хук
   const { getParentIcon, getParentName } = useMenu();
 
+  // Функция рендеринга иконки
   const renderIcon = (iconName: string | React.ReactNode) => {
+    // Для строковых идентификаторов используем маппинг
     if (typeof iconName === "string") {
       return ICON_MAP[iconName] ? (
-        <Icon name={ICON_MAP[iconName]} size={20} />
+        <Icon
+          name={ICON_MAP[iconName]}
+          size={iconSize}
+          className={isActive ? "text-red-500" : "text-icon-text"}
+        />
       ) : (
-        <FaCircle className="text-xl" />
+        <FaCircle
+          className={isActive ? "text-red-500" : "text-icon-text text-xl"}
+        /> // Заглушка при отсутствии иконки
       );
     }
-    return iconName;
+    return iconName; // Возвращаем готовый React-элемент
   };
 
+  // Формирование содержимого тултипа
   const tooltipContent = item.parentId
-    ? `${item.name} (${getParentName(item)})`
-    : item.name;
+    ? `${item.name} (${getParentName(item)})` // Для дочерних элементов добавляем родителя
+    : item.name; // Для родительских - только имя
 
   return (
+    // Провайдер тултипов с настройкой задержки
     <Tooltip.Provider delayDuration={50}>
       <Tooltip.Root>
+        {/* Триггер тултипа (сам элемент меню) */}
         <Tooltip.Trigger asChild>
           <button
-            className={`px-3 ${isCentral ? "py-2" : "py-3"} rounded-lg text-gray-900 hover:bg-gray-100 transition-colors`}
+            className={`px-1 ${isCentral ? "py-2" : "py-3"} rounded-lg w-16  text-icon-text hover:bg-gray-100 transition-colors flex flex-col items-center ${
+              isActive ? "bg-gray-50" : ""
+            }`}
             onClick={onClick}
           >
             <div className="relative">
+              {/* Индикатор закрепленного элемента */}
               {item.isPinned && (
                 <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-blue-500/20 border border-blue-500 rounded-full shadow-[0_0_4px_rgba(59,130,246,0.5)]" />
               )}
-              {item.parentId ? (
-                <div className="relative">
-                  {renderIcon(getParentIcon(item))}
-                  <span className="absolute top-5 -right-1 flex h-5 w-8">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-white border border-gray-200 shadow-xl flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-gray-900">
-                        {item.name.slice(0, 2).toUpperCase()}
-                      </span>
-                    </span>
-                  </span>
-                </div>
-              ) : (
-                renderIcon(item.icon)
-              )}
+
+              {/* Отображаем иконку без метки с буквами */}
+              {item.parentId
+                ? renderIcon(getParentIcon(item))
+                : renderIcon(item.icon)}
             </div>
+
+            {/* Добавляем название под иконкой */}
+            <span
+              className={`text-xs text-[11px] tracking-[0.02em] mt-1 w-full text-center truncate ${
+                isActive ? "text-gray-900 font-medium" : "text-icon-text"
+              }`}
+            >
+              {item.name}
+            </span>
           </button>
         </Tooltip.Trigger>
+
+        {/* Контент тултипа с анимацией */}
         <Tooltip.Portal>
           <Tooltip.Content
-            className="rounded-lg bg-gray-900 px-3 py-2 text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade"
+            className="rounded-lg bg-gray-900 px-3 py-2  text-sm leading-none text-white shadow-lg z-[9999] data-[state=delayed-open]:data-[side=right]:animate-slideRightAndFade"
             sideOffset={5}
             side="right"
           >

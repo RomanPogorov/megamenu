@@ -40,7 +40,11 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
     }
   };
 
-  const getIconComponent = (icon: string) => {
+  const getIconComponent = (icon: string | React.ReactNode) => {
+    if (typeof icon !== "string") {
+      return icon;
+    }
+
     switch (icon) {
       case "folder-open":
         return (
@@ -135,17 +139,11 @@ const RecentMenu: React.FC<RecentMenuProps> = ({ items, buttonRect }) => {
               </div>
               <button
                 className={`${isPinned(item.id) ? "text-red-500 hover:text-gray-500" : "text-gray-500 hover:text-red-500"} transition-colors flex items-center justify-center w-6 h-6`}
-                aria-label={
-                  isPinned(item.id)
-                    ? `Открепить ${item.name}`
-                    : `Прикрепить ${item.name}`
-                }
-                title={
-                  isPinned(item.id)
-                    ? `Открепить ${item.name}`
-                    : `Прикрепить ${item.name}`
-                }
-                onClick={(e) => handlePinToggle(e, item)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePinToggle(e, item);
+                }}
+                aria-label={isPinned(item.id) ? "Открепить" : "Закрепить"}
               >
                 <Icon
                   name={isPinned(item.id) ? ICON_PIN_FILLED : ICON_PIN}

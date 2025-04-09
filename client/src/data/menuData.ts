@@ -2,7 +2,7 @@ import { Category, MenuItem } from "../types/menu";
 
 // Categories
 export const categories: Category[] = [
-  { id: "resources", name: "Resources", icon: "folder-open", order: 1 },
+  { id: "resources", name: "Browser", icon: "folder-open", order: 1 },
   { id: "notebooks", name: "Notebooks", icon: "book", order: 2 },
   { id: "api", name: "API", icon: "code", order: 3 },
   { id: "database", name: "Database", icon: "database", order: 4 },
@@ -15,7 +15,7 @@ export const categories: Category[] = [
 export const menuItems: MenuItem[] = [
   {
     id: "resources",
-    name: "Resources",
+    name: "Ресурсы",
     icon: "folder-open",
     category: "resources",
     isParent: true,

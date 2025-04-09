@@ -91,21 +91,21 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const renderCategoryIcon = (categoryId: string) => {
     switch (categoryId) {
       case "resources":
-        return <Icon name={ICON_RESOURCES} className="mr-1" />;
+        return <Icon name={ICON_RESOURCES} className="mr-1" size={24} />;
       case "database":
-        return <Icon name={ICON_DATABASE} className="mr-1" />;
+        return <Icon name={ICON_DATABASE} className="mr-1" size={24} />;
       case "api":
-        return <Icon name={ICON_API} className="mr-1" />;
+        return <Icon name={ICON_API} className="mr-1" size={24} />;
       case "notebooks":
-        return <Icon name={ICON_NOTEBOOKS} className="mr-1" />;
+        return <Icon name={ICON_NOTEBOOKS} className="mr-1" size={24} />;
       case "far":
-        return <Icon name={ICON_FAR} className="mr-1" />;
+        return <Icon name={ICON_FAR} className="mr-1" size={24} />;
       case "plugins":
-        return <Icon name={ICON_PLUGINS} className="mr-1" />;
+        return <Icon name={ICON_PLUGINS} className="mr-1" size={24} />;
       case "iam":
-        return <Icon name={ICON_IAM} className="mr-1" />;
+        return <Icon name={ICON_IAM} className="mr-1" size={24} />;
       default:
-        return <Icon name={ICON_LAYER_GROUP} className="mr-1" />;
+        return <Icon name={ICON_LAYER_GROUP} className="mr-1" size={24} />;
     }
   };
 
@@ -131,7 +131,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               className={`ml-1 ${
                 activeFilter === filter.id
                   ? "bg-white text-red-500"
-                  : "bg-gray-100 text-gray-800"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               } rounded-full w-5 h-5 inline-flex items-center justify-center text-xs`}
             >
               {filter.count}

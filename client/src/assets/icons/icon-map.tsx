@@ -14,6 +14,7 @@ import LogoIcon from "./svg/logo.svg";
 import MenuIcon from "./svg/menu.svg";
 import CloseMenuIcon from "./svg/close-menu.svg";
 import LayerGroupIcon from "./svg/layer-group.svg";
+import GettingStartedIcon from "./svg/gettingstarted.svg";
 
 // Константы имен иконок
 export const ICON_RESOURCES = "icon-resources";
@@ -31,6 +32,7 @@ export const ICON_LAYER_GROUP = "icon-layer-group";
 export const ICON_LOGO = "icon-logo";
 export const ICON_MENU = "icon-menu";
 export const ICON_CLOSE_MENU = "icon-close-menu";
+export const ICON_GETTING_STARTED = "icon-getting-started";
 
 // Карта соответствия имен иконок и компонентов React
 export const ICON_MAP: Record<string, any> = {
@@ -49,4 +51,5 @@ export const ICON_MAP: Record<string, any> = {
   [ICON_LOGO]: LogoIcon,
   [ICON_MENU]: MenuIcon,
   [ICON_CLOSE_MENU]: CloseMenuIcon,
+  [ICON_GETTING_STARTED]: GettingStartedIcon,
 };
