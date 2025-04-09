@@ -24,7 +24,7 @@ const SIDEBAR_STYLES = {
     central: "py-2",
     nonCentral: "py-2",
     active: "bg-red-300/10",
-    hover: "hover:bg-gray-50",
+    hover: "hover:bg-gray-100",
   },
 
   // Стили иконок

@@ -60,6 +60,14 @@ const SIDEBAR_MENU_STYLES = {
 
   // Зона recent items
   recentItems: "w-full flex flex-col items-center space-y-1 pb-2 h-[200px]",
+
+  // Empty state для Recent
+  emptyState: {
+    container:
+      "w-full h-full flex flex-col items-center justify-center space-y-3",
+    placeholder:
+      "w-[48px] h-[48px] bg-gray-100 rounded-lg flex items-center justify-center",
+  },
 };
 
 interface SidebarMenuProps {
@@ -341,18 +349,37 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
           {/* Отображаем 3 последних элемента из recentItems */}
           <div className={SIDEBAR_MENU_STYLES.recentItems}>
-            {recentItems.slice(0, 3).map((item) => (
-              <SidebarMenuItem
-                key={item.id}
-                item={item}
-                onClick={() => handleItemClick(item)}
-                isCentral={true}
-                isActive={
-                  isActiveItem(item.id) &&
-                  !pinnedItems.some((pinnedItem) => pinnedItem.id === item.id)
-                }
-              />
-            ))}
+            {recentItems.length > 0 ? (
+              recentItems
+                .slice(0, 3)
+                .map((item) => (
+                  <SidebarMenuItem
+                    key={item.id}
+                    item={item}
+                    onClick={() => handleItemClick(item)}
+                    isCentral={true}
+                    isActive={
+                      isActiveItem(item.id) &&
+                      !pinnedItems.some(
+                        (pinnedItem) => pinnedItem.id === item.id
+                      )
+                    }
+                  />
+                ))
+            ) : (
+              <div className={SIDEBAR_MENU_STYLES.emptyState.container}>
+                {/* Три прямоугольника-заполнителя */}
+                <div
+                  className={SIDEBAR_MENU_STYLES.emptyState.placeholder}
+                ></div>
+                <div
+                  className={SIDEBAR_MENU_STYLES.emptyState.placeholder}
+                ></div>
+                <div
+                  className={SIDEBAR_MENU_STYLES.emptyState.placeholder}
+                ></div>
+              </div>
+            )}
           </div>
 
           {/* Профиль пользователя */}
