@@ -62,7 +62,7 @@ const SIDEBAR_MENU_STYLES = {
   recentItems: "w-full flex flex-col items-center space-y-1 pb-2 h-[200px]",
   recentItemsPlaceholder: {
     container: "w-full flex flex-col items-center justify-center h-full",
-    item: "w-[64px] h-[64px] rounded-md bg-gray-200 mb-2",
+    item: "w-[64px] h-[64px] rounded-md bg-gray-100 mb-2",
   },
 };
 
@@ -354,6 +354,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                     item={item}
                     onClick={() => handleItemClick(item)}
                     isCentral={true}
+                    showParent={true}
                     isActive={
                       isActiveItem(item.id) &&
                       !pinnedItems.some(

@@ -76,6 +76,7 @@ interface SidebarMenuItemProps {
   activeCategoryId?: string | null; // ID активной категории
   iconSize?: number; // Добавляем опциональный пропс
   isActive?: boolean; // Новый параметр
+  showParent?: boolean; // Показывать родителя в скобках
 }
 
 // Основной компонент элемента бокового меню
@@ -86,6 +87,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   activeCategoryId,
   iconSize = 24, // Значение по умолчанию
   isActive = false, // Активное состояние
+  showParent = false, // По умолчанию не показывать родителя
 }) => {
   // Получение методов работы с меню через хук
   const { getParentIcon, getParentName, getCategoryIcon } = useMenu();
@@ -142,6 +144,12 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
     return iconName; // Возвращаем готовый React-элемент
   };
 
+  // Формирование отображаемого имени элемента
+  const displayName =
+    showParent && item.parentId
+      ? `${item.name} (${getParentName(item)})`
+      : item.name;
+
   // Формирование содержимого тултипа
   const tooltipContent = item.parentId
     ? `${item.name} (${getParentName(item)})` // Для дочерних элементов добавляем родителя
@@ -172,7 +180,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         <span
           className={`${SIDEBAR_STYLES.text.base} ${SIDEBAR_STYLES.text.active}`}
         >
-          {item.name}
+          {displayName}
         </span>
       </button>
     ) : (
@@ -205,7 +213,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
               <span
                 className={`${SIDEBAR_STYLES.text.base} ${SIDEBAR_STYLES.text.inactive}`}
               >
-                {item.name}
+                {displayName}
               </span>
             </button>
           </Tooltip.Trigger>
