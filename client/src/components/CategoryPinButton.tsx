@@ -6,7 +6,7 @@ import { ICON_STYLES } from "../styles/iconStyles";
 
 interface CategoryPinButtonProps {
   category: Category;
-  isPinned: (id: string) => boolean;
+  isPinned: ((id: string) => boolean) | (() => boolean);
   handlePinToggle: (category: Category) => void;
   pinIconSize?: number;
 }
@@ -18,7 +18,10 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
   pinIconSize = 16,
 }) => {
   const categoryId = `category-${category.id}`;
-  const isPinnedValue = isPinned(categoryId);
+  const isPinnedValue =
+    typeof isPinned === "function" && (isPinned as Function).length > 0
+      ? (isPinned as (id: string) => boolean)(categoryId)
+      : (isPinned as () => boolean)();
 
   return (
     <button

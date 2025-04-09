@@ -904,33 +904,22 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           />
                           <h3 className="font-medium text-gray-900">Recent</h3>
                         </div>
-                        {/* Кнопка-переключатель для отображения секции Recent в боковом меню */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleRecentSectionVisibility();
-                          }}
-                          className="flex items-center justify-center ml-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
-                          title={
-                            isRecentSectionVisible
-                              ? "Скрыть Recent в боковом меню"
-                              : "Показать Recent в боковом меню"
-                          }
-                        >
-                          <Icon
-                            name={
-                              isRecentSectionVisible
-                                ? ICON_PIN_FILLED
-                                : ICON_PIN
+                        {/* Заменяем кнопку на CategoryPinButton */}
+                        <div className="ml-2 flex-shrink-0">
+                          <CategoryPinButton
+                            category={{
+                              id: "recent-section",
+                              name: "Recent",
+                              icon: ICON_CLOCK,
+                              order: 999,
+                            }}
+                            isPinned={() => isRecentSectionVisible}
+                            handlePinToggle={() =>
+                              toggleRecentSectionVisibility()
                             }
-                            size={ICON_STYLES.pin.size}
-                            className={
-                              isRecentSectionVisible
-                                ? "text-red-500"
-                                : "text-gray-400 hover:text-gray-600"
-                            }
+                            pinIconSize={ICON_STYLES.pin.size}
                           />
-                        </button>
+                        </div>
                       </div>
                       <div
                         className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
