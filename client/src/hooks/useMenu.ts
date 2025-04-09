@@ -6,7 +6,7 @@ import React, {
   ReactNode,
   useCallback,
 } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage, clearStorageItem } from "./useLocalStorage";
 import {
   categories,
   menuItemsWithCategoryNames,
@@ -39,6 +39,12 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 // Create the provider component
 export function MenuProvider({ children }: { children: ReactNode }) {
+  // Сначала очищаем проблемные данные из localStorage
+  useEffect(() => {
+    // Очищаем только при первой загрузке компонента
+    clearStorageItem("recentItems");
+  }, []);
+
   const [pinnedItems, setPinnedItems] = useLocalStorage<MenuItem[]>(
     "pinnedItems",
     []
@@ -83,6 +89,50 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     }
   }, [menuItems, categories]); // Зависимости, чтобы эффект срабатывал при изменении исходных данных
 
+  // Миграция данных recentItems
+  useEffect(() => {
+    if (recentItems.length > 0) {
+      // Обходим все элементы и проверяем/преобразуем иконки
+      const updatedRecentItems = recentItems.map((item) => {
+        // Преобразуем item для хранения
+        const fixedItem = { ...item };
+
+        // Убедимся, что иконки представлены строками для правильного рендеринга
+        if (typeof fixedItem.icon !== "string") {
+          // Определяем иконку по родителю или категории
+          if (fixedItem.parentId) {
+            const parent = menuItems.find((m) => m.id === fixedItem.parentId);
+            if (parent && typeof parent.icon === "string") {
+              fixedItem.icon = parent.icon;
+            }
+          }
+
+          if (typeof fixedItem.icon !== "string") {
+            // Ищем иконку в категории
+            const category = categories.find(
+              (c) => c.id === fixedItem.category
+            );
+            if (category) {
+              fixedItem.icon = category.icon;
+            } else {
+              // Устанавливаем дефолтную иконку
+              fixedItem.icon = "folder-open";
+            }
+          }
+        }
+
+        return fixedItem;
+      });
+
+      // Обновляем recentItems только если есть изменения
+      const hasChanges =
+        JSON.stringify(updatedRecentItems) !== JSON.stringify(recentItems);
+      if (hasChanges) {
+        setRecentItems(updatedRecentItems);
+      }
+    }
+  }, [menuItems, categories]); // Зависимости, чтобы эффект срабатывал при изменении исходных данных
+
   const addToPinned = (item: MenuItem) => {
     // Don't add duplicates
     if (!pinnedItems.some((pinnedItem) => pinnedItem.id === item.id)) {
@@ -118,21 +168,27 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     // Проверяем и преобразуем item перед добавлением в recentItems
     const itemToTrack = { ...item };
 
-    // Если это элемент с parentId, нужно убедиться, что иконка установлена корректно
-    if (itemToTrack.parentId) {
-      // Найдем родителя по ID
-      const parentItem = menuItems.find((m) => m.id === itemToTrack.parentId);
-
-      if (parentItem && typeof parentItem.icon === "string") {
-        // Используем строковый идентификатор иконки родителя
-        itemToTrack.icon = parentItem.icon;
+    // Для всех элементов в recentItems используем строковые идентификаторы иконок
+    // чтобы они правильно отображались через ICON_MAP
+    if (typeof itemToTrack.icon !== "string") {
+      // Если иконка не строка, определяем подходящую строковую иконку по категории
+      if (itemToTrack.parentId) {
+        const parentItem = menuItems.find((m) => m.id === itemToTrack.parentId);
+        if (parentItem && typeof parentItem.icon === "string") {
+          itemToTrack.icon = parentItem.icon;
+        }
       }
-    }
-    // Если у элемента нет родителя, но есть категория
-    else if (itemToTrack.category && !itemToTrack.isParent) {
-      const category = categories.find((c) => c.id === itemToTrack.category);
-      if (category) {
-        itemToTrack.icon = category.icon;
+
+      if (typeof itemToTrack.icon !== "string") {
+        // Если до сих пор не определили строковую иконку, используем категорию
+        const categoryId = itemToTrack.category;
+        const category = categories.find((c) => c.id === categoryId);
+        if (category) {
+          itemToTrack.icon = category.icon;
+        } else {
+          // Если ничего не помогло, используем дефолтную иконку
+          itemToTrack.icon = "folder-open";
+        }
       }
     }
 

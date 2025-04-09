@@ -48,23 +48,44 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   isActive = false, // Активное состояние
 }) => {
   // Получение методов работы с меню через хук
-  const { getParentIcon, getParentName } = useMenu();
+  const { getParentIcon, getParentName, getCategoryIcon } = useMenu();
 
   // Функция рендеринга иконки
   const renderIcon = (iconName: string | React.ReactNode) => {
     // Для строковых идентификаторов используем маппинг
     if (typeof iconName === "string") {
-      return ICON_MAP[iconName] ? (
-        <Icon
-          name={ICON_MAP[iconName]}
-          size={iconSize}
-          className={isActive ? "text-red-500" : "text-icon-text"}
-        />
-      ) : (
-        <FaCircle
-          className={isActive ? "text-red-500" : "text-icon-text text-xl"}
-        /> // Заглушка при отсутствии иконки
-      );
+      // Проверяем наличие в маппинге
+      if (ICON_MAP[iconName]) {
+        return (
+          <Icon
+            name={ICON_MAP[iconName]}
+            size={iconSize}
+            className={isActive ? "text-red-500" : "text-icon-text"}
+          />
+        );
+      } else {
+        // Если иконки нет в маппинге, используем иконку категории
+        const categoryIcon = item.category
+          ? getCategoryIcon(item.category)
+          : "folder-open";
+        // Если категория вернула строку, рекурсивно вызываем renderIcon
+        if (typeof categoryIcon === "string" && ICON_MAP[categoryIcon]) {
+          return (
+            <Icon
+              name={ICON_MAP[categoryIcon]}
+              size={iconSize}
+              className={isActive ? "text-red-500" : "text-icon-text"}
+            />
+          );
+        } else {
+          // В крайнем случае показываем круг как заглушку
+          return (
+            <FaCircle
+              className={isActive ? "text-red-500" : "text-icon-text text-xl"}
+            />
+          );
+        }
+      }
     }
     return iconName; // Возвращаем готовый React-элемент
   };
