@@ -19,6 +19,7 @@ import closeMenuIcon from "../assets/icons/svg/close-menu.svg?raw";
 import layerGroupIcon from "../assets/icons/svg/layer-group.svg?raw";
 import gettingStartedIcon from "../assets/icons/svg/gettingstarted.svg?raw";
 import profileIcon from "../assets/icons/svg/profile.svg?raw";
+import consoleIcon from "../assets/icons/svg/console.svg?raw";
 
 // Создаем словарь, где ключ - имя иконки, значение - содержимое SVG файла
 const SVG_MAP: Record<string, string> = {
@@ -39,6 +40,7 @@ const SVG_MAP: Record<string, string> = {
   "icon-layer-group": layerGroupIcon,
   "icon-getting-started": gettingStartedIcon,
   "icon-profile": profileIcon,
+  "icon-console": consoleIcon,
 };
 
 // Определяем типы для входных параметров компонента

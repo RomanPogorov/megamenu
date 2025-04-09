@@ -15,6 +15,7 @@ import {
   ICON_PIN_FILLED,
   ICON_CLOSE_MENU,
   ICON_CLOCK,
+  ICON_CONSOLE,
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
@@ -98,7 +99,7 @@ const NAV_BUTTONS: NavButton[] = [
   {
     id: "rest-console",
     name: "REST Console",
-    iconName: ICON_API,
+    iconName: ICON_CONSOLE,
     category: "navigation",
   },
   {
@@ -108,6 +109,16 @@ const NAV_BUTTONS: NavButton[] = [
     category: "navigation",
   },
 ];
+
+// Добавляем функцию-помощник для создания MenuItem из NavButton
+const createMenuItemFromNavButton = (button: NavButton): MenuItemType => {
+  return {
+    id: button.id,
+    name: button.name,
+    icon: button.iconName as unknown as React.ReactNode, // Явное приведение типа
+    category: button.category,
+  };
+};
 
 const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   const [, setLocation] = useHashLocation();
@@ -167,18 +178,14 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen, setActiveFilter]);
 
+  // Используем эту функцию в обработчике клика
   const handleItemClick = (categoryId: string, itemId: string) => {
     // Для навигационных кнопок
     if (categoryId === "navigation") {
       const navButton = NAV_BUTTONS.find((btn) => btn.id === itemId);
       if (navButton) {
-        // Трекинг элемента в истории для навигационных кнопок
-        trackRecentItem({
-          id: itemId,
-          name: navButton.name,
-          category: categoryId,
-          icon: navButton.iconName,
-        });
+        // Используем функцию-помощник
+        trackRecentItem(createMenuItemFromNavButton(navButton));
       }
     } else {
       // Для обычных пунктов меню - стандартная логика
@@ -341,12 +348,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         className="absolute right-3 top-1/2 -translate-y-1/2 z-10 cursor-pointer hover:opacity-75 flex items-center justify-center"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handlePinToggle({
-                            id: button.id,
-                            name: button.name,
-                            icon: button.iconName,
-                            category: button.category,
-                          });
+                          // Используем функцию-помощник для создания MenuItem
+                          handlePinToggle(createMenuItemFromNavButton(button));
                         }}
                       >
                         <Icon

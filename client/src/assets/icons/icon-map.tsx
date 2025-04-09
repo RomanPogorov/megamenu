@@ -17,6 +17,7 @@ import LayerGroupIcon from "./svg/layer-group.svg";
 import GettingStartedIcon from "./svg/gettingstarted.svg";
 import UserIcon from "./svg/user-shield.svg";
 import ProfileIcon from "./svg/profile.svg";
+import ConsoleIcon from "./svg/console.svg";
 
 // Константы имен иконок
 export const ICON_RESOURCES = "icon-resources";
@@ -37,6 +38,7 @@ export const ICON_CLOSE_MENU = "icon-close-menu";
 export const ICON_GETTING_STARTED = "icon-getting-started";
 export const ICON_USER = "icon-user";
 export const ICON_PROFILE = "icon-profile";
+export const ICON_CONSOLE = "icon-console";
 
 // Карта соответствия имен иконок и компонентов React
 export const ICON_MAP: Record<string, any> = {
@@ -58,4 +60,5 @@ export const ICON_MAP: Record<string, any> = {
   [ICON_GETTING_STARTED]: GettingStartedIcon,
   [ICON_USER]: UserIcon,
   [ICON_PROFILE]: ProfileIcon,
+  [ICON_CONSOLE]: ConsoleIcon,
 };
