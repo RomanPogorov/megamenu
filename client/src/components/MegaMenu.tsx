@@ -257,12 +257,9 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       event.stopPropagation();
                       setSearchQuery("");
                     }}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center h-5 w-5"
                   >
-                    <Icon
-                      name={ICON_CLOSE_MENU}
-                      size={MENU_STYLES.sizes.iconSize}
-                    />
+                    <Icon name={ICON_CLOSE_MENU} size={16} />
                   </button>
                 )}
               </div>

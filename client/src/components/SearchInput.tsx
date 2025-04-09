@@ -25,7 +25,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       />
       <Icon
         name={ICON_SEARCH}
-        size={24}
+        size={20}
         className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
       />
       {value && (
@@ -34,9 +34,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
             event.stopPropagation();
             onChange("");
           }}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-15 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center h-5 w-5"
         >
-          <Icon name={ICON_CLOSE_MENU} size={24} />
+          <Icon name={ICON_CLOSE_MENU} size={16} />
         </button>
       )}
     </div>
