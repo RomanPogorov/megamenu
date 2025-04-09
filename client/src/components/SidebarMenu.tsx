@@ -59,7 +59,11 @@ const SIDEBAR_MENU_STYLES = {
     "p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors",
 
   // Зона recent items
-  recentItems: "w-full flex flex-col items-center space-y-1 pb-2",
+  recentItems: "w-full flex flex-col items-center space-y-1 pb-2 h-[200px]",
+  recentItemsPlaceholder: {
+    container: "w-full flex flex-col items-center justify-center h-full",
+    item: "w-[64px] h-[64px] rounded-md bg-gray-200 mb-2",
+  },
 };
 
 interface SidebarMenuProps {
@@ -339,20 +343,40 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             )}
           </div>
 
-          {/* Отображаем 3 последних элемента из recentItems */}
+          {/* Отображаем 3 последних элемента из recentItems или placeholder */}
           <div className={SIDEBAR_MENU_STYLES.recentItems}>
-            {recentItems.slice(0, 3).map((item) => (
-              <SidebarMenuItem
-                key={item.id}
-                item={item}
-                onClick={() => handleItemClick(item)}
-                isCentral={true}
-                isActive={
-                  isActiveItem(item.id) &&
-                  !pinnedItems.some((pinnedItem) => pinnedItem.id === item.id)
-                }
-              />
-            ))}
+            {recentItems.length > 0 ? (
+              recentItems
+                .slice(0, 3)
+                .map((item) => (
+                  <SidebarMenuItem
+                    key={item.id}
+                    item={item}
+                    onClick={() => handleItemClick(item)}
+                    isCentral={true}
+                    isActive={
+                      isActiveItem(item.id) &&
+                      !pinnedItems.some(
+                        (pinnedItem) => pinnedItem.id === item.id
+                      )
+                    }
+                  />
+                ))
+            ) : (
+              <div
+                className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.container}
+              >
+                <div
+                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                ></div>
+                <div
+                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                ></div>
+                <div
+                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                ></div>
+              </div>
+            )}
           </div>
 
           {/* Профиль пользователя */}
