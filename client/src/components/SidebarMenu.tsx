@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Icon } from "./Icon";
 import {
   ICON_LOGO,
@@ -10,7 +10,6 @@ import {
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import SidebarMenuItem from "./SidebarMenuItem";
-import RecentMenu from "./RecentMenu";
 import { MenuItem } from "../types/menu";
 
 interface SidebarMenuProps {
@@ -22,8 +21,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   toggleMegaMenu,
   isMegaMenuOpen = false,
 }) => {
-  const [recentMenuOpen, setRecentMenuOpen] = useState(false);
-  const recentButtonRef = useRef<HTMLButtonElement>(null);
   const {
     pinnedItems,
     recentItems,
@@ -65,22 +62,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
     // Устанавливаем элемент активным
     setActiveItem("getting-started");
-  }, []);
-
-  // Close recent menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        recentButtonRef.current &&
-        !recentButtonRef.current.contains(event.target as Node) &&
-        !(event.target as Element).closest("#recentDropdown")
-      ) {
-        setRecentMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Разделяем pinnedItems по типам
@@ -212,7 +193,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           )}
         </div>
 
-        {/* Нижняя часть с кнопкой Recent */}
+        {/* Нижняя часть с RECENT элементами */}
         <div className="mt-auto w-full flex flex-col items-center">
           {/* Заголовок RECENT */}
           <div className="flex flex-col items-center w-full py-2">
@@ -229,26 +210,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             <div className="w-[60px] h-px bg-gray-200"></div>
           </div>
 
-          <div className="w-full flex justify-center">
-            <div className="relative">
-              <button
-                ref={recentButtonRef}
-                className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
-                aria-label="Недавние элементы"
-                title="Недавние элементы"
-                onClick={() => setRecentMenuOpen(!recentMenuOpen)}
-              >
-                <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
-              </button>
-
-              {/* Recent Items Dropdown */}
-              {recentMenuOpen && recentItems.length > 0 && (
-                <RecentMenu
-                  items={recentItems}
-                  buttonRect={recentButtonRef.current?.getBoundingClientRect()}
-                />
-              )}
-            </div>
+          {/* Отображаем 3 последних элемента из recentItems */}
+          <div className="w-full flex flex-col items-center space-y-1 mb-2">
+            {recentItems.slice(0, 3).map((item) => (
+              <SidebarMenuItem
+                key={item.id}
+                item={item}
+                onClick={() => handleItemClick(item)}
+                isCentral={true}
+                isActive={isActiveItem(item.id)}
+              />
+            ))}
           </div>
         </div>
       </div>

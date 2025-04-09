@@ -115,13 +115,34 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   };
 
   const trackRecentItem = (item: MenuItem) => {
+    // Проверяем и преобразуем item перед добавлением в recentItems
+    const itemToTrack = { ...item };
+
+    // Если это элемент с parentId, нужно убедиться, что иконка установлена корректно
+    if (itemToTrack.parentId) {
+      // Найдем родителя по ID
+      const parentItem = menuItems.find((m) => m.id === itemToTrack.parentId);
+
+      if (parentItem && typeof parentItem.icon === "string") {
+        // Используем строковый идентификатор иконки родителя
+        itemToTrack.icon = parentItem.icon;
+      }
+    }
+    // Если у элемента нет родителя, но есть категория
+    else if (itemToTrack.category && !itemToTrack.isParent) {
+      const category = categories.find((c) => c.id === itemToTrack.category);
+      if (category) {
+        itemToTrack.icon = category.icon;
+      }
+    }
+
     // Create a copy without the recent items that match this ID
     const filteredRecents = recentItems.filter(
-      (recentItem) => recentItem.id !== item.id
+      (recentItem) => recentItem.id !== itemToTrack.id
     );
 
     // Add the new item to the beginning
-    const updatedRecents = [item, ...filteredRecents];
+    const updatedRecents = [itemToTrack, ...filteredRecents];
 
     // Limit to most recent 10 items
     setRecentItems(updatedRecents.slice(0, 10));
