@@ -22,6 +22,7 @@ import MenuItem from "./MenuItem";
 import SearchResults from "./SearchResults";
 import { Category, MenuItem as MenuItemType } from "../types/menu";
 import CategoryPinButton from "./CategoryPinButton";
+import { ICON_STYLES } from "../styles/iconStyles"; // Импортируем стили из отдельного файла
 
 // Централизованные стили для MegaMenu
 const MENU_STYLES = {
@@ -36,13 +37,13 @@ const MENU_STYLES = {
     itemText: "text-gray-700",
     divider: "bg-gray-200",
     searchPlaceholder: "text-gray-400",
-    icon: "text-red-500", // Основной цвет иконок
+    icon: ICON_STYLES.navigation.icon, // Используем централизованный стиль
   },
 
   // Размеры
   sizes: {
-    iconSize: 20, // Основной размер всех иконок (категорий, поиска, закрытия, кнопок)
-    pinIcon: 16, // Размер иконок закрепления
+    iconSize: ICON_STYLES.categories.size, // Используем централизованный размер
+    pinIcon: ICON_STYLES.pin.size, // Используем централизованный размер
     categoryHeaderSpacing: "mb-4", // Отступ для заголовков категорий
     categoryItemSpacing: "mb-2", // Отступ для элементов категорий
     dividerHeight: "h-px", // Высота разделителя
@@ -77,6 +78,36 @@ interface MegaMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+// Навигационные кнопки как элементы меню
+interface NavButton {
+  id: string;
+  name: string;
+  iconName: string; // Имя иконки для компонента Icon
+  category: string;
+}
+
+// Добавляем ID для навигационных кнопок
+const NAV_BUTTONS: NavButton[] = [
+  {
+    id: "resource-browser",
+    name: "Resource Browser",
+    iconName: ICON_RESOURCES,
+    category: "navigation",
+  },
+  {
+    id: "rest-console",
+    name: "REST Console",
+    iconName: ICON_API,
+    category: "navigation",
+  },
+  {
+    id: "db-console",
+    name: "DB Console",
+    iconName: ICON_DATABASE,
+    category: "navigation",
+  },
+];
 
 const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   const [, setLocation] = useHashLocation();
@@ -137,13 +168,31 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   }, [isOpen, setActiveFilter]);
 
   const handleItemClick = (categoryId: string, itemId: string) => {
-    // Track the item in recent history
-    trackRecentItem({
-      id: itemId,
-      name: allMenuItems.find((item) => item.id === itemId)?.name || "",
-      category: categoryId,
-      icon: allMenuItems.find((item) => item.id === itemId)?.icon || "",
-    });
+    // Для навигационных кнопок
+    if (categoryId === "navigation") {
+      const navButton = NAV_BUTTONS.find((btn) => btn.id === itemId);
+      if (navButton) {
+        // Трекинг элемента в истории для навигационных кнопок
+        trackRecentItem({
+          id: itemId,
+          name: navButton.name,
+          category: categoryId,
+          icon: navButton.iconName,
+        });
+      }
+    } else {
+      // Для обычных пунктов меню - стандартная логика
+      const menuItem = allMenuItems.find((item) => item.id === itemId);
+      if (menuItem) {
+        // Track the item in recent history
+        trackRecentItem({
+          id: itemId,
+          name: menuItem.name,
+          category: categoryId,
+          icon: menuItem.icon,
+        });
+      }
+    }
 
     // Set the item as active
     setActiveItem(itemId);
@@ -248,8 +297,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                 />
                 <Icon
                   name={ICON_SEARCH}
-                  size={MENU_STYLES.sizes.iconSize}
-                  className={`absolute left-5 top-1/2 -translate-y-1/2 ${MENU_STYLES.colors.icon}`}
+                  size={ICON_STYLES.utility.size.search}
+                  className={`absolute left-5 top-1/2 -translate-y-1/2 ${ICON_STYLES.utility.search}`}
                 />
                 {searchQuery && (
                   <button
@@ -257,9 +306,13 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       event.stopPropagation();
                       setSearchQuery("");
                     }}
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center h-5 w-5"
+                    className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center justify-center h-5 w-5"
                   >
-                    <Icon name={ICON_CLOSE_MENU} size={16} />
+                    <Icon
+                      name={ICON_CLOSE_MENU}
+                      size={ICON_STYLES.utility.size.close}
+                      className={ICON_STYLES.utility.close}
+                    />
                   </button>
                 )}
               </div>
@@ -269,30 +322,47 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             {!searchQuery && (
               <div className="flex justify-center items-center px-16 pb-11 mt-6">
                 <div className="flex gap-4">
-                  <button className={MENU_STYLES.components.navigationButton}>
-                    <Icon
-                      name={ICON_RESOURCES}
-                      className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                      size={MENU_STYLES.sizes.iconSize}
-                    />
-                    Resource Browser
-                  </button>
-                  <button className={MENU_STYLES.components.navigationButton}>
-                    <Icon
-                      name={ICON_API}
-                      className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                      size={MENU_STYLES.sizes.iconSize}
-                    />
-                    REST Console
-                  </button>
-                  <button className={MENU_STYLES.components.navigationButton}>
-                    <Icon
-                      name={ICON_DATABASE}
-                      className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                      size={MENU_STYLES.sizes.iconSize}
-                    />
-                    DB Console
-                  </button>
+                  {NAV_BUTTONS.map((button) => (
+                    <button
+                      key={button.id}
+                      className={`${MENU_STYLES.components.navigationButton} group relative`}
+                      onClick={() =>
+                        handleItemClick(button.category, button.id)
+                      }
+                    >
+                      <Icon
+                        name={button.iconName}
+                        className={`mr-2 ${ICON_STYLES.navigation.icon}`}
+                        size={ICON_STYLES.categories.size}
+                      />
+                      <span className="mr-8">{button.name}</span>
+                      {/* Размещаем иконку пина в абсолютно позиционированном контейнере с высоким z-index */}
+                      <div
+                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 cursor-pointer hover:opacity-75 flex items-center justify-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePinToggle({
+                            id: button.id,
+                            name: button.name,
+                            icon: button.iconName,
+                            category: button.category,
+                          });
+                        }}
+                      >
+                        <Icon
+                          name={
+                            isPinned(button.id) ? ICON_PIN_FILLED : ICON_PIN
+                          }
+                          size={ICON_STYLES.pin.size}
+                          className={
+                            isPinned(button.id)
+                              ? ICON_STYLES.pin.active
+                              : ICON_STYLES.pin.inactive
+                          }
+                        />
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -319,7 +389,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
             ) : (
               // Initial Menu State - Fullscreen version
               <div className={MENU_STYLES.components.container}>
-                <div className="flex gap-16 mx-auto">
+                <div className="flex gap-16 justify-center">
                   {/* Resources колонка */}
                   <div className={MENU_STYLES.components.resourcesColumn}>
                     {categories
@@ -334,8 +404,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                             >
                               <Icon
                                 name={ICON_RESOURCES}
-                                className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                size={MENU_STYLES.sizes.iconSize}
+                                className={`mr-2 ${ICON_STYLES.categories.resources}`}
+                                size={ICON_STYLES.categories.size}
                               />
                               <h3
                                 className={MENU_STYLES.components.categoryName}
@@ -348,7 +418,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 category={category}
                                 isPinned={isPinned}
                                 handlePinToggle={handleCategoryPinToggle}
-                                pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                pinIconSize={ICON_STYLES.pin.size}
                               />
                             </div>
                           </div>
@@ -372,7 +442,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 }
                                 isChild={!!item.parentId}
                                 parentIcon={getCategoryIcon(item.category)}
-                                pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                pinIconSize={ICON_STYLES.pin.size}
                               />
                             ))}
                         </div>
@@ -401,8 +471,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_NOTEBOOKS}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.notebooks}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -417,7 +487,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -441,7 +511,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -461,8 +531,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_API}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.api}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -477,7 +547,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -501,7 +571,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -521,8 +591,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_DATABASE}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.database}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -537,7 +607,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -561,7 +631,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -582,8 +652,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_IAM}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.iam}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -598,7 +668,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -622,7 +692,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -642,8 +712,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_FAR}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.far}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -658,7 +728,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -682,7 +752,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -702,8 +772,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                               >
                                 <Icon
                                   name={ICON_PLUGINS}
-                                  className={`mr-2 ${MENU_STYLES.colors.icon}`}
-                                  size={MENU_STYLES.sizes.iconSize}
+                                  className={`mr-2 ${ICON_STYLES.categories.plugins}`}
+                                  size={ICON_STYLES.categories.size}
                                 />
                                 <h3
                                   className={
@@ -718,7 +788,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   category={category}
                                   isPinned={isPinned}
                                   handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               </div>
                             </div>
@@ -742,7 +812,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                   }
                                   isChild={!!item.parentId}
                                   parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={MENU_STYLES.sizes.pinIcon}
+                                  pinIconSize={ICON_STYLES.pin.size}
                                 />
                               ))}
                           </div>
@@ -751,7 +821,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Recent колонка */}
-                  <div>
+                  <div style={{ width: MENU_STYLES.sizes.columnWidth }}>
                     <div className="mb-8">
                       <div className="mb-4 flex items-center group pl-2">
                         <div className="flex items-center">
@@ -775,7 +845,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           isChild={!!item.parentId}
                           parentIcon={getCategoryIcon(item.category)}
                           showPinButton={false}
-                          pinIconSize={MENU_STYLES.sizes.pinIcon}
+                          pinIconSize={ICON_STYLES.pin.size}
                         />
                       ))}
                     </div>
