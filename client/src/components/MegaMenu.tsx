@@ -112,10 +112,23 @@ const NAV_BUTTONS: NavButton[] = [
 
 // Добавляем функцию-помощник для создания MenuItem из NavButton
 const createMenuItemFromNavButton = (button: NavButton): MenuItemType => {
+  // Маппинг от имен констант иконок (ICON_XXX) к именам файлов для боковой панели
+  const iconNameMapping: Record<string, string> = {
+    [ICON_RESOURCES]: "folder-open",
+    [ICON_CONSOLE]: "console",
+    [ICON_DATABASE]: "database",
+    [ICON_API]: "code",
+    [ICON_NOTEBOOKS]: "book",
+    [ICON_IAM]: "user-shield",
+    [ICON_FAR]: "tasks",
+    [ICON_PLUGINS]: "puzzle-piece",
+  };
+
   return {
     id: button.id,
     name: button.name,
-    icon: button.iconName as unknown as React.ReactNode, // Явное приведение типа
+    // Преобразуем константу иконки в имя файла
+    icon: iconNameMapping[button.iconName] || button.iconName,
     category: button.category,
   };
 };
