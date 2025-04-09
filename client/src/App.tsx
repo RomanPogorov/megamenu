@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import SidebarMenu from "./components/SidebarMenu";
 import MegaMenu from "./components/MegaMenu";
 import ResourceTypeView from "./pages/ResourceTypeView";
+import ResourcePage from "./pages/ResourcePage";
 import NotFound from "./pages/not-found";
 import { MenuProvider } from "./hooks/useMenu";
 import { useShortcut } from "./hooks/useShortcut";
@@ -28,10 +29,10 @@ function AppContent() {
           isMegaMenuOpen={isMegaMenuOpen}
         />
 
-        <div className="flex-1 overflow-x-hidden overflow-y-auto ml-[60px] h-full">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto ml-[80px] h-full">
           <Switch>
             <Route path="/" component={ResourceTypeView} />
-            <Route path="/resource/:id" component={ResourceTypeView} />
+            <Route path="/resource/:id" component={ResourcePage} />
             <Route component={NotFound} />
           </Switch>
         </div>
