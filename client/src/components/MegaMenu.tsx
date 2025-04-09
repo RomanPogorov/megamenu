@@ -139,14 +139,16 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     allMenuItems,
     categories,
     pinnedItems,
+    recentItems,
+    isPinned,
     addToPinned,
     removeFromPinned,
+    activeItemId,
     trackRecentItem,
-    isPinned,
-    getCategoryIcon,
-    recentItems,
     setActiveItem,
-    isActiveItem,
+    getCategoryIcon,
+    isRecentSectionVisible,
+    toggleRecentSectionVisibility,
   } = useMenu();
   const {
     searchQuery,
@@ -893,7 +895,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                   {/* Recent колонка */}
                   <div style={{ width: MENU_STYLES.sizes.columnWidth }}>
                     <div className="mb-8">
-                      <div className="mb-4 flex items-center group pl-2">
+                      <div className="mb-4 flex items-center justify-between group pl-2">
                         <div className="flex items-center">
                           <Icon
                             name={ICON_CLOCK}
@@ -902,6 +904,33 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           />
                           <h3 className="font-medium text-gray-900">Recent</h3>
                         </div>
+                        {/* Кнопка-переключатель для отображения секции Recent в боковом меню */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleRecentSectionVisibility();
+                          }}
+                          className="flex items-center justify-center ml-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
+                          title={
+                            isRecentSectionVisible
+                              ? "Скрыть Recent в боковом меню"
+                              : "Показать Recent в боковом меню"
+                          }
+                        >
+                          <Icon
+                            name={
+                              isRecentSectionVisible
+                                ? ICON_PIN_FILLED
+                                : ICON_PIN
+                            }
+                            size={ICON_STYLES.pin.size}
+                            className={
+                              isRecentSectionVisible
+                                ? "text-red-500"
+                                : "text-gray-400 hover:text-gray-600"
+                            }
+                          />
+                        </button>
                       </div>
                       <div
                         className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}

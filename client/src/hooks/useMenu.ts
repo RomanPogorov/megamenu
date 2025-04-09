@@ -37,6 +37,8 @@ type MenuContextType = {
   isActiveItem: (id: string) => boolean;
   setActiveItem: (id: string) => void;
   clearRecentItems: () => void;
+  isRecentSectionVisible: boolean;
+  toggleRecentSectionVisibility: () => void;
 };
 
 // Create the context
@@ -66,6 +68,18 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   const [lastTrackedTimestamp, setLastTrackedTimestamp] = useState<number>(0);
   // Минимальный интервал между добавлениями одного и того же элемента (в мс)
   const MIN_TRACKING_INTERVAL = 1000;
+
+  // Состояние для отображения секции Recent в боковом меню
+  const [isRecentSectionVisible, setIsRecentSectionVisible] =
+    useLocalStorage<boolean>(
+      "isRecentSectionVisible",
+      true // По умолчанию секция видима
+    );
+
+  // Переключение видимости секции Recent
+  const toggleRecentSectionVisibility = useCallback(() => {
+    setIsRecentSectionVisible(!isRecentSectionVisible);
+  }, [isRecentSectionVisible]);
 
   // Синхронизация названий элементов в pinnedItems с menuData
   useEffect(() => {
@@ -353,6 +367,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     isActiveItem,
     setActiveItem,
     clearRecentItems,
+    isRecentSectionVisible,
+    toggleRecentSectionVisibility,
   };
 
   // Return the Provider component with the value

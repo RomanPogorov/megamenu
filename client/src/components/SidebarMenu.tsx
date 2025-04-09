@@ -85,6 +85,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     setPinnedItems,
     trackRecentItem,
     clearRecentItems,
+    isRecentSectionVisible,
   } = useMenu();
 
   // Добавляем Getting Started при первой загрузке и делаем активным
@@ -315,70 +316,81 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
         {/* ФИКСИРОВАННАЯ НИЖНЯЯ ЗОНА: RECENT и Profile */}
         <div className={SIDEBAR_MENU_STYLES.fixedBottomZone}>
-          {/* Заголовок RECENT с кнопкой очистки */}
-          <div className="w-full relative">
-            <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
-              <div className={SIDEBAR_MENU_STYLES.sectionHeader.titleContainer}>
-                <Icon
-                  name={ICON_CLOCK}
-                  size={10}
-                  className={SIDEBAR_MENU_STYLES.sectionHeader.icon}
-                />
-                <span className={SIDEBAR_MENU_STYLES.sectionHeader.title}>
-                  RECENT
-                </span>
-              </div>
-              <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
-            </div>
-
-            {/* Кнопка очистки недавних элементов (абсолютно позиционирована) */}
-            {recentItems.length > 0 && (
-              <button
-                onClick={() => clearRecentItems()}
-                className="absolute right-4 top-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                title="Очистить недавние элементы"
-              >
-                <Icon name={ICON_CLOSE_MENU} size={10} />
-              </button>
-            )}
-          </div>
-
-          {/* Отображаем 3 последних элемента из recentItems или placeholder */}
-          <div className={SIDEBAR_MENU_STYLES.recentItems}>
-            {recentItems.length > 0 ? (
-              recentItems
-                .slice(0, 3)
-                .map((item) => (
-                  <SidebarMenuItem
-                    key={item.id}
-                    item={item}
-                    onClick={() => handleItemClick(item)}
-                    isCentral={true}
-                    showParent={true}
-                    isActive={
-                      isActiveItem(item.id) &&
-                      !pinnedItems.some(
-                        (pinnedItem) => pinnedItem.id === item.id
-                      )
-                    }
+          {/* Заголовок RECENT с кнопкой очистки - отображаем только если isRecentSectionVisible=true */}
+          {isRecentSectionVisible && (
+            <div className="w-full relative">
+              <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
+                <div
+                  className={SIDEBAR_MENU_STYLES.sectionHeader.titleContainer}
+                >
+                  <Icon
+                    name={ICON_CLOCK}
+                    size={10}
+                    className={SIDEBAR_MENU_STYLES.sectionHeader.icon}
                   />
-                ))
-            ) : (
-              <div
-                className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.container}
-              >
+                  <span className={SIDEBAR_MENU_STYLES.sectionHeader.title}>
+                    RECENT
+                  </span>
+                </div>
                 <div
-                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
-                ></div>
-                <div
-                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
-                ></div>
-                <div
-                  className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                  className={SIDEBAR_MENU_STYLES.sectionHeader.divider}
                 ></div>
               </div>
-            )}
-          </div>
+
+              {/* Кнопка очистки недавних элементов (абсолютно позиционирована) */}
+              {recentItems.length > 0 && (
+                <button
+                  onClick={() => clearRecentItems()}
+                  className="absolute right-4 top-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                  title="Очистить недавние элементы"
+                >
+                  <Icon name={ICON_CLOSE_MENU} size={10} />
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Отображаем 3 последних элемента из recentItems или placeholder - только если isRecentSectionVisible=true */}
+          {isRecentSectionVisible && (
+            <div className={SIDEBAR_MENU_STYLES.recentItems}>
+              {recentItems.length > 0 ? (
+                recentItems.slice(0, 3).map((item) => {
+                  // Проверяем, есть ли этот элемент в приколотых (pinned)
+                  const isPinnedItem = pinnedItems.some(
+                    (pinnedItem) => pinnedItem.id === item.id
+                  );
+
+                  return (
+                    <SidebarMenuItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleItemClick(item)}
+                      isCentral={true}
+                      showParent={true}
+                      // Элемент в Recent активен только если он активен И НЕ приколот
+                      isActive={isActiveItem(item.id) && !isPinnedItem}
+                    />
+                  );
+                })
+              ) : (
+                <div
+                  className={
+                    SIDEBAR_MENU_STYLES.recentItemsPlaceholder.container
+                  }
+                >
+                  <div
+                    className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                  ></div>
+                  <div
+                    className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                  ></div>
+                  <div
+                    className={SIDEBAR_MENU_STYLES.recentItemsPlaceholder.item}
+                  ></div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Профиль пользователя */}
           <div className={SIDEBAR_MENU_STYLES.profileZone}>
