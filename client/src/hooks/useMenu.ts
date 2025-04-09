@@ -32,6 +32,7 @@ type MenuContextType = {
   activeItemId: string;
   isActiveItem: (id: string) => boolean;
   setActiveItem: (id: string) => void;
+  clearRecentItems: () => void;
 };
 
 // Create the context
@@ -317,6 +318,13 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     setActiveItemId(id);
   };
 
+  // Добавляем функцию для очистки списка недавних элементов
+  const clearRecentItems = useCallback(() => {
+    setRecentItems([]);
+    // Также очищаем в localStorage
+    clearStorageItem("recentItems");
+  }, []);
+
   // Create the value object to be passed to consumers
   const contextValue: MenuContextType = {
     allMenuItems: menuItems,
@@ -336,6 +344,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     activeItemId,
     isActiveItem,
     setActiveItem,
+    clearRecentItems,
   };
 
   // Return the Provider component with the value

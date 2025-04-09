@@ -79,6 +79,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     addToPinned,
     setPinnedItems,
     trackRecentItem,
+    clearRecentItems,
   } = useMenu();
 
   // Добавляем Getting Started при первой загрузке и делаем активным
@@ -315,6 +316,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
               <span className={SIDEBAR_MENU_STYLES.sectionHeader.title}>
                 RECENT
               </span>
+
+              {/* Кнопка очистки недавних элементов */}
+              {recentItems.length > 0 && (
+                <button
+                  onClick={() => clearRecentItems()}
+                  className="ml-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                  title="Очистить недавние элементы"
+                >
+                  <Icon name={ICON_CLOSE_MENU} size={10} />
+                </button>
+              )}
             </div>
             <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
           </div>
@@ -327,7 +339,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 item={item}
                 onClick={() => handleItemClick(item)}
                 isCentral={true}
-                isActive={isActiveItem(item.id)}
+                isActive={
+                  isActiveItem(item.id) &&
+                  !pinnedItems.some((pinnedItem) => pinnedItem.id === item.id)
+                }
               />
             ))}
           </div>
