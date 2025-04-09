@@ -6,6 +6,7 @@ import {
   ICON_CLOSE_MENU,
   ICON_CLOCK,
   ICON_GETTING_STARTED,
+  ICON_PIN_FILLED,
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import SidebarMenuItem from "./SidebarMenuItem";
@@ -166,6 +167,21 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Разделитель после основного меню */}
           <div className="w-8 h-px bg-gray-200 my-2"></div>
 
+          {/* Заголовок PINNED */}
+          <div className="flex flex-col items-center w-full py-2">
+            <div className="flex items-center justify-center mb-2">
+              <Icon
+                name={ICON_PIN_FILLED}
+                size={10}
+                className="text-gray-500 mr-1"
+              />
+              <span className="text-xs uppercase text-gray-500 font-normal tracking-wider">
+                PINNED
+              </span>
+            </div>
+            <div className="w-[60px] h-px bg-gray-200"></div>
+          </div>
+
           {/* Системные припиненные элементы (теперь включая Getting Started) */}
           {hasSystemItems && (
             <div className="w-full flex flex-col items-center space-y-1 mb-2">
@@ -197,25 +213,42 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
         </div>
 
         {/* Нижняя часть с кнопкой Recent */}
-        <div className="mt-auto w-full flex justify-center ">
-          <div className="relative">
-            <button
-              ref={recentButtonRef}
-              className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
-              aria-label="Недавние элементы"
-              title="Недавние элементы"
-              onClick={() => setRecentMenuOpen(!recentMenuOpen)}
-            >
-              <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
-            </button>
-
-            {/* Recent Items Dropdown */}
-            {recentMenuOpen && recentItems.length > 0 && (
-              <RecentMenu
-                items={recentItems}
-                buttonRect={recentButtonRef.current?.getBoundingClientRect()}
+        <div className="mt-auto w-full flex flex-col items-center">
+          {/* Заголовок RECENT */}
+          <div className="flex flex-col items-center w-full py-2">
+            <div className="flex items-center justify-center mb-2">
+              <Icon
+                name={ICON_CLOCK}
+                size={10}
+                className="text-gray-500 mr-1"
               />
-            )}
+              <span className="text-xs uppercase text-gray-500 font-normal tracking-wider">
+                RECENT
+              </span>
+            </div>
+            <div className="w-[60px] h-px bg-gray-200"></div>
+          </div>
+
+          <div className="w-full flex justify-center">
+            <div className="relative">
+              <button
+                ref={recentButtonRef}
+                className="p-3 rounded-lg text-gray-900 hover:bg-gray-100 transition-colors"
+                aria-label="Недавние элементы"
+                title="Недавние элементы"
+                onClick={() => setRecentMenuOpen(!recentMenuOpen)}
+              >
+                <Icon name={ICON_CLOCK} size={24} className="text-gray-900" />
+              </button>
+
+              {/* Recent Items Dropdown */}
+              {recentMenuOpen && recentItems.length > 0 && (
+                <RecentMenu
+                  items={recentItems}
+                  buttonRect={recentButtonRef.current?.getBoundingClientRect()}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
