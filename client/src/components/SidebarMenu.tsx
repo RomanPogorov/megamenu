@@ -266,7 +266,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 PINNED
               </span>
             </div>
-            <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
+            {/* Центрируем разделитель независимо от других элементов */}
+            <div className="flex justify-center w-full">
+              <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
+            </div>
           </div>
         </div>
 
@@ -305,30 +308,32 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
         {/* ФИКСИРОВАННАЯ НИЖНЯЯ ЗОНА: RECENT и Profile */}
         <div className={SIDEBAR_MENU_STYLES.fixedBottomZone}>
-          {/* Заголовок RECENT */}
-          <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
-            <div className={SIDEBAR_MENU_STYLES.sectionHeader.titleContainer}>
-              <Icon
-                name={ICON_CLOCK}
-                size={10}
-                className={SIDEBAR_MENU_STYLES.sectionHeader.icon}
-              />
-              <span className={SIDEBAR_MENU_STYLES.sectionHeader.title}>
-                RECENT
-              </span>
-
-              {/* Кнопка очистки недавних элементов */}
-              {recentItems.length > 0 && (
-                <button
-                  onClick={() => clearRecentItems()}
-                  className="ml-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                  title="Очистить недавние элементы"
-                >
-                  <Icon name={ICON_CLOSE_MENU} size={10} />
-                </button>
-              )}
+          {/* Заголовок RECENT с кнопкой очистки */}
+          <div className="w-full relative">
+            <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
+              <div className={SIDEBAR_MENU_STYLES.sectionHeader.titleContainer}>
+                <Icon
+                  name={ICON_CLOCK}
+                  size={10}
+                  className={SIDEBAR_MENU_STYLES.sectionHeader.icon}
+                />
+                <span className={SIDEBAR_MENU_STYLES.sectionHeader.title}>
+                  RECENT
+                </span>
+              </div>
+              <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
             </div>
-            <div className={SIDEBAR_MENU_STYLES.sectionHeader.divider}></div>
+
+            {/* Кнопка очистки недавних элементов (абсолютно позиционирована) */}
+            {recentItems.length > 0 && (
+              <button
+                onClick={() => clearRecentItems()}
+                className="absolute right-4 top-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+                title="Очистить недавние элементы"
+              >
+                <Icon name={ICON_CLOSE_MENU} size={10} />
+              </button>
+            )}
           </div>
 
           {/* Отображаем 3 последних элемента из recentItems */}
