@@ -268,6 +268,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     let contentTimer: NodeJS.Timeout;
     let focusTimer: NodeJS.Timeout;
+    let visibilityTimer: NodeJS.Timeout;
 
     if (isOpen) {
       setIsVisible(true);
@@ -289,11 +290,17 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
       // Reset states when closed
       setShowSearchBar(false);
       setShowContent(false);
+
+      // Полностью скрываем элемент после окончания анимации
+      visibilityTimer = setTimeout(() => {
+        setIsVisible(false);
+      }, 200); // Немного дольше, чем анимация, чтобы убедиться, что она завершена
     }
 
     return () => {
       clearTimeout(focusTimer);
       clearTimeout(contentTimer);
+      clearTimeout(visibilityTimer);
     };
   }, [isOpen]);
 
@@ -320,11 +327,15 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  if (!isVisible) return null;
+  if (!isVisible && !isOpen) return null;
 
   return (
     <div
-      className={`fixed inset-0 bg-white z-40 ml-[80px] transition-opacity duration-100 ${isOpen ? "opacity-100" : "opacity-0"}`}
+      className={`fixed inset-0 bg-white z-40 ml-[80px] transition-opacity duration-100 ${
+        isOpen
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      }`}
     >
       <div ref={menuRef} className="w-full h-full overflow-auto relative">
         {/* Убираем крестик из мегаменю, оставляем только в боковом меню */}
