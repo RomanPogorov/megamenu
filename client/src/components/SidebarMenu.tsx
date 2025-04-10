@@ -278,7 +278,20 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
             </div>
           </div>
 
-          {/* Разделитель после основного меню */}
+          {/* Активный контекстный элемент - показываем только если он не в закрепленных */}
+          {activeContextItem && (
+            <div className="w-full px-2 mt-6 flex justify-center">
+              <SidebarMenuItem
+                key={`context-${activeContextItem.id}`}
+                item={activeContextItem}
+                onClick={() => handleItemClick(activeContextItem)}
+                isCentral={true}
+                isActive={true}
+                showParent={!!activeContextItem.parentId}
+              />
+              {/* Убираем линию-разделитель */}
+            </div>
+          )}
 
           {/* Заголовок PINNED */}
           <div className={SIDEBAR_MENU_STYLES.sectionHeader.container}>
@@ -299,29 +312,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           </div>
         </div>
 
-        {/* СКРОЛЛИРУЕМАЯ ЗОНА: припиненные элементы и активный контекстный элемент */}
+        {/* СКРОЛЛИРУЕМАЯ ЗОНА: припиненные элементы */}
         <div className={SIDEBAR_MENU_STYLES.scrollableZone}>
-          {/* Активный контекстный элемент - показываем только если он не в закрепленных */}
-          {activeContextItem && (
-            <div
-              className={SIDEBAR_MENU_STYLES.itemsContainer}
-              style={{
-                borderBottom: "1px solid rgba(209, 213, 219, 0.5)",
-                marginBottom: "8px",
-                paddingBottom: "8px",
-              }}
-            >
-              <SidebarMenuItem
-                key={`context-${activeContextItem.id}`}
-                item={activeContextItem}
-                onClick={() => handleItemClick(activeContextItem)}
-                isCentral={true}
-                isActive={true}
-                showParent={!!activeContextItem.parentId}
-              />
-            </div>
-          )}
-
           {/* Системные припиненные элементы */}
           {hasSystemItems && (
             <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
