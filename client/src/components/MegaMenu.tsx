@@ -523,7 +523,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                     MENU_STYLES.components.categoryName
                                   }
                                 >
-                                  {category.name}
+                                  SDK
                                 </h3>
                               </div>
                               <div className="ml-2 flex-shrink-0">
@@ -884,56 +884,68 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Recent колонка */}
+                  {/* Заменяем Recent колонку на дубликат блока Notebooks */}
                   <div style={{ width: MENU_STYLES.sizes.columnWidth }}>
-                    <div className="mb-8">
-                      <div className="mb-4 flex items-center justify-between group pl-2">
-                        <div className="flex items-center">
-                          <Icon
-                            name={ICON_CLOCK}
-                            className={`mr-2 text-gray-500`}
-                            size={ICON_STYLES.categories.size}
+                    {categories
+                      .filter((category) => category.id === "notebooks")
+                      .map((category: Category) => (
+                        <div
+                          key={`notebooks-duplicate-${category.id}`}
+                          className="mb-8"
+                        >
+                          <div
+                            className={MENU_STYLES.components.categoryHeader}
+                          >
+                            <div
+                              className={MENU_STYLES.components.categoryTitle}
+                              onClick={() => handleCategoryTitleClick(category)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <Icon
+                                name={ICON_NOTEBOOKS}
+                                className={`mr-2 ${ICON_STYLES.categories.notebooks}`}
+                                size={ICON_STYLES.categories.size}
+                              />
+                              <h3
+                                className={MENU_STYLES.components.categoryName}
+                              >
+                                Notebooks
+                              </h3>
+                            </div>
+                            <div className="ml-2 flex-shrink-0">
+                              <CategoryPinButton
+                                category={category}
+                                isPinned={isPinned}
+                                handlePinToggle={handleCategoryPinToggle}
+                                pinIconSize={ICON_STYLES.pin.size}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
                           />
-                          <h3 className="font-medium text-gray-900">Recent</h3>
-                        </div>
-                        {/* Заменяем кнопку на CategoryPinButton */}
-                        <div className="ml-2 flex-shrink-0">
-                          <CategoryPinButton
-                            category={{
-                              id: "recent-section",
-                              name: "Recent",
-                              icon: ICON_CLOCK,
-                              order: 999,
-                            }}
-                            isPinned={() => isRecentSectionVisible}
-                            handlePinToggle={() =>
-                              toggleRecentSectionVisibility()
-                            }
-                            pinIconSize={ICON_STYLES.pin.size}
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
-                      />
 
-                      {/* Здесь будут элементы Recent Search */}
-                      {recentItems.map((item) => (
-                        <MenuItem
-                          key={item.id}
-                          item={item}
-                          isPinned={isPinned(item.id)}
-                          onPinToggle={() => handlePinToggle(item)}
-                          onClick={() =>
-                            handleItemClick(item.category, item.id)
-                          }
-                          isChild={!!item.parentId}
-                          parentIcon={getCategoryIcon(item.category)}
-                          showPinButton={false}
-                          pinIconSize={ICON_STYLES.pin.size}
-                        />
+                          {allMenuItems
+                            .filter(
+                              (item) =>
+                                item.category === category.id && item.parentId
+                            )
+                            .map((item) => (
+                              <MenuItem
+                                key={`notebooks-duplicate-${item.id}`}
+                                item={item}
+                                isPinned={isPinned(item.id)}
+                                onPinToggle={() => handlePinToggle(item)}
+                                onClick={() =>
+                                  handleItemClick(category.id, item.id)
+                                }
+                                isChild={!!item.parentId}
+                                parentIcon={getCategoryIcon(item.category)}
+                                pinIconSize={ICON_STYLES.pin.size}
+                              />
+                            ))}
+                        </div>
                       ))}
-                    </div>
                   </div>
                 </div>
               </div>
