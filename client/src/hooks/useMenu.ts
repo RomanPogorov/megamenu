@@ -50,6 +50,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Очищаем только при первой загрузке компонента
     clearStorageItem("recentItems");
+    // Принудительно очищаем значение isRecentSectionVisible
+    clearStorageItem("isRecentSectionVisible");
   }, []);
 
   const [pinnedItems, setPinnedItems] = useLocalStorage<MenuItem[]>(
@@ -73,7 +75,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
   const [isRecentSectionVisible, setIsRecentSectionVisible] =
     useLocalStorage<boolean>(
       "isRecentSectionVisible",
-      true // По умолчанию секция видима
+      false // По умолчанию секция скрыта
     );
 
   // Переключение видимости секции Recent

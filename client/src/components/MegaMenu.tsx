@@ -505,10 +505,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       gridTemplateColumns: `repeat(3, ${MENU_STYLES.sizes.columnWidth})`,
                     }}
                   >
-                    {/* Верхний ряд (Notebooks, API, Database) */}
+                    {/* Верхний ряд (API, IAM, Database) */}
                     <div className="mb-2">
                       {categories
-                        .filter((category) => category.id === "notebooks")
+                        .filter((category) => category.id === "api")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
                             <div
@@ -522,8 +522,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 style={{ cursor: "pointer" }}
                               >
                                 <Icon
-                                  name={ICON_NOTEBOOKS}
-                                  className={`mr-2 ${ICON_STYLES.categories.notebooks}`}
+                                  name={ICON_API}
+                                  className={`mr-2 ${ICON_STYLES.categories.api}`}
                                   size={ICON_STYLES.categories.size}
                                 />
                                 <h3
@@ -572,7 +572,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
 
                     <div className="mb-2">
                       {categories
-                        .filter((category) => category.id === "api")
+                        .filter((category) => category.id === "iam")
                         .map((category: Category) => (
                           <div key={category.id} className="mb-8">
                             <div
@@ -586,8 +586,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 style={{ cursor: "pointer" }}
                               >
                                 <Icon
-                                  name={ICON_API}
-                                  className={`mr-2 ${ICON_STYLES.categories.api}`}
+                                  name={ICON_IAM}
+                                  className={`mr-2 ${ICON_STYLES.categories.iam}`}
                                   size={ICON_STYLES.categories.size}
                                 />
                                 <h3
@@ -698,71 +698,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         ))}
                     </div>
 
-                    {/* Нижний ряд (IAM, FAR, Plugins & Modules) */}
-                    <div className="mb-2">
-                      {categories
-                        .filter((category) => category.id === "iam")
-                        .map((category: Category) => (
-                          <div key={category.id} className="mb-8">
-                            <div
-                              className={MENU_STYLES.components.categoryHeader}
-                            >
-                              <div
-                                className={MENU_STYLES.components.categoryTitle}
-                                onClick={() =>
-                                  handleCategoryTitleClick(category)
-                                }
-                                style={{ cursor: "pointer" }}
-                              >
-                                <Icon
-                                  name={ICON_IAM}
-                                  className={`mr-2 ${ICON_STYLES.categories.iam}`}
-                                  size={ICON_STYLES.categories.size}
-                                />
-                                <h3
-                                  className={
-                                    MENU_STYLES.components.categoryName
-                                  }
-                                >
-                                  {category.name}
-                                </h3>
-                              </div>
-                              <div className="ml-2 flex-shrink-0">
-                                <CategoryPinButton
-                                  category={category}
-                                  isPinned={isPinned}
-                                  handlePinToggle={handleCategoryPinToggle}
-                                  pinIconSize={ICON_STYLES.pin.size}
-                                />
-                              </div>
-                            </div>
-                            <div
-                              className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
-                            />
-
-                            {allMenuItems
-                              .filter(
-                                (item) =>
-                                  item.category === category.id && item.parentId
-                              )
-                              .map((item) => (
-                                <MenuItem
-                                  key={item.id}
-                                  item={item}
-                                  isPinned={isPinned(item.id)}
-                                  onPinToggle={() => handlePinToggle(item)}
-                                  onClick={() =>
-                                    handleItemClick(category.id, item.id)
-                                  }
-                                  isChild={!!item.parentId}
-                                  parentIcon={getCategoryIcon(item.category)}
-                                  pinIconSize={ICON_STYLES.pin.size}
-                                />
-                              ))}
-                          </div>
-                        ))}
-                    </div>
-
+                    {/* Нижний ряд (FAR, Plugins, SDK) */}
                     <div className="mb-2">
                       {categories
                         .filter((category) => category.id === "far")
@@ -890,32 +826,103 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                           </div>
                         ))}
                     </div>
+
+                    <div className="mb-2">
+                      {categories
+                        .filter((category) => category.id === "sdk")
+                        .map((category: Category) => (
+                          <div key={category.id} className="mb-8">
+                            <div
+                              className={MENU_STYLES.components.categoryHeader}
+                            >
+                              <div
+                                className={MENU_STYLES.components.categoryTitle}
+                                onClick={() =>
+                                  handleCategoryTitleClick(category)
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                <Icon
+                                  name={ICON_API}
+                                  className={`mr-2 ${ICON_STYLES.categories.api}`}
+                                  size={ICON_STYLES.categories.size}
+                                />
+                                <h3
+                                  className={
+                                    MENU_STYLES.components.categoryName
+                                  }
+                                >
+                                  {category.name}
+                                </h3>
+                              </div>
+                              <div className="ml-2 flex-shrink-0">
+                                <CategoryPinButton
+                                  category={category}
+                                  isPinned={isPinned}
+                                  handlePinToggle={handleCategoryPinToggle}
+                                  pinIconSize={ICON_STYLES.pin.size}
+                                />
+                              </div>
+                            </div>
+                            <div
+                              className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
+                            />
+
+                            {allMenuItems
+                              .filter(
+                                (item) =>
+                                  item.category === category.id && item.parentId
+                              )
+                              .map((item) => (
+                                <MenuItem
+                                  key={item.id}
+                                  item={item}
+                                  isPinned={isPinned(item.id)}
+                                  onPinToggle={() => handlePinToggle(item)}
+                                  onClick={() =>
+                                    handleItemClick(category.id, item.id)
+                                  }
+                                  isChild={!!item.parentId}
+                                  parentIcon={getCategoryIcon(item.category)}
+                                  pinIconSize={ICON_STYLES.pin.size}
+                                />
+                              ))}
+                          </div>
+                        ))}
+                    </div>
                   </div>
 
-                  {/* Recent колонка */}
+                  {/* Notebooks колонка (отдельная справа) */}
                   <div style={{ width: MENU_STYLES.sizes.columnWidth }}>
                     <div className="mb-8">
                       <div className="mb-4 flex items-center justify-between group pl-2">
                         <div className="flex items-center">
                           <Icon
-                            name={ICON_CLOCK}
-                            className={`mr-2 text-gray-500`}
+                            name={ICON_NOTEBOOKS}
+                            className={`mr-2 ${ICON_STYLES.categories.notebooks}`}
                             size={ICON_STYLES.categories.size}
                           />
-                          <h3 className="font-medium text-gray-900">Recent</h3>
+                          <h3 className="font-medium text-gray-900">
+                            Notebooks
+                          </h3>
                         </div>
-                        {/* Заменяем кнопку на CategoryPinButton */}
+                        {/* Кнопка для закрепления категории notebooks */}
                         <div className="ml-2 flex-shrink-0">
                           <CategoryPinButton
                             category={{
-                              id: "recent-section",
-                              name: "Recent",
-                              icon: ICON_CLOCK,
-                              order: 999,
+                              id: "notebooks",
+                              name: "Notebooks",
+                              icon: ICON_NOTEBOOKS,
+                              order: 2,
                             }}
-                            isPinned={() => isRecentSectionVisible}
+                            isPinned={() => isPinned("category-notebooks")}
                             handlePinToggle={() =>
-                              toggleRecentSectionVisibility()
+                              handleCategoryPinToggle({
+                                id: "notebooks",
+                                name: "Notebooks",
+                                icon: ICON_NOTEBOOKS,
+                                order: 2,
+                              })
                             }
                             pinIconSize={ICON_STYLES.pin.size}
                           />
@@ -925,22 +932,26 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                         className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
                       />
 
-                      {/* Здесь будут элементы Recent Search */}
-                      {recentItems.map((item) => (
-                        <MenuItem
-                          key={item.id}
-                          item={item}
-                          isPinned={isPinned(item.id)}
-                          onPinToggle={() => handlePinToggle(item)}
-                          onClick={() =>
-                            handleItemClick(item.category, item.id)
-                          }
-                          isChild={!!item.parentId}
-                          parentIcon={getCategoryIcon(item.category)}
-                          showPinButton={false}
-                          pinIconSize={ICON_STYLES.pin.size}
-                        />
-                      ))}
+                      {/* Отображаем элементы Notebooks */}
+                      {allMenuItems
+                        .filter(
+                          (item) =>
+                            item.category === "notebooks" && item.parentId
+                        )
+                        .map((item) => (
+                          <MenuItem
+                            key={item.id}
+                            item={item}
+                            isPinned={isPinned(item.id)}
+                            onPinToggle={() => handlePinToggle(item)}
+                            onClick={() =>
+                              handleItemClick("notebooks", item.id)
+                            }
+                            isChild={!!item.parentId}
+                            parentIcon={getCategoryIcon("notebooks")}
+                            pinIconSize={ICON_STYLES.pin.size}
+                          />
+                        ))}
                     </div>
                   </div>
                 </div>
