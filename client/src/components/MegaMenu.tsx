@@ -969,7 +969,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-1.5"
+              className="h-5 w-5 text-gray-500"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -1015,18 +1015,21 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               <path
                 d="M14 8.66667V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H7.33333"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M14 2L8 8"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M10 2H14V6"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
@@ -1074,18 +1077,21 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
               <path
                 d="M14 8.66667V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H7.33333"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M14 2L8 8"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M10 2H14V6"
                 stroke="#717684"
+                stroke-width="1.2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
