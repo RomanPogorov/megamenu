@@ -16,6 +16,7 @@ import {
   ICON_CLOSE_MENU,
   ICON_CLOCK,
   ICON_CONSOLE,
+  ICON_SETTINGS,
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
 import { useSearch } from "../hooks/useSearch";
@@ -108,6 +109,12 @@ const NAV_BUTTONS: NavButton[] = [
     iconName: ICON_DATABASE,
     category: "navigation",
   },
+  {
+    id: "settings",
+    name: "Settings",
+    iconName: ICON_SETTINGS,
+    category: "navigation",
+  },
 ];
 
 // Добавляем функцию-помощник для создания MenuItem из NavButton
@@ -117,6 +124,7 @@ const createMenuItemFromNavButton = (button: NavButton): MenuItemType => {
     [ICON_RESOURCES]: "folder-open",
     [ICON_CONSOLE]: "console",
     [ICON_DATABASE]: "database",
+    [ICON_SETTINGS]: "Settings",
     [ICON_API]: "code",
     [ICON_NOTEBOOKS]: "book",
     [ICON_IAM]: "user-shield",

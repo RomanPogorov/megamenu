@@ -34,3 +34,4 @@ export const ICON_LAYER_GROUP = "icon-layer-group";
 export const ICON_LOGO = "icon-logo";
 export const ICON_MENU = "icon-menu";
 export const ICON_CLOSE_MENU = "icon-close-menu";
+export const ICON_SETTINGS = "icon-settings";

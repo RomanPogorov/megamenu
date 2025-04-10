@@ -16,6 +16,7 @@ export const ICON_STYLES = {
     iam: "text-red-500", // Цвет иконки IAM
     far: "text-red-500", // Цвет иконки FAR
     plugins: "text-red-500", // Цвет иконки Plugins
+    settings: "text-red-500", // Цвет иконки Settings
     size: 20, // Стандартный размер иконок категорий
   },
 

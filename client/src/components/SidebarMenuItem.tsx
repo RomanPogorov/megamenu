@@ -13,6 +13,7 @@ import {
   ICON_LAYER_GROUP,
   ICON_GETTING_STARTED,
   ICON_CONSOLE,
+  ICON_SETTINGS,
 } from "../assets/icons/icon-map";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
@@ -66,6 +67,7 @@ const ICON_MAP: Record<string, string> = {
   "layer-group": ICON_LAYER_GROUP,
   "getting-started": ICON_GETTING_STARTED,
   console: ICON_CONSOLE,
+  Settings: ICON_SETTINGS,
 };
 
 // Пропсы компонента элемента бокового меню

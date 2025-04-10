@@ -119,3 +119,23 @@
 .icon-layer-group {
   background-image: url("./svg/layer-group.svg");
 }
+
+.icon-getting-started {
+  background-image: url("./svg/gettingstarted.svg");
+}
+
+.icon-user {
+  background-image: url("./svg/user-shield.svg");
+}
+
+.icon-profile {
+  background-image: url("./svg/profile.svg");
+}
+
+.icon-console {
+  background-image: url("./svg/console.svg");
+}
+
+.icon-settings {
+  background-image: url("./svg/Settings.svg");
+}
