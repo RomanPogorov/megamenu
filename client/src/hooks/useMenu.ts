@@ -178,12 +178,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      // Если это элемент 'getting-started', добавляем его в начало списка
-      if (itemToAdd.id === "getting-started") {
-        setPinnedItems([itemToAdd, ...pinnedItems]);
-      } else {
-        setPinnedItems([...pinnedItems, itemToAdd]);
-      }
+      // Изменяем логику: всегда добавляем пины в начало списка
+      setPinnedItems([itemToAdd, ...pinnedItems]);
     }
   };
 
@@ -295,8 +291,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
     // Only add if not already pinned
     if (!isPinned(parentItem.id)) {
-      // Add only the parent to pinned
-      setPinnedItems([...pinnedItems, parentItem]);
+      // Добавляем категорию в начало списка пинов
+      setPinnedItems([parentItem, ...pinnedItems]);
     }
   };
 
