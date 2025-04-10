@@ -112,7 +112,9 @@ const ResourcesTable = () => {
   return (
     <div className="container mx-auto py-4 h-full">
       <div className="flex items-center justify-between mb-6 px-6">
-        <h1 className="text-xl font-semibold text-gray-800">Resource Types</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mt-8">
+          Resource Types
+        </h1>
         <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-800 hover:bg-gray-50 transition-colors">
           <FaPlus className="inline mr-2" />
           Resource Type

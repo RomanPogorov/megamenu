@@ -1,4 +1,4 @@
-import { Switch, Route, Router } from "wouter";
+import { Switch, Route, Router, useParams } from "wouter";
 import { useState, useEffect } from "react";
 import SidebarMenu from "./components/SidebarMenu";
 import MegaMenu from "./components/MegaMenu";
@@ -8,6 +8,19 @@ import NotFound from "./pages/not-found";
 import { MenuProvider } from "./hooks/useMenu";
 import { useShortcut } from "./hooks/useShortcut";
 import { useHashLocation } from "wouter/use-hash-location";
+
+// Компонент, который решает, что отображать в зависимости от ID ресурса
+const ResourceRouter = () => {
+  const params = useParams<{ id?: string }>();
+
+  // Если id равен "getting-started" - показываем ResourceTypeView (таблицу)
+  if (params.id === "getting-started") {
+    return <ResourceTypeView />;
+  }
+
+  // Иначе отображаем страницу ресурса
+  return <ResourcePage />;
+};
 
 function AppContent() {
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
@@ -32,7 +45,7 @@ function AppContent() {
         <div className="flex-1 overflow-x-hidden overflow-y-auto ml-[80px] h-full">
           <Switch>
             <Route path="/" component={ResourceTypeView} />
-            <Route path="/resource/:id" component={ResourcePage} />
+            <Route path="/resource/:id" component={ResourceRouter} />
             <Route component={NotFound} />
           </Switch>
         </div>

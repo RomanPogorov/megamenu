@@ -35,14 +35,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
       className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 py-1 pl-2 rounded transition-colors"
       onClick={onClick}
     >
-      <div className={`flex items-center min-w-0 flex-1`}>
+      <div className={`flex items-center min-w-0 flex-1 cursor-pointer`}>
         <span className="text-gray-800 truncate">{item.name}</span>
       </div>
       {showPinButton && (
         <button
           className={`${
             isPinned ? ICON_STYLES.pin.active : ICON_STYLES.pin.inactive
-          } transition-colors flex items-center justify-center w-6 h-6 ml-2 flex-shrink-0 hover:opacity-75 z-10 relative`}
+          } transition-colors flex items-center justify-center cursor-pointer`}
           aria-label={
             isPinned ? `Открепить ${item.name}` : `Прикрепить ${item.name}`
           }

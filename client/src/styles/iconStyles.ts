@@ -5,7 +5,7 @@ export const ICON_STYLES = {
     active:
       "text-gray-600 hover:text-gray-900 !cursor-pointer pointer-events-auto", // Стиль для активного/закрепленного пина с эффектом при наведении
     inactive:
-      "text-gray-400 hover:text-gray-700 !cursor-pointer pointer-events-auto", // Стиль для неактивного пина с эффектом при наведении
+      "text-gray-300 hover:text-gray-700 !cursor-pointer pointer-events-auto", // Стиль для неактивного пина с эффектом при наведении
     size: 16, // Стандартный размер иконок пинов
   },
 
