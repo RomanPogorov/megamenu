@@ -388,7 +388,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                       <span className="mr-8">{button.name}</span>
                       {/* Размещаем иконку пина в абсолютно позиционированном контейнере с высоким z-index */}
                       <div
-                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 cursor-pointer hover:opacity-75 flex items-center justify-center"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 hover:opacity-75 flex items-center justify-center"
                         onClick={(e) => {
                           e.stopPropagation();
                           // Используем функцию-помощник для создания MenuItem

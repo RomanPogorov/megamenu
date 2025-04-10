@@ -43,7 +43,7 @@ const CategoryPinButton: React.FC<CategoryPinButtonProps> = ({
       <Icon
         name={isPinnedValue ? ICON_PIN_FILLED : ICON_PIN}
         size={pinIconSize}
-        className="pointer-events-auto cursor-pointer"
+        className=""
       />
     </button>
   );

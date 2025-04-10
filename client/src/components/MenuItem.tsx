@@ -54,7 +54,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
           <Icon
             name={isPinned ? ICON_PIN_FILLED : ICON_PIN}
             size={pinIconSize}
-            className="pointer-events-auto"
+            className=""
           />
         </button>
       )}
