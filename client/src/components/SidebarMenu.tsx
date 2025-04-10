@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "./Icon";
 import {
   ICON_LOGO,
@@ -7,6 +7,7 @@ import {
   ICON_CLOCK,
   ICON_GETTING_STARTED,
   ICON_PIN_FILLED,
+  ICON_PIN,
   ICON_PROFILE,
 } from "../assets/icons/icon-map";
 import { useMenu } from "../hooks/useMenu";
@@ -89,6 +90,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     activeItemId,
     allMenuItems,
   } = useMenu();
+
+  // Добавляем состояние для отслеживания наведения на активный контекстный элемент
+  const [isActiveItemHovered, setIsActiveItemHovered] = useState(false);
 
   // Добавляем Getting Started при первой загрузке и делаем активным
   useEffect(() => {
@@ -178,6 +182,13 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     // Если нашли, возвращаем для отображения
     return activeItem || null;
   }, [activeItemId, pinnedItems, allMenuItems]);
+
+  // Функция закрепления активного контекстного элемента
+  const pinActiveContextItem = () => {
+    if (activeContextItem) {
+      addToPinned(activeContextItem);
+    }
+  };
 
   // В конце файла, прямо перед export default SidebarMenu
   // Добавляем стили для скрытия скроллбара через CSS
@@ -280,7 +291,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
 
           {/* Активный контекстный элемент - показываем только если он не в закрепленных */}
           {activeContextItem && (
-            <div className="w-full px-2 mt-6 flex justify-center">
+            <div
+              className="w-full px-2 mt-6 flex justify-center relative"
+              onMouseEnter={() => setIsActiveItemHovered(true)}
+              onMouseLeave={() => setIsActiveItemHovered(false)}
+            >
               <SidebarMenuItem
                 key={`context-${activeContextItem.id}`}
                 item={activeContextItem}
@@ -289,7 +304,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
                 isActive={true}
                 showParent={!!activeContextItem.parentId}
               />
-              {/* Убираем линию-разделитель */}
+
+              {/* Кнопка для закрепления активного элемента */}
+              {isActiveItemHovered && (
+                <button
+                  className="absolute top-0 right-2 transform -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-sm flex items-center justify-center hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer z-10"
+                  onClick={pinActiveContextItem}
+                  title="Закрепить элемент"
+                >
+                  <Icon name={ICON_PIN} size={12} className="text-gray-500" />
+                </button>
+              )}
             </div>
           )}
 
