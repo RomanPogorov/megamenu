@@ -9,7 +9,7 @@ export const ICON_STYLES = {
 
   // Стили для категорий
   categories: {
-    resources: "text-red-500", // Цвет иконки Resources
+    resources: "text-gray-600", // Цвет иконки Resources
     notebooks: "text-red-500", // Цвет иконки Notebooks
     api: "text-red-500", // Цвет иконки API
     database: "text-red-500", // Цвет иконки Database

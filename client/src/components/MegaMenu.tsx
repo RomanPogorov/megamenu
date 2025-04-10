@@ -461,14 +461,6 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ isOpen, onClose }) => {
                                 {category.name}
                               </h3>
                             </div>
-                            <div className="ml-2 flex-shrink-0">
-                              <CategoryPinButton
-                                category={category}
-                                isPinned={isPinned}
-                                handlePinToggle={handleCategoryPinToggle}
-                                pinIconSize={ICON_STYLES.pin.size}
-                              />
-                            </div>
                           </div>
                           <div
                             className={`${MENU_STYLES.sizes.dividerHeight} ${MENU_STYLES.colors.divider} ${MENU_STYLES.sizes.categoryHeaderSpacing}`}
