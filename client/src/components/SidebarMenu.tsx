@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Icon } from "./Icon";
 import {
   ICON_LOGO,
@@ -86,6 +86,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
     trackRecentItem,
     clearRecentItems,
     isRecentSectionVisible,
+    activeItemId,
+    allMenuItems,
   } = useMenu();
 
   // Добавляем Getting Started при первой загрузке и делаем активным
@@ -160,6 +162,22 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
       window.location.hash = `/resource/${item.id}`;
     }
   };
+
+  // Получаем активный элемент, который будет отображаться в контекстном блоке
+  const activeContextItem = useMemo(() => {
+    // Если нет активного элемента, то нечего показывать
+    if (!activeItemId) return null;
+
+    // Если активный элемент уже есть в закрепленных, не показываем его дополнительно
+    const isPinnedActive = pinnedItems.some((item) => item.id === activeItemId);
+    if (isPinnedActive) return null;
+
+    // Ищем активный элемент во всех доступных списках
+    const activeItem = allMenuItems.find((item) => item.id === activeItemId);
+
+    // Если нашли, возвращаем для отображения
+    return activeItem || null;
+  }, [activeItemId, pinnedItems, allMenuItems]);
 
   // В конце файла, прямо перед export default SidebarMenu
   // Добавляем стили для скрытия скроллбара через CSS
@@ -281,8 +299,29 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           </div>
         </div>
 
-        {/* СКРОЛЛИРУЕМАЯ ЗОНА: только припиненные элементы */}
+        {/* СКРОЛЛИРУЕМАЯ ЗОНА: припиненные элементы и активный контекстный элемент */}
         <div className={SIDEBAR_MENU_STYLES.scrollableZone}>
+          {/* Активный контекстный элемент - показываем только если он не в закрепленных */}
+          {activeContextItem && (
+            <div
+              className={SIDEBAR_MENU_STYLES.itemsContainer}
+              style={{
+                borderBottom: "1px solid rgba(209, 213, 219, 0.5)",
+                marginBottom: "8px",
+                paddingBottom: "8px",
+              }}
+            >
+              <SidebarMenuItem
+                key={`context-${activeContextItem.id}`}
+                item={activeContextItem}
+                onClick={() => handleItemClick(activeContextItem)}
+                isCentral={true}
+                isActive={true}
+                showParent={!!activeContextItem.parentId}
+              />
+            </div>
+          )}
+
           {/* Системные припиненные элементы */}
           {hasSystemItems && (
             <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
