@@ -94,58 +94,47 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   // Добавляем состояние для отслеживания наведения на активный контекстный элемент
   const [isActiveItemHovered, setIsActiveItemHovered] = useState(false);
 
-  // Добавляем Getting Started при первой загрузке и делаем активным
+  // Отслеживаем изменение URL и устанавливаем активный элемент
   useEffect(() => {
-    const gettingStartedItem = {
-      id: "getting-started",
-      name: "Start",
-      icon: "getting-started",
-      category: "system",
-      isParent: true,
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith("#/resource/")) {
+        const resourceId = hash.replace("#/resource/", "");
+
+        // Проверяем, начинается ли resourceId с category-
+        if (!resourceId.startsWith("category-")) {
+          // Проверяем, является ли это навигационной кнопкой (resource-browser, rest-console и т.д.)
+          // Для них нужно установить активный элемент
+
+          // Проверяем, существует ли элемент с таким ID в allMenuItems
+          const menuItem = allMenuItems.find((item) => item.id === resourceId);
+          if (
+            menuItem ||
+            resourceId === "resource-browser" ||
+            resourceId === "rest-console" ||
+            resourceId === "db-console" ||
+            resourceId === "settings"
+          ) {
+            // Устанавливаем элемент активным
+            setActiveItem(resourceId);
+          }
+        }
+      }
     };
 
-    // Проверяем, есть ли уже такой элемент
-    const existingIndex = pinnedItems.findIndex(
-      (item) => item.id === "getting-started"
-    );
+    // Вызываем один раз при монтировании для установки начального состояния
+    handleHashChange();
 
-    if (existingIndex === -1) {
-      // Если элемента нет, добавляем его
-      addToPinned(gettingStartedItem);
-    } else {
-      // Если элемент уже существует, обновляем его имя
-      const updatedItems = [...pinnedItems];
-      updatedItems[existingIndex] = {
-        ...updatedItems[existingIndex],
-        name: gettingStartedItem.name,
-      };
-      // Обновляем pinnedItems с обновленным именем
-      setPinnedItems(updatedItems);
-    }
+    // Подписываемся на изменения хэша (URL)
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [setActiveItem, allMenuItems]);
 
-    // Устанавливаем элемент активным
-    setActiveItem("getting-started");
-  }, []);
-
-  // Разделяем pinnedItems по типам
-  const systemPinnedItems = pinnedItems
-    .filter((item) => item.isParent || item.id.startsWith("category-"))
-    .sort((a, b) => {
-      // getting-started всегда будет первым элементом
-      if (a.id === "getting-started") return -1;
-      if (b.id === "getting-started") return 1;
-      return 0;
-    });
-  const userPinnedItems = pinnedItems.filter(
-    (item) => !item.isParent && !item.id.startsWith("category-")
-  );
-
-  // Проверяем наличие разных типов элементов
-  const hasSystemItems = systemPinnedItems.length > 0;
-  const hasUserItems = userPinnedItems.length > 0;
-
-  // console.log("System pinned items:", systemPinnedItems);
-  // console.log("User pinned items:", userPinnedItems);
+  // Убираем разделение на системные и пользовательские элементы
+  // Теперь все элементы будут отображаться в одном списке
+  const hasPinnedItems = pinnedItems.length > 0;
 
   // Обработчик клика на элемент меню
   const handleItemClick = (item: MenuItem) => {
@@ -186,7 +175,18 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
   // Функция закрепления активного контекстного элемента
   const pinActiveContextItem = () => {
     if (activeContextItem) {
-      addToPinned(activeContextItem);
+      // Если у элемента есть родитель, нужно сохранить информацию об иконке родителя
+      if (activeContextItem.parentId) {
+        // Создаем копию элемента с явным указанием использовать иконку родителя
+        const itemToPin = {
+          ...activeContextItem,
+          icon: "parent", // Специальное значение, указывающее на использование иконки родителя
+        };
+        addToPinned(itemToPin);
+      } else {
+        // Если родителя нет, добавляем как есть
+        addToPinned(activeContextItem);
+      }
     }
   };
 
@@ -292,7 +292,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {/* Активный контекстный элемент - показываем только если он не в закрепленных */}
           {activeContextItem && (
             <div
-              className="w-full px-2 mt-6 flex justify-center relative"
+              className="w-full px-2 mt-4 mb-2 flex justify-center relative"
               onMouseEnter={() => setIsActiveItemHovered(true)}
               onMouseLeave={() => setIsActiveItemHovered(false)}
             >
@@ -308,7 +308,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
               {/* Кнопка для закрепления активного элемента */}
               {isActiveItemHovered && (
                 <button
-                  className="absolute top-0 right-2 transform -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-sm flex items-center justify-center hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer z-10"
+                  className="absolute top-0 right-0.5 transform -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-sm flex items-center justify-center hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer z-10"
                   onClick={pinActiveContextItem}
                   title="Закрепить элемент"
                 >
@@ -337,27 +337,12 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({
           </div>
         </div>
 
-        {/* СКРОЛЛИРУЕМАЯ ЗОНА: припиненные элементы */}
+        {/* СКРОЛЛИРУЕМАЯ ЗОНА: все припиненные элементы в одном списке */}
         <div className={SIDEBAR_MENU_STYLES.scrollableZone}>
-          {/* Системные припиненные элементы */}
-          {hasSystemItems && (
+          {/* Все закрепленные элементы вместе */}
+          {hasPinnedItems && (
             <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
-              {systemPinnedItems.map((item) => (
-                <SidebarMenuItem
-                  key={item.id}
-                  item={item}
-                  onClick={() => handleItemClick(item)}
-                  isCentral={true}
-                  isActive={isActiveItem(item.id)}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Пользовательские припиненные элементы */}
-          {hasUserItems && (
-            <div className={SIDEBAR_MENU_STYLES.itemsContainer}>
-              {userPinnedItems.map((item) => (
+              {pinnedItems.map((item) => (
                 <SidebarMenuItem
                   key={item.id}
                   item={item}

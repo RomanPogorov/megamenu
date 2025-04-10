@@ -5,6 +5,7 @@ import React, {
   useEffect,
   ReactNode,
   useCallback,
+  useMemo,
 } from "react";
 import { useLocalStorage, clearStorageItem } from "./useLocalStorage";
 import {
@@ -345,9 +346,46 @@ export function MenuProvider({ children }: { children: ReactNode }) {
     clearStorageItem("recentItems");
   }, []);
 
+  // Добавляем навигационные элементы в список всех элементов
+  const navigationItems: MenuItem[] = [
+    {
+      id: "resource-browser",
+      name: "Resource Browser",
+      icon: "folder-open",
+      category: "navigation",
+      isParent: true,
+    },
+    {
+      id: "rest-console",
+      name: "REST Console",
+      icon: "console",
+      category: "navigation",
+      isParent: true,
+    },
+    {
+      id: "db-console",
+      name: "DB Console",
+      icon: "database",
+      category: "navigation",
+      isParent: true,
+    },
+    {
+      id: "settings",
+      name: "Settings",
+      icon: "Settings",
+      category: "navigation",
+      isParent: true,
+    },
+  ];
+
+  // Расширяем список всех элементов, добавляя навигационные элементы
+  const allMenuItems = useMemo(() => {
+    return [...menuItemsWithCategoryNames, ...navigationItems];
+  }, []);
+
   // Create the value object to be passed to consumers
   const contextValue: MenuContextType = {
-    allMenuItems: menuItems,
+    allMenuItems,
     categories,
     pinnedItems,
     recentItems,
